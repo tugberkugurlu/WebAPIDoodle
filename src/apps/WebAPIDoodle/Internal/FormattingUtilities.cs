@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Collections.ObjectModel;
 
 //Taken from System.Net.Http Library
-namespace WebAPIDoodle.Internal {
+namespace WebAPIDoodle {
 
     internal static class FormattingUtilities {
 
