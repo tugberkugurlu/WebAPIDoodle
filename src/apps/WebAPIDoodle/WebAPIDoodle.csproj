@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Filters\ApiKeyAuthAttribute.cs" />
+    <Compile Include="Filters\ValidateModelStateAttribute.cs" />
     <Compile Include="Formatting\CSVMediaTypeFormatter.cs" />
     <Compile Include="Formatting\RouteDataMapping.cs" />
     <Compile Include="IApiKeyAuthorizer.cs" />
