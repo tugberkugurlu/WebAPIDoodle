@@ -36,6 +36,7 @@
       <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.5\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http">
       <HintPath>..\..\..\packages\Microsoft.Net.Http.2.0.20523.0\lib\net40\System.Net.Http.dll</HintPath>
@@ -57,13 +58,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\HttpConfigurationExtensions.cs" />
     <Compile Include="Filters\ApiKeyAuthAttribute.cs" />
+    <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Filters\ValidateModelStateAttribute.cs" />
     <Compile Include="Formatting\CSVMediaTypeFormatter.cs" />
     <Compile Include="Formatting\RouteDataMapping.cs" />
     <Compile Include="IApiKeyAuthorizer.cs" />
     <Compile Include="Internal\AuthorizationUtilities.cs" />
     <Compile Include="Internal\FormattingUtilities.cs" />
+    <Compile Include="Messages\HttpResponseMessageWithStringContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
