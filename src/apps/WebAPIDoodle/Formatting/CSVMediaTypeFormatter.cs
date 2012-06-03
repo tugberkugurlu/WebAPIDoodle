@@ -42,15 +42,10 @@ namespace WebAPIDoodle.Formatting {
             return isTypeOfIEnumerable(type);
         }
 
-        public override System.Threading.Tasks.Task WriteToStreamAsync(
-            Type type, 
-            object value, 
-            Stream writeStream, 
-            HttpContent content, 
-            TransportContext transportContext) {
+        public override Task WriteToStreamAsync(Type type, object value, Stream stream, HttpContentHeaders contentHeaders, TransportContext transportContext) {
 
             return Task.Factory.StartNew(() => {
-                writeToStream(type, value, writeStream, content.Headers);
+                writeToStream(type, value, stream, contentHeaders);
             });
         }
 
