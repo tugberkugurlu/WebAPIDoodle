@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDoodle", "src\apps\WebAPIDoodle\WebAPIDoodle.csproj", "{215FF16A-9FD4-44C9-8727-97AE045F0161}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{3BBDE5D7-5238-4D34-A7F3-471D096B48FE}"
@@ -20,7 +20,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{42EACC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8878DC30-FAA1-43C1-BEF4-A861FF923732}"
 	ProjectSection(SolutionItems) = preProject
-		WebAPIDoodle.build = WebAPIDoodle.build
+		WebAPIDoodle.msbuild = WebAPIDoodle.msbuild
 	EndProjectSection
 EndProject
 Global
@@ -29,20 +29,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Release|Any CPU.Build.0 = Release|Any CPU
 		{11DABFEE-B3FD-4AC0-B0A4-145C317AFB03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{11DABFEE-B3FD-4AC0-B0A4-145C317AFB03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11DABFEE-B3FD-4AC0-B0A4-145C317AFB03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11DABFEE-B3FD-4AC0-B0A4-145C317AFB03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{215FF16A-9FD4-44C9-8727-97AE045F0161} = {3BBDE5D7-5238-4D34-A7F3-471D096B48FE}
 		{11DABFEE-B3FD-4AC0-B0A4-145C317AFB03} = {D532231C-3698-4B45-A5AD-A4F7E6B73221}
+		{215FF16A-9FD4-44C9-8727-97AE045F0161} = {3BBDE5D7-5238-4D34-A7F3-471D096B48FE}
 	EndGlobalSection
 EndGlobal
