@@ -16,7 +16,7 @@ namespace WebAPIDoodle.MessageHandlers {
 
                 var response = task.Result;
 
-                var httpContext = response.RequestMessage.Properties["MS_HttpContext"] as HttpContextWrapper;
+                var httpContext = response.RequestMessage.Properties[Constants.HttpContextBaseKey] as HttpContextWrapper;
                 if (httpContext != null)
                     httpContext.Response.Headers.Remove("Server");
 

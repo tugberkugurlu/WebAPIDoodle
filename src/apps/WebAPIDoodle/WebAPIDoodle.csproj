@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\HttpConfigurationExtensions.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Filters\ApiKeyAuthAttribute.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Filters\ValidateModelStateAttribute.cs" />
