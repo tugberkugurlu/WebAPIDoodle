@@ -67,11 +67,11 @@
     <Compile Include="IApiKeyAuthorizer.cs" />
     <Compile Include="Internal\AuthorizationUtilities.cs" />
     <Compile Include="Internal\FormattingUtilities.cs" />
+    <Compile Include="MessageHandlers\RemoveServerHeaderMessageHandler.cs" />
     <Compile Include="Messages\HttpResponseMessageWithStringContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="MessageHandlers\" />
     <Folder Include="Routing\" />
   </ItemGroup>
   <ItemGroup>
