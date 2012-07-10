@@ -18,6 +18,8 @@ namespace WebAPIDoodle {
         protected override void Initialize(HttpControllerContext controllerContext) {
             
             base.Initialize(controllerContext);
+
+            //TODO: implement a way to make it possible to terminate the request here
             OnActionExecuting(controllerContext);
         }
 
