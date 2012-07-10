@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllerBase.cs" />
     <Compile Include="Configuration\HttpConfigurationExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Filters\ApiKeyAuthAttribute.cs" />
@@ -65,6 +66,7 @@
     <Compile Include="Filters\ValidateModelStateAttribute.cs" />
     <Compile Include="Formatting\CSVMediaTypeFormatter.cs" />
     <Compile Include="Formatting\RouteDataMapping.cs" />
+    <Compile Include="IApiControllerBase.cs" />
     <Compile Include="IApiKeyAuthorizer.cs" />
     <Compile Include="Internal\AuthorizationUtilities.cs" />
     <Compile Include="Internal\FormattingUtilities.cs" />
