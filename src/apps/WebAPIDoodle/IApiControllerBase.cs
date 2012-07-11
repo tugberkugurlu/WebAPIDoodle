@@ -9,7 +9,7 @@ namespace WebAPIDoodle {
 
     public interface IApiControllerBase {
 
-        void OnActionExecuting(HttpControllerContext controllerContext);
-        void OnActionExecuted(HttpResponseMessage response);
+        void OnControllerExecuting(HttpControllerExecutingContext controllerExecutingContext);
+        void OnControllerExecuted(HttpResponseMessage response);
     }
 }

@@ -10,28 +10,53 @@ using System.Web.Http.Controllers;
 
 namespace WebAPIDoodle {
 
+    /// <summary>
+    /// Base APiController class which provides aditional two methods that run before and after the controller execution
+    /// </summary>
     public abstract class ApiControllerBase : ApiController, IApiControllerBase {
 
-        public virtual void OnActionExecuting(HttpControllerContext controllerContext) { }
-        public virtual void OnActionExecuted(HttpResponseMessage response) { }
+        private Task<HttpResponseMessage> _intermediateResponseMessage;
 
         protected override void Initialize(HttpControllerContext controllerContext) {
             
             base.Initialize(controllerContext);
+            
+            HttpControllerExecutingContext controllerExecutingContext = new HttpControllerExecutingContext(controllerContext);
 
-            //TODO: implement a way to make it possible to terminate the request here
-            OnActionExecuting(controllerContext);
+            try {
+
+                OnControllerExecuting(controllerExecutingContext);
+            }
+            catch (Exception e) {
+
+                _intermediateResponseMessage = TaskHelpers.FromError<HttpResponseMessage>(e);
+            }
+
+            //Set the response message if the response coming from OnControllerExecuting is not null
+            if (controllerExecutingContext.Response != null) {
+
+                _intermediateResponseMessage = TaskHelpers.FromResult<HttpResponseMessage>(controllerExecutingContext.Response);
+            }
         }
 
         public override Task<HttpResponseMessage> ExecuteAsync(HttpControllerContext controllerContext, CancellationToken cancellationToken) {
-            
+
+            if (_intermediateResponseMessage != null) {
+
+                OnControllerExecuted(_intermediateResponseMessage.Result);
+                return _intermediateResponseMessage;
+            }
+
             //TODO: Handle this better. E.g: What happens when an exception is thrown?
             return base.ExecuteAsync(controllerContext, cancellationToken).ContinueWith(task => {
 
                 var response = task.Result;
-                OnActionExecuted(response);
+                OnControllerExecuted(response);
                 return response;
             });
         }
+
+        public virtual void OnControllerExecuting(HttpControllerExecutingContext controllerExecutingContext) { }
+        public virtual void OnControllerExecuted(HttpResponseMessage response) { }
     }
 }
