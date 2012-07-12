@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://raw.github.com/tugberkugurlu/WebAPIDoodle/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/tugberkugurlu/WebAPIDoodle</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright Tugberk Ugurlu 2012</copyright>
+    <tags>aspnetwebapi aspnet webapi signalr</tags>
+  </metadata>
+</package>

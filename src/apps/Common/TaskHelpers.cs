@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WebAPIDoodle {
+﻿
+namespace System.Threading.Tasks {
 
     /// <summary>
     /// Helpers for safely using Task libraries (taken from ASP.NET Web Stack source: http://aspnetwebstack.codeplex.com)
