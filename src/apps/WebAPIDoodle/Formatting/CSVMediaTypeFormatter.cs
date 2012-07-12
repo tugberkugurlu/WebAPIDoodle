@@ -44,7 +44,7 @@ namespace WebAPIDoodle.Formatting {
 
         public override Task WriteToStreamAsync(Type type, object value, Stream stream, HttpContentHeaders contentHeaders, TransportContext transportContext) {
 
-            return Task.Factory.StartNew(() => {
+            return TaskHelpers.RunSynchronously(() => {
                 writeToStream(type, value, stream, contentHeaders);
             });
         }
