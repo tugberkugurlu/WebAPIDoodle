@@ -26,7 +26,7 @@ namespace WebAPIDoodle.MessageHandlers {
 
             public static Task<HttpResponseMessage> SSLRequiredForbiddenResponseMessage = GetSSLRequiredForbiddenResponseMessage();
 
-            private static Task<HttpResponseMessage> GetSSLRequiredForbiddenResponseMessage() { 
+            private static Task<HttpResponseMessage> GetSSLRequiredForbiddenResponseMessage() {
 
                 return TaskHelpers.FromResult<HttpResponseMessage>(
                     new HttpResponseMessageWithStringContent("SSL required", HttpStatusCode.Forbidden));
