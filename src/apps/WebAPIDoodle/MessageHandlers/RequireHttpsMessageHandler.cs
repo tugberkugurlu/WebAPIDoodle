@@ -16,21 +16,11 @@ namespace WebAPIDoodle.MessageHandlers {
 
             if (request.RequestUri.Scheme != Uri.UriSchemeHttps) {
 
-                return CachedSSLRequiredResponseMessageItem.SSLRequiredForbiddenResponseMessage;
-            }
-   
-            return base.SendAsync(request, cancellationToken);
-        }
-
-        private static class CachedSSLRequiredResponseMessageItem {
-
-            public static Task<HttpResponseMessage> SSLRequiredForbiddenResponseMessage = GetSSLRequiredForbiddenResponseMessage();
-
-            private static Task<HttpResponseMessage> GetSSLRequiredForbiddenResponseMessage() {
-
                 return TaskHelpers.FromResult<HttpResponseMessage>(
                     new HttpResponseMessageWithStringContent("SSL required", HttpStatusCode.Forbidden));
             }
+   
+            return base.SendAsync(request, cancellationToken);
         }
     }
 }
