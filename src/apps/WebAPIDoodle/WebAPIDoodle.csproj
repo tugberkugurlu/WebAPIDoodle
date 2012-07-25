@@ -79,7 +79,7 @@
     <Compile Include="MessageHandlers\BasicAuthenticationMessageHandler.cs" />
     <Compile Include="MessageHandlers\RemoveServerHeaderMessageHandler.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />
-    <Compile Include="Messages\HttpResponseMessageWithStringContent.cs" />
+    <Compile Include="Messages\HttpStringResponseMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

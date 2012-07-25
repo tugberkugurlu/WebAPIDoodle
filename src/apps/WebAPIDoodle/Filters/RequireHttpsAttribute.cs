@@ -15,7 +15,7 @@ namespace WebAPIDoodle.Filters {
 
             if (actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps) {
 
-                actionContext.Response = new HttpResponseMessageWithStringContent("SSL required", HttpStatusCode.Forbidden);
+                actionContext.Response = new HttpStringResponseMessage("SSL required", HttpStatusCode.Forbidden);
             }
         }
     }
