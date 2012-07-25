@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
-namespace WebAPIDoodle {
+namespace WebAPIDoodle.Controllers {
 
     /// <summary>
     /// Base APiController class which provides aditional two methods that run before and after the controller execution

@@ -65,14 +65,14 @@
     <Compile Include="..\Common\TaskHelpers.cs">
       <Link>Common\TaskHelpers.cs</Link>
     </Compile>
-    <Compile Include="ApiControllerBase.cs" />
+    <Compile Include="Controllers\ApiControllerBase.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Filters\ApiKeyAuthAttribute.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Filters\ValidateModelStateAttribute.cs" />
     <Compile Include="Formatting\RouteDataMapping.cs" />
-    <Compile Include="HttpControllerExecutingContext.cs" />
-    <Compile Include="IApiControllerBase.cs" />
+    <Compile Include="Controllers\HttpControllerExecutingContext.cs" />
+    <Compile Include="Controllers\IApiControllerBase.cs" />
     <Compile Include="IApiKeyAuthorizer.cs" />
     <Compile Include="MessageHandlers\BasicAuthenticationMessageHandler.cs" />
     <Compile Include="MessageHandlers\RemoveServerHeaderMessageHandler.cs" />

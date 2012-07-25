@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http.Controllers;
 
-namespace WebAPIDoodle {
+namespace WebAPIDoodle.Controllers {
 
     public class HttpControllerExecutingContext {
 
