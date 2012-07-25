@@ -32,8 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -69,13 +70,10 @@
     <Compile Include="Filters\ApiKeyAuthAttribute.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Filters\ValidateModelStateAttribute.cs" />
-    <Compile Include="Formatting\CSVMediaTypeFormatter.cs" />
     <Compile Include="Formatting\RouteDataMapping.cs" />
     <Compile Include="HttpControllerExecutingContext.cs" />
     <Compile Include="IApiControllerBase.cs" />
     <Compile Include="IApiKeyAuthorizer.cs" />
-    <Compile Include="Internal\AuthorizationUtilities.cs" />
-    <Compile Include="Internal\FormattingUtilities.cs" />
     <Compile Include="MessageHandlers\BasicAuthenticationMessageHandler.cs" />
     <Compile Include="MessageHandlers\RemoveServerHeaderMessageHandler.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />

@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2E6930
 		.nuget\nuget.exe = .nuget\nuget.exe
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDoodle.Formatting", "src\apps\WebAPIDoodle.Formatting\WebAPIDoodle.Formatting.csproj", "{4E9C705E-8964-401E-B2B1-A766B5FF9B32}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{215FF16A-9FD4-44C9-8727-97AE045F0161}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E9C705E-8964-401E-B2B1-A766B5FF9B32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E9C705E-8964-401E-B2B1-A766B5FF9B32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E9C705E-8964-401E-B2B1-A766B5FF9B32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E9C705E-8964-401E-B2B1-A766B5FF9B32}.Release|Any CPU.Build.0 = Release|Any CPU
 		{515B7AF3-301D-4886-A7B5-C5599CB09F06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{515B7AF3-301D-4886-A7B5-C5599CB09F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{515B7AF3-301D-4886-A7B5-C5599CB09F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -50,6 +56,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{11DABFEE-B3FD-4AC0-B0A4-145C317AFB03} = {D532231C-3698-4B45-A5AD-A4F7E6B73221}
 		{215FF16A-9FD4-44C9-8727-97AE045F0161} = {3BBDE5D7-5238-4D34-A7F3-471D096B48FE}
+		{4E9C705E-8964-401E-B2B1-A766B5FF9B32} = {3BBDE5D7-5238-4D34-A7F3-471D096B48FE}
 		{515B7AF3-301D-4886-A7B5-C5599CB09F06} = {3BBDE5D7-5238-4D34-A7F3-471D096B48FE}
 	EndGlobalSection
 EndGlobal

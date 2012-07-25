@@ -16,12 +16,13 @@ namespace WebAPIDoodle.Filters {
     /// </summary>
     public class ApiKeyAuthAttribute : AuthorizationFilterAttribute {
 
+        private static readonly string[] _emptyArray = new string[0];
         private const string _apiKeyAuthorizerMethodName = "IsAuthorized";
 
         private readonly string _apiKeyQueryParameter;
         private string _roles;
         private readonly Type _apiKeyAuthorizerType;
-        private string[] _rolesSplit = AuthorizationUtilities._emptyArray;
+        private string[] _rolesSplit = _emptyArray;
 
         /// <summary>
         /// The comma seperated list of roles which user needs to be in.
@@ -36,7 +37,7 @@ namespace WebAPIDoodle.Filters {
             set {
 
                 this._roles = value;
-                this._rolesSplit = AuthorizationUtilities.splitString(value);
+                this._rolesSplit = SplitString(value);
             }
         }
 
@@ -53,7 +54,7 @@ namespace WebAPIDoodle.Filters {
             if (apiKeyAuthorizerType == null)
                 throw new ArgumentNullException("apiKeyAuthorizerType");
 
-            if (!isTypeOfIApiKeyAuthorizer(apiKeyAuthorizerType)) {
+            if (!IsTypeOfIApiKeyAuthorizer(apiKeyAuthorizerType)) {
 
                 throw new ArgumentException(
                     string.Format(
@@ -73,10 +74,10 @@ namespace WebAPIDoodle.Filters {
             if (actionContext == null)
                 throw new ArgumentNullException("actionContext");
 
-            if (this.skipAuthorization(actionContext))
+            if (this.SkipAuthorization(actionContext))
                 return;
 
-            if (!authorizeCore(actionContext.Request))
+            if (!AuthorizeCore(actionContext.Request))
                 HandleUnauthorizedRequest(actionContext);
         }
 
@@ -94,7 +95,7 @@ namespace WebAPIDoodle.Filters {
         }
 
         //private helpers
-        private bool isTypeOfIApiKeyAuthorizer(Type type) {
+        private bool IsTypeOfIApiKeyAuthorizer(Type type) {
 
             foreach (Type interfaceType in type.GetInterfaces()) {
 
@@ -104,23 +105,26 @@ namespace WebAPIDoodle.Filters {
 
             return false;
         }
-        private bool skipAuthorization(HttpActionContext actionContext) {
+
+        private bool SkipAuthorization(HttpActionContext actionContext) {
 
             return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any<AllowAnonymousAttribute>() ||
                 actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any<AllowAnonymousAttribute>();
         }
-        private bool authorizeCore(HttpRequestMessage request) {
+
+        private bool AuthorizeCore(HttpRequestMessage request) {
 
             var apiKey = HttpUtility.ParseQueryString(request.RequestUri.Query)[_apiKeyQueryParameter];
 
-            return isAuthorized(apiKey);
+            return IsAuthorized(apiKey);
         }
-        private bool isAuthorized(string apiKey) {
+
+        private bool IsAuthorized(string apiKey) {
 
             object apiKeyAuthorizerClassInstance = Activator.CreateInstance(_apiKeyAuthorizerType);
             object result = null;
 
-            if (_rolesSplit == AuthorizationUtilities._emptyArray) {
+            if (_rolesSplit == _emptyArray) {
 
                 result = _apiKeyAuthorizerType.GetMethod(_apiKeyAuthorizerMethodName, new Type[] { typeof(string) }).
                     Invoke(apiKeyAuthorizerClassInstance, new object[] { apiKey });
@@ -133,6 +137,22 @@ namespace WebAPIDoodle.Filters {
             }
 
             return (bool)result;
+        }
+
+        private static string[] SplitString(string original) {
+
+            if (string.IsNullOrEmpty(original))
+                return _emptyArray;
+
+            IEnumerable<string> source =
+                from piece in original.Split(new char[] {
+
+					','
+				})
+                let trimmed = piece.Trim()
+                where !string.IsNullOrEmpty(trimmed)
+                select trimmed;
+            return source.ToArray<string>();
         }
     }
 }
