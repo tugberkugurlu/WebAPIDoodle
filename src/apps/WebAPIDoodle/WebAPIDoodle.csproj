@@ -65,7 +65,6 @@
       <Link>Common\TaskHelpers.cs</Link>
     </Compile>
     <Compile Include="ApiControllerBase.cs" />
-    <Compile Include="Configuration\HttpConfigurationExtensions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Filters\ApiKeyAuthAttribute.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
