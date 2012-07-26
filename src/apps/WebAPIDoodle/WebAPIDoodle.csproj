@@ -79,6 +79,7 @@
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />
     <Compile Include="MessageHandlers\TimeoutHandler.cs" />
     <Compile Include="Messages\HttpStringResponseMessage.cs" />
+    <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
