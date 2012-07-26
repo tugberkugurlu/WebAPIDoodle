@@ -11,6 +11,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright Tugberk Ugurlu 2012</copyright>
-    <tags>aspnetwebapi aspnet webapi signalr</tags>
+    <tags>aspnetwebapi aspnet webapi formatting</tags>
   </metadata>
 </package>

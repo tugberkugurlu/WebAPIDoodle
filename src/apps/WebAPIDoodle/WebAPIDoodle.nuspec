@@ -6,11 +6,14 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://raw.github.com/tugberkugurlu/WebAPIDoodle/master/LICENSE.md</licenseUrl>
-    <projectUrl>https://github.com/tugberkugurlu/WebAPIDoodle</projectUrl>
+    <licenseUrl>https://raw.github.com/WebAPIDoodle/WebAPIDoodle/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/WebAPIDoodle/WebAPIDoodle</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright Tugberk Ugurlu 2012</copyright>
     <tags>aspnetwebapi aspnet webapi</tags>
+    <dependencies>
+      <dependency id="WebAPIDoodle.Formatting" version="$version$" />
+    </dependencies>
   </metadata>
 </package>
