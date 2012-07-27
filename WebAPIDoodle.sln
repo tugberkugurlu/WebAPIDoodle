@@ -11,11 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{2E12
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDoodle.Test", "src\tests\WebAPIDoodle.Test\WebAPIDoodle.Test.csproj", "{11DABFEE-B3FD-4AC0-B0A4-145C317AFB03}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{8878DC30-FAA1-43C1-BEF4-A861FF923732}"
-	ProjectSection(SolutionItems) = preProject
-		WebAPIDoodle.msbuild = WebAPIDoodle.msbuild
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDoodle.SignalR", "src\apps\WebAPIDoodle.SignalR\WebAPIDoodle.SignalR.csproj", "{515B7AF3-301D-4886-A7B5-C5599CB09F06}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2E6930B0-FB24-4AD2-94CE-C7DF9FC75F23}"

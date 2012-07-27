@@ -1,4 +1,5 @@
 ﻿
+using System.Collections.Generic;
 namespace System.Threading.Tasks {
 
     /// <summary>
@@ -8,6 +9,11 @@ namespace System.Threading.Tasks {
 
         private static readonly Task<object> _completedTaskReturningNull = FromResult<object>(null);
         private static readonly Task _defaultCompleted = FromResult<AsyncVoid>(default(AsyncVoid));
+
+        internal static Task<object> NullResult() {
+
+            return _completedTaskReturningNull;
+        }
 
         /// <summary>
         /// Returns a successful completed task with the given result.  
@@ -38,9 +44,22 @@ namespace System.Threading.Tasks {
             return tcs.Task;
         }
 
-        internal static Task<object> NullResult() {
+        /// <summary>
+        /// Returns an error task of the given type. The task is Completed, IsCanceled = False, IsFaulted = True
+        /// </summary>
+        internal static Task FromErrors(IEnumerable<Exception> exceptions) {
 
-            return _completedTaskReturningNull;
+            return FromErrors<AsyncVoid>(exceptions);
+        }
+
+        /// <summary>
+        /// Returns an error task of the given type. The task is Completed, IsCanceled = False, IsFaulted = True
+        /// </summary>
+        internal static Task<TResult> FromErrors<TResult>(IEnumerable<Exception> exceptions) {
+
+            TaskCompletionSource<TResult> tcs = new TaskCompletionSource<TResult>();
+            tcs.SetException(exceptions);
+            return tcs.Task;
         }
 
         /// <summary>
@@ -51,19 +70,12 @@ namespace System.Threading.Tasks {
             return _defaultCompleted;
         }
 
-        internal static Task<TResult> Completed<TResult>(TResult result) {
-
-            TaskCompletionSource<TResult> tcs = new TaskCompletionSource<TResult>();
-            tcs.SetResult(result);
-            return tcs.Task;
-        }
-
         /// <summary>
         /// Returns a canceled Task. The task is completed, IsCanceled = True, IsFaulted = False.
         /// </summary>
         internal static Task Canceled() {
 
-            return CanceledTaskCache<AsyncVoid>.Canceled;
+            return Canceled<AsyncVoid>();
         }
 
         /// <summary>
@@ -71,7 +83,9 @@ namespace System.Threading.Tasks {
         /// </summary>
         internal static Task<TResult> Canceled<TResult>() {
 
-            return CanceledTaskCache<TResult>.Canceled;
+            TaskCompletionSource<TResult> tcs = new TaskCompletionSource<TResult>();
+            tcs.SetCanceled();
+            return tcs.Task;
         }
 
         /// <summary>
@@ -166,21 +180,6 @@ namespace System.Threading.Tasks {
             catch (Exception e) {
 
                 return FromError<TResult>(e);
-            }
-        }
-
-        /// <summary>
-        /// This class is a convenient cache for per-type cancelled tasks
-        /// </summary>
-        private static class CanceledTaskCache<TResult> {
-
-            public static readonly Task<TResult> Canceled = GetCancelledTask();
-
-            private static Task<TResult> GetCancelledTask() {
-
-                TaskCompletionSource<TResult> tcs = new TaskCompletionSource<TResult>();
-                tcs.SetCanceled();
-                return tcs.Task;
             }
         }
 
