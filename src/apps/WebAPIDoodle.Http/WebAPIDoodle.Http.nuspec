@@ -11,9 +11,6 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright Tugberk Ugurlu 2012</copyright>
-    <tags>aspnetwebapi aspnet webapi formatting</tags>
-    <dependencies>
-      <dependency id="WebAPIDoodle.Http" version="$version$" />
-    </dependencies>
+    <tags>http client httpclient webapi aspnetwebapi</tags>
   </metadata>
 </package>

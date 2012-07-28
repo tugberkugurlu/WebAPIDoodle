@@ -34,6 +34,7 @@
     <Exec WorkingDirectory="%(NugetExeDir.FullPath)" Command="nuget.exe pack ..\src\apps\WebAPIDoodle\WebAPIDoodle.csproj -Build -OutputDirectory ..\artifacts\packages" />
     <Exec WorkingDirectory="%(NugetExeDir.FullPath)" Command="nuget.exe pack ..\src\apps\WebAPIDoodle.SignalR\WebAPIDoodle.SignalR.csproj -Build -OutputDirectory ..\artifacts\packages" />
     <Exec WorkingDirectory="%(NugetExeDir.FullPath)" Command="nuget.exe pack ..\src\apps\WebAPIDoodle.Formatting\WebAPIDoodle.Formatting.csproj -Build -OutputDirectory ..\artifacts\packages" />
+    <Exec WorkingDirectory="%(NugetExeDir.FullPath)" Command="nuget.exe pack ..\src\apps\WebAPIDoodle.Http\WebAPIDoodle.Http.csproj -Build -OutputDirectory ..\artifacts\packages" />
   </Target>
   <Target Name="PublishPackage">
     <Exec WorkingDirectory="%(ScriptsDir.FullPath)" Command="powershell -file .\publish.ps1" />

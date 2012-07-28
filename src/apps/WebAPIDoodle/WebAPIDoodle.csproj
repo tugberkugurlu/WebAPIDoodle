@@ -70,27 +70,24 @@
     </Compile>
     <Compile Include="Controllers\ApiControllerBase.cs" />
     <Compile Include="Common\Constants.cs" />
-    <Compile Include="Http\Entity\OAuthCredential.cs" />
     <Compile Include="Filters\ApiKeyAuthAttribute.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Filters\ValidateModelStateAttribute.cs" />
     <Compile Include="Formatting\RouteDataMapping.cs" />
     <Compile Include="Controllers\HttpControllerExecutingContext.cs" />
     <Compile Include="Controllers\IApiControllerBase.cs" />
-    <Compile Include="Http\EmptyContent.cs" />
     <Compile Include="Filters\IApiKeyAuthorizer.cs" />
-    <Compile Include="Http\Handlers\BasicAuthenticationMessageHandler.cs" />
-    <Compile Include="Http\OAuthHttpClient.cs" />
-    <Compile Include="Http\Handlers\OAuthMessageHandler.cs" />
     <Compile Include="Http\Handlers\RemoveServerHeaderMessageHandler.cs" />
-    <Compile Include="Http\Handlers\RequireHttpsMessageHandler.cs" />
     <Compile Include="Http\Handlers\TimeoutHandler.cs" />
-    <Compile Include="Http\HttpStringResponseMessage.cs" />
     <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\OAuthBase.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\WebAPIDoodle.Http\WebAPIDoodle.Http.csproj">
+      <Project>{4c07c35b-d14b-4f20-969d-ec6630bc2a99}</Project>
+      <Name>WebAPIDoodle.Http</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="WebAPIDoodle.nuspec" />
