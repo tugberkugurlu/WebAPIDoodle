@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Controllers\ApiControllerBase.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Entity\OAuthCredential.cs" />
     <Compile Include="Filters\ApiKeyAuthAttribute.cs" />
     <Compile Include="Filters\RequireHttpsAttribute.cs" />
     <Compile Include="Filters\ValidateModelStateAttribute.cs" />
@@ -78,12 +79,15 @@
     <Compile Include="Controllers\IApiControllerBase.cs" />
     <Compile Include="IApiKeyAuthorizer.cs" />
     <Compile Include="MessageHandlers\BasicAuthenticationMessageHandler.cs" />
+    <Compile Include="MessageHandlers\OAuthHttpClient.cs" />
+    <Compile Include="MessageHandlers\OAuthMessageHandler.cs" />
     <Compile Include="MessageHandlers\RemoveServerHeaderMessageHandler.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandler.cs" />
     <Compile Include="MessageHandlers\TimeoutHandler.cs" />
     <Compile Include="Messages\HttpStringResponseMessage.cs" />
     <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\OAuthBase.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
