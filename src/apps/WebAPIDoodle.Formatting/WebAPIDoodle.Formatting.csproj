@@ -63,6 +63,7 @@
       <Link>Common\TaskHelpers.cs</Link>
     </Compile>
     <Compile Include="CSVMediaTypeFormatter.cs" />
+    <Compile Include="HttpClientExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
