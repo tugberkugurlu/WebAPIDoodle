@@ -6,9 +6,8 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using WebAPIDoodle.Messages;
 
-namespace WebAPIDoodle.MessageHandlers {
+namespace WebAPIDoodle.Http {
 
     public class RequireHttpsMessageHandler : DelegatingHandler {
 

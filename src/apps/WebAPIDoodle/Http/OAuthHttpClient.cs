@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using WebAPIDoodle.Entity;
+using WebAPIDoodle.Http.Entity;
 
-namespace WebAPIDoodle.MessageHandlers {
+namespace WebAPIDoodle.Http {
 
     public class OAuthHttpClient : HttpClient {
 

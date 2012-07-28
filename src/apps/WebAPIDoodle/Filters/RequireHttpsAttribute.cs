@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Web.Http.Filters;
 using System.Web.Http.Controllers;
-using WebAPIDoodle.Messages;
 using System.Net;
+using WebAPIDoodle.Http;
 
 namespace WebAPIDoodle.Filters {
 

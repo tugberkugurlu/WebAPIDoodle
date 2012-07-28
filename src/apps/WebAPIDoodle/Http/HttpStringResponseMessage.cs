@@ -5,7 +5,7 @@ using System.Text;
 using System.Net.Http;
 using System.Net;
 
-namespace WebAPIDoodle.Messages {
+namespace WebAPIDoodle.Http {
 
     public class HttpStringResponseMessage : HttpResponseMessage {
 

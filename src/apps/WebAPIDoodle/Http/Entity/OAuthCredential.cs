@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WebAPIDoodle.Entity {
+namespace WebAPIDoodle.Http.Entity {
 
     public class OAuthCredential {
 

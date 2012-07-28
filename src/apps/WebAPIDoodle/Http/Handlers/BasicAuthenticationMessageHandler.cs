@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebAPIDoodle.MessageHandlers {
+namespace WebAPIDoodle.Http {
 
     //reference: https://github.com/davidfowl/MessengR/blob/master/MessengR/Account/Login.ashx.cs
     //         : https://github.com/WebApiContrib/WebAPIContrib/blob/master/src/WebApiContrib/MessageHandlers/BasicAuthenticationHandler.cs

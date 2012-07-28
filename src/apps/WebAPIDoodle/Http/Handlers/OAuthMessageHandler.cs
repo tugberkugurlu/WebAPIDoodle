@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
-using WebAPIDoodle.Entity;
 using WebAPIDoodle.Util;
 using System.Net.Http.Headers;
+using WebAPIDoodle.Http.Entity;
 
-namespace WebAPIDoodle.MessageHandlers {
+namespace WebAPIDoodle.Http {
 
     public class OAuthMessageHandler : DelegatingHandler {
 
