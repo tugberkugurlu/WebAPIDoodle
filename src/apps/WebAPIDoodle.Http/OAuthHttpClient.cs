@@ -15,6 +15,10 @@ namespace WebAPIDoodle.Http {
             : this(new OAuthCredential(consumerKey, consumerSecret, token, tokenSecret)) {
         }
 
+        public OAuthHttpClient(string consumerKey, string consumerSecret, string callbackUrl)
+            : this(new OAuthCredential(consumerKey, consumerSecret, callbackUrl)) {
+        }
+
         public OAuthHttpClient(OAuthCredential oAuthCredential) 
             : base(new OAuthMessageHandler(oAuthCredential, new HttpClientHandler())) {
 

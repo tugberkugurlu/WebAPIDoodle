@@ -6,18 +6,25 @@ namespace WebAPIDoodle.Http.Entity {
 
         private readonly string _consumerKey;
         private readonly string _consumerSecret;
-        private readonly string _token;
-        private readonly string _tokenSecret;
-        
+
+        private string _token;
+        private string _tokenSecret;
         private string _callbackUrl;
 
-        public OAuthCredential(string consumerKey, string consumerSecret, string token, string tokenSecret, string callbackUrl) 
-            : this(consumerKey, consumerSecret, token, tokenSecret) {
+        public OAuthCredential(string consumerKey, string consumerSecret, string callbackUrl) 
+            : this(consumerKey, consumerSecret) {
 
             _callbackUrl = callbackUrl;
         }
 
-        public OAuthCredential(string consumerKey, string consumerSecret, string token, string tokenSecret) {
+        public OAuthCredential(string consumerKey, string consumerSecret, string token, string tokenSecret)
+            : this(consumerKey, consumerSecret) {
+
+            _token = token;
+            _tokenSecret = tokenSecret;
+        }
+
+        public OAuthCredential(string consumerKey, string consumerSecret) {
 
             if (string.IsNullOrEmpty(consumerKey)) {
                 throw new ArgumentNullException("consumerKey");
@@ -27,18 +34,8 @@ namespace WebAPIDoodle.Http.Entity {
                 throw new ArgumentNullException("consumerSecret");
             }
 
-            if (string.IsNullOrEmpty(token)) {
-                throw new ArgumentNullException(token);
-            }
-
-            if (string.IsNullOrEmpty(tokenSecret)) {
-                throw new ArgumentNullException(tokenSecret);
-            }
-
             _consumerKey = consumerKey;
             _consumerSecret = consumerSecret;
-            _token = token;
-            _tokenSecret = tokenSecret;
         }
 
         public string ConsumerKey { 
@@ -59,13 +56,21 @@ namespace WebAPIDoodle.Http.Entity {
 
             get {
                 return _token;
-            } 
+            }
+
+            set {
+                _token = value;
+            }
         }
 
         public string TokenSecret {
-            
+
             get {
                 return _tokenSecret;
+            }
+
+            set {
+                _tokenSecret = value;
             }
         }
 

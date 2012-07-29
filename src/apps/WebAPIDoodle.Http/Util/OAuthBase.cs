@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Cryptography;
+using System.Collections.Generic;
 using System.Text;
 
 namespace WebAPIDoodle.Util {
 
-    internal class OAuthBase {
+    public class OAuthBase {
 
         /// <summary>
         /// Provides a predefined set of algorithms that are supported officially by the protocol
@@ -72,19 +71,18 @@ namespace WebAPIDoodle.Util {
         protected const string OAuthNonceKey = "oauth_nonce";
         protected const string OAuthTokenKey = "oauth_token";
         protected const string OAuthTokenSecretKey = "oauth_token_secret";
+        protected const string OAuthVerifier = "oauth_verifier";
 
         protected const string HMACSHA1SignatureType = "HMAC-SHA1";
         protected const string PlainTextSignatureType = "PLAINTEXT";
         protected const string RSASHA1SignatureType = "RSA-SHA1";
 
-        protected Random random = new Random();
-
-        protected string unreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
+        protected static string unreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
 
         /// <summary>
         /// Helper function to compute a hash value
         /// </summary>
-        /// <param name="hashAlgorithm">The hashing algorithm used. If that algorithm needs some initialization, like HMAC and its derivatives, they should be initialized prior to passing it to this function</param>
+        /// <param name="hashAlgorithm">The hashing algoirhtm used. If that algorithm needs some initialization, like HMAC and its derivatives, they should be initialized prior to passing it to this function</param>
         /// <param name="data">The data to hash</param>
         /// <returns>a Base64 string of the hash value</returns>
         private string ComputeHash(HashAlgorithm hashAlgorithm, string data) {
@@ -103,7 +101,7 @@ namespace WebAPIDoodle.Util {
         }
 
         /// <summary>
-        /// Internal function to cut out all non oauth query string parameters (all parameters not beginning with "oauth_")
+        /// Internal function to cut out all non oauth query string parameters (all parameters not begining with "oauth_")
         /// </summary>
         /// <param name="parameters">The query string part of the Url</param>
         /// <returns>A list of QueryParameter each containing the parameter name and value</returns>
@@ -138,7 +136,7 @@ namespace WebAPIDoodle.Util {
         /// </summary>
         /// <param name="value">The value to Url encode</param>
         /// <returns>Returns a Url encoded string</returns>
-        protected string UrlEncode(string value) {
+        public static string UrlEncode(string value) {
             StringBuilder result = new StringBuilder();
 
             foreach (char symbol in value) {
@@ -177,19 +175,27 @@ namespace WebAPIDoodle.Util {
         /// Generate the signature base that is used to produce the signature
         /// </summary>
         /// <param name="url">The full url that needs to be signed including its non OAuth url parameters</param>
+        /// <param name="callback">The callback URL, if available.</param>        
         /// <param name="consumerKey">The consumer key</param>        
         /// <param name="token">The token, if available. If not available pass null or an empty string</param>
         /// <param name="tokenSecret">The token secret, if available. If not available pass null or an empty string</param>
         /// <param name="httpMethod">The http method used. Must be a valid HTTP method verb (POST,GET,PUT, etc)</param>
         /// <param name="signatureType">The signature type. To use the default values use <see cref="OAuthBase.SignatureTypes">OAuthBase.SignatureTypes</see>.</param>
         /// <returns>The signature base</returns>
-        public string GenerateSignatureBase(Uri url, string consumerKey, string token, string tokenSecret, string httpMethod, string timeStamp, string nonce, string signatureType, out string normalizedUrl, out string normalizedRequestParameters) {
+        public string GenerateSignatureBase(Uri url, string callback, string consumerKey, string token, string tokenSecret, string httpMethod, string timeStamp, string verifier, string nonce, string signatureType, out string normalizedUrl, out string normalizedRequestParameters) {
+            if (callback == null) {
+                callback = string.Empty;
+            }
             if (token == null) {
                 token = string.Empty;
             }
 
             if (tokenSecret == null) {
                 tokenSecret = string.Empty;
+            }
+
+            if (verifier == null) {
+                verifier = string.Empty;
             }
 
             if (string.IsNullOrEmpty(consumerKey)) {
@@ -216,6 +222,14 @@ namespace WebAPIDoodle.Util {
 
             if (!string.IsNullOrEmpty(token)) {
                 parameters.Add(new QueryParameter(OAuthTokenKey, token));
+            }
+
+            if (!string.IsNullOrEmpty(callback)) {
+                parameters.Add(new QueryParameter(OAuthCallbackKey, UrlEncode(callback)));
+            }
+
+            if (!string.IsNullOrEmpty(verifier)) {
+                parameters.Add(new QueryParameter(OAuthVerifier, verifier));
             }
 
             parameters.Sort(new QueryParameterComparer());
@@ -255,8 +269,8 @@ namespace WebAPIDoodle.Util {
         /// <param name="tokenSecret">The token secret, if available. If not available pass null or an empty string</param>
         /// <param name="httpMethod">The http method used. Must be a valid HTTP method verb (POST,GET,PUT, etc)</param>
         /// <returns>A base64 string of the hash value</returns>
-        public string GenerateSignature(Uri url, string consumerKey, string consumerSecret, string token, string tokenSecret, string httpMethod, string timeStamp, string nonce, string callbackUrl, out string normalizedUrl, out string normalizedRequestParameters, out string authHeader) {
-            return GenerateSignature(url, consumerKey, consumerSecret, token, tokenSecret, httpMethod, timeStamp, nonce, SignatureTypes.HMACSHA1, callbackUrl, out normalizedUrl, out normalizedRequestParameters, out authHeader);
+        public string GenerateSignature(Uri url, string callback, string consumerKey, string consumerSecret, string token, string tokenSecret, string httpMethod, string timeStamp, string verifier, string nonce, out string normalizedUrl, out string normalizedRequestParameters, out string authHeader) {
+            return GenerateSignature(url, callback, consumerKey, consumerSecret, token, tokenSecret, httpMethod, timeStamp, verifier, nonce, SignatureTypes.HMACSHA1, out normalizedUrl, out normalizedRequestParameters, out authHeader);
         }
 
         /// <summary>
@@ -270,7 +284,7 @@ namespace WebAPIDoodle.Util {
         /// <param name="httpMethod">The http method used. Must be a valid HTTP method verb (POST,GET,PUT, etc)</param>
         /// <param name="signatureType">The type of signature to use</param>
         /// <returns>A base64 string of the hash value</returns>
-        public string GenerateSignature(Uri url, string consumerKey, string consumerSecret, string token, string tokenSecret, string httpMethod, string timeStamp, string nonce, SignatureTypes signatureType, string callbackUrl, out string normalizedUrl, out string normalizedRequestParameters, out string authHeader) {
+        public string GenerateSignature(Uri url, string callback, string consumerKey, string consumerSecret, string token, string tokenSecret, string httpMethod, string timeStamp, string verifier, string nonce, SignatureTypes signatureType, out string normalizedUrl, out string normalizedRequestParameters, out string authHeader) {
             normalizedUrl = null;
             normalizedRequestParameters = null;
             authHeader = null;
@@ -279,23 +293,25 @@ namespace WebAPIDoodle.Util {
                 case SignatureTypes.PLAINTEXT:
                     return UrlEncode(string.Format("{0}&{1}", consumerSecret, tokenSecret));
                 case SignatureTypes.HMACSHA1:
-                    string signatureBase = GenerateSignatureBase(url, consumerKey, token, tokenSecret, httpMethod, timeStamp, nonce, HMACSHA1SignatureType, out normalizedUrl, out normalizedRequestParameters);
+                    string signatureBase = GenerateSignatureBase(url, callback, consumerKey, token, tokenSecret, httpMethod, timeStamp, verifier, nonce, HMACSHA1SignatureType, out normalizedUrl, out normalizedRequestParameters);
 
                     HMACSHA1 hmacsha1 = new HMACSHA1();
                     hmacsha1.Key = Encoding.ASCII.GetBytes(string.Format("{0}&{1}", UrlEncode(consumerSecret), string.IsNullOrEmpty(tokenSecret) ? "" : UrlEncode(tokenSecret)));
 
-                    string signature = GenerateSignatureUsingHash(signatureBase, hmacsha1);
+                    var signature = GenerateSignatureUsingHash(signatureBase, hmacsha1);
 
                     StringBuilder auth = new StringBuilder();
-                    if (!string.IsNullOrEmpty(callbackUrl)) {
-                        auth.AppendFormat("{0}=\"{1}\", ", OAuthCallbackKey, UrlEncode(callbackUrl));
-                    }
                     auth.AppendFormat("{0}=\"{1}\", ", OAuthConsumerKeyKey, UrlEncode(consumerKey));
                     auth.AppendFormat("{0}=\"{1}\", ", OAuthNonceKey, UrlEncode(nonce));
                     auth.AppendFormat("{0}=\"{1}\", ", OAuthSignatureKey, UrlEncode(signature));
                     auth.AppendFormat("{0}=\"{1}\", ", OAuthSignatureMethodKey, "HMAC-SHA1");
                     auth.AppendFormat("{0}=\"{1}\", ", OAuthTimestampKey, timeStamp);
-                    auth.AppendFormat("{0}=\"{1}\", ", OAuthTokenKey, UrlEncode(token));
+                    if (!string.IsNullOrEmpty(token)) {
+                        auth.AppendFormat("{0}=\"{1}\", ", OAuthTokenKey, UrlEncode(token));
+                    }
+                    if (!string.IsNullOrEmpty(callback)) {
+                        auth.AppendFormat("{0}=\"{1}\", ", OAuthCallbackKey, UrlEncode(callback));
+                    }
                     auth.AppendFormat("{0}=\"{1}\"", OAuthVersionKey, "1.0");
                     authHeader = auth.ToString();
 
@@ -323,8 +339,8 @@ namespace WebAPIDoodle.Util {
         /// </summary>
         /// <returns></returns>
         public virtual string GenerateNonce() {
-            // Just a simple implementation of a random number between 123400 and 9999999
-            return random.Next(123400, 9999999).ToString();
+            return Guid.NewGuid().ToString().Replace("-", "");
         }
+
     }
 }

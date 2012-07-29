@@ -21,8 +21,8 @@ namespace WebAPIDoodle.Http {
         private readonly string _callbackUrl;
         private readonly OAuthBase _oauthBase;
 
-        public OAuthMessageHandler(string consumerKey, string consumerSecret, string token, string tokenSecret, HttpMessageHandler innerHandler)
-            : this(new OAuthCredential(consumerKey, consumerSecret, token, tokenSecret), innerHandler) {
+        public OAuthMessageHandler(string consumerKey, string consumerSecret, HttpMessageHandler innerHandler)
+            : this(new OAuthCredential(consumerKey, consumerSecret), innerHandler) {
         }
 
         public OAuthMessageHandler(OAuthCredential oAuthCredential, HttpMessageHandler innerHandler)
@@ -50,14 +50,15 @@ namespace WebAPIDoodle.Http {
 
             _oauthBase.GenerateSignature(
                 request.RequestUri,
+                _callbackUrl,
                 _consumerKey,
                 _consumerSecret,
                 _token,
                 _tokenSecret,
                 request.Method.Method,
                 _oauthBase.GenerateTimeStamp(),
+                null,
                 _oauthBase.GenerateNonce(),
-                _callbackUrl,
                 out normalizedUri,
                 out normalizedParameters,
                 out authHeader);
