@@ -18,6 +18,7 @@ namespace WebAPIDoodle.Http {
         private readonly string _consumerSecret;
         private readonly string _token;
         private readonly string _tokenSecret;
+        private readonly string _callbackUrl;
         private readonly OAuthBase _oauthBase;
 
         public OAuthMessageHandler(string consumerKey, string consumerSecret, string token, string tokenSecret, HttpMessageHandler innerHandler)
@@ -35,6 +36,7 @@ namespace WebAPIDoodle.Http {
             _consumerSecret = oAuthCredential.ConsumerSecret;
             _token = oAuthCredential.Token;
             _tokenSecret = oAuthCredential.TokenSecret;
+            _callbackUrl = oAuthCredential.CallbackUrl;
 
             _oauthBase = new OAuthBase();
         }
@@ -55,6 +57,7 @@ namespace WebAPIDoodle.Http {
                 request.Method.Method,
                 _oauthBase.GenerateTimeStamp(),
                 _oauthBase.GenerateNonce(),
+                _callbackUrl,
                 out normalizedUri,
                 out normalizedParameters,
                 out authHeader);

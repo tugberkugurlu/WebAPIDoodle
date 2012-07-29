@@ -8,6 +8,14 @@ namespace WebAPIDoodle.Http.Entity {
         private readonly string _consumerSecret;
         private readonly string _token;
         private readonly string _tokenSecret;
+        
+        private string _callbackUrl;
+
+        public OAuthCredential(string consumerKey, string consumerSecret, string token, string tokenSecret, string callbackUrl) 
+            : this(consumerKey, consumerSecret, token, tokenSecret) {
+
+            _callbackUrl = callbackUrl;
+        }
 
         public OAuthCredential(string consumerKey, string consumerSecret, string token, string tokenSecret) {
 
@@ -58,6 +66,17 @@ namespace WebAPIDoodle.Http.Entity {
             
             get {
                 return _tokenSecret;
+            }
+        }
+
+        public string CallbackUrl {
+
+            get {
+                return _callbackUrl;
+            }
+
+            set {
+                _callbackUrl = value;
             }
         }
     }
