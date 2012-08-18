@@ -56,15 +56,12 @@
     <Compile Include="..\Common\TaskHelpers.cs">
       <Link>Common\TaskHelpers.cs</Link>
     </Compile>
+    <Compile Include="Common\IEnumerableExtensions.cs" />
     <Compile Include="EmptyContent.cs" />
-    <Compile Include="Entity\OAuthCredential.cs" />
-    <Compile Include="Handlers\BasicAuthenticationMessageHandler.cs" />
-    <Compile Include="Handlers\OAuthMessageHandler.cs" />
+    <Compile Include="Handlers\BasicAuthenticationHandler.cs" />
     <Compile Include="Handlers\RequireHttpsMessageHandler.cs" />
     <Compile Include="HttpStringResponseMessage.cs" />
-    <Compile Include="OAuthHttpClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\OAuthBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
