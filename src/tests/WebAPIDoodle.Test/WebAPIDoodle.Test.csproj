@@ -71,6 +71,7 @@
       <Link>Common\TaskHelpersTest.cs</Link>
     </Compile>
     <Compile Include="Controllers\ApiControllerBaseTest.cs" />
+    <Compile Include="Filters\ValidateModelStateAttributeTest.cs" />
     <Compile Include="MessageHandlers\ApiKeyAuthenticationHandlerTest.cs" />
     <Compile Include="MessageHandlers\BasicAuthenticationHandlerTest.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandlerTest.cs" />
@@ -93,9 +94,7 @@
       <Name>WebAPIDoodle</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Filters\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
