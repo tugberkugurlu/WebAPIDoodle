@@ -71,6 +71,7 @@
       <Link>Common\TaskHelpersTest.cs</Link>
     </Compile>
     <Compile Include="Controllers\ApiControllerBaseTest.cs" />
+    <Compile Include="MessageHandlers\ApiKeyAuthenticationHandlerTest.cs" />
     <Compile Include="MessageHandlers\BasicAuthenticationHandlerTest.cs" />
     <Compile Include="MessageHandlers\RequireHttpsMessageHandlerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

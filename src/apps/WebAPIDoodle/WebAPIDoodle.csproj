@@ -77,6 +77,7 @@
     <Compile Include="Controllers\HttpControllerExecutingContext.cs" />
     <Compile Include="Controllers\IApiControllerBase.cs" />
     <Compile Include="Filters\IApiKeyAuthorizer.cs" />
+    <Compile Include="Http\Handlers\ApiKeyAuthenticationHandler.cs" />
     <Compile Include="Http\Handlers\RemoveServerHeaderMessageHandler.cs" />
     <Compile Include="Http\Handlers\TimeoutHandler.cs" />
     <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />
