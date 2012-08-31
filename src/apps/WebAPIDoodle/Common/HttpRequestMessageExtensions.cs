@@ -7,8 +7,8 @@ using System.Text;
 using System.Web.Http;
 
 namespace System.Net.Http {
-    
-    public static class HttpResponseMessageExtensions {
+
+    public static class HttpRequestMessageExtensions {
 
         internal static HttpResponseMessage CreateErrorResponse(this HttpRequestMessage request, HttpStatusCode statusCode, string message, string messageDetail) {
 
