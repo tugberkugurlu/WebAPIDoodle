@@ -17,7 +17,7 @@ namespace WebAPIDoodle.Test.Filters {
         public void InvalidModelStateFilterAttribute_ShouldSetThe400ResponseIfTheModelStateIsNotValid() {
 
             //Arange
-            var validateModelStateFilter = new ValidateModelStateAttribute();
+            var validateModelStateFilter = new InvalidModelStateFilterAttribute();
             var request = new HttpRequestMessage();
             var actionContext = ContextUtil.GetHttpActionContext(request);
             actionContext.ModelState.AddModelError("foo", "foo is invalid.");
@@ -34,7 +34,7 @@ namespace WebAPIDoodle.Test.Filters {
         public void InvalidModelStateFilterAttribute_ShouldNotSetTheResponseIfTheModelStateIsValid() {
 
             //Arange
-            var validateModelStateFilter = new ValidateModelStateAttribute();
+            var validateModelStateFilter = new InvalidModelStateFilterAttribute();
             var request = new HttpRequestMessage();
             var actionContext = ContextUtil.GetHttpActionContext(request);
 
@@ -53,7 +53,7 @@ namespace WebAPIDoodle.Test.Filters {
             //      really honors the conneg.
 
             //Arange
-            var validateModelStateFilter = new ValidateModelStateAttribute();
+            var validateModelStateFilter = new InvalidModelStateFilterAttribute();
             var request = new HttpRequestMessage();
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             var actionContext = ContextUtil.GetHttpActionContext(request);

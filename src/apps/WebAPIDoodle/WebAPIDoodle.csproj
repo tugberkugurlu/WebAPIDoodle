@@ -79,8 +79,10 @@
     <Compile Include="Common\HttpErrorConstants.cs" />
     <Compile Include="Common\HttpErrorExtensions.cs" />
     <Compile Include="Common\TypeHelper.cs" />
+    <Compile Include="Controllers\BindCatchAllRouteAttribute.cs" />
+    <Compile Include="Controllers\CatchAllRouteParameterBinding.cs" />
     <Compile Include="Controllers\ComplexTypeUriParamFriendlyActionSelector.cs" />
-    <Compile Include="Common\HttpResponseMessageExtensions.cs" />
+    <Compile Include="Common\HttpRequestMessageExtensions.cs" />
     <Compile Include="Internal\HttpParameterBindingExtensions.cs" />
     <Compile Include="Properties\SRResources.Designer.cs">
       <AutoGen>True</AutoGen>
