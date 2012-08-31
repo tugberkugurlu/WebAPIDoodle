@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WebAPIDoodle.Controllers {
 
-    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class UriParametersAttribute : Attribute {
 
         private static readonly string[] _emptyArray = new string[0];
