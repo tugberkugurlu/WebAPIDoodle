@@ -10,7 +10,7 @@ using System.Web.Http.Filters;
 using System.Web.Http.Hosting;
 using System.Web.Http.Routing;
 
-namespace System.Web.Http {
+namespace WebAPIDoodle.Test {
 
     internal static class ContextUtil {
 
