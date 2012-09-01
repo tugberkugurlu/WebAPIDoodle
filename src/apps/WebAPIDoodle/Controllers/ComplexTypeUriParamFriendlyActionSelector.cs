@@ -124,27 +124,8 @@ namespace WebAPIDoodle.Controllers {
                         actionDescriptor,
                         actionBinding.ParameterBindings
                             .Where(binding => !binding.Descriptor.IsOptional && TypeHelper.IsSimpleUnderlyingType(binding.Descriptor.ParameterType) && binding.WillReadUri())
-                            .Select(binding => binding.Descriptor.Prefix ?? binding.Descriptor.ParameterName).ToArray());
-
-                    // Here is probably the place where I need to inject my logic.
-                    // I need to take a look at the method to see if the special Attribute is applied
-                    if (method.IsDefined(typeof(UriParametersAttribute), false)) {
-
-                        string[] customDefinedParams = method.GetCustomAttribute<UriParametersAttribute>().Parameters;
-                        string[] existingParams = _actionParameterNames[actionDescriptor];
-                        ICollection<string> newParams = new Collection<string>(existingParams.ToList());
-
-                        for (int index = 0; index < customDefinedParams.Length; index++) {
-
-                            var customParam = customDefinedParams[i];
-
-                            if (!existingParams.Contains(customParam)) {
-                                newParams.Add(customDefinedParams[i]);
-                            }
-                        }
-
-                        _actionParameterNames[actionDescriptor] = newParams.ToArray();
-                    }
+                            .Select(binding => binding.Descriptor.Prefix ?? binding.Descriptor.ParameterName)
+                            .Union(method.IsDefined(typeof(UriParametersAttribute)) ? method.GetCustomAttribute<UriParametersAttribute>().Parameters : Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase).ToArray());
                 }
 
                 _actionNameMapping = _actionDescriptors.ToLookup(actionDesc => actionDesc.ActionName, StringComparer.OrdinalIgnoreCase);
