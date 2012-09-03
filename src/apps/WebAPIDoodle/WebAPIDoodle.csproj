@@ -104,6 +104,7 @@
     <Compile Include="Http\Handlers\TimeoutHandler.cs" />
     <Compile Include="ModelBinding\PrincipalParameterBinding.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Routes\OptionalRegExConstraint.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebAPIDoodle.Http\WebAPIDoodle.Http.csproj">
