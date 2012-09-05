@@ -125,7 +125,7 @@ namespace WebAPIDoodle.Controllers {
                         actionBinding.ParameterBindings
                             .Where(binding => !binding.Descriptor.IsOptional && TypeHelper.IsSimpleUnderlyingType(binding.Descriptor.ParameterType) && binding.WillReadUri())
                             .Select(binding => binding.Descriptor.Prefix ?? binding.Descriptor.ParameterName)
-                            .Union(method.IsDefined(typeof(UriParametersAttribute)) ? method.GetCustomAttribute<UriParametersAttribute>().Parameters : Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase).ToArray());
+                            .Union(Attribute.IsDefined(method, typeof(UriParametersAttribute)) ? method.GetAttribute<UriParametersAttribute>().Parameters : Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase).ToArray());
                 }
 
                 _actionNameMapping = _actionDescriptors.ToLookup(actionDesc => actionDesc.ActionName, StringComparer.OrdinalIgnoreCase);

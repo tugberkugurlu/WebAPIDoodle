@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
-namespace System.Reflection {
+namespace WebAPIDoodle {
     
     internal static class CustomAttributeExtensions {
 
-        internal static T GetCustomAttribute<T>(this MemberInfo element) where T : Attribute {
+        internal static T GetAttribute<T>(this MemberInfo element) where T : Attribute {
 
-            return (T)((object)element.GetCustomAttribute(typeof(T)));
+            return (T)((object)element.GetAttribute(typeof(T)));
         }
 
-        internal static Attribute GetCustomAttribute(this MemberInfo element, Type attributeType) {
+        internal static Attribute GetAttribute(this MemberInfo element, Type attributeType) {
 
             return Attribute.GetCustomAttribute(element, attributeType);
-        }
-
-        public static bool IsDefined(this MemberInfo element, Type attributeType) {
-
-            return Attribute.IsDefined(element, attributeType);
         }
     }
 }
