@@ -184,6 +184,34 @@ namespace System.Threading.Tasks {
         }
 
         /// <summary>
+        /// Set a completion source from the given Task.
+        /// </summary>
+        /// <typeparam name="TResult">result type for completion source.</typeparam>
+        /// <param name="tcs">completion source to set</param>
+        /// <param name="source">Task to get values from.</param>
+        /// <returns>true if this successfully sets the completion source.</returns>
+        internal static bool TrySetFromTask<TResult>(this TaskCompletionSource<TResult> tcs, Task source) {
+
+            if (source.Status == TaskStatus.Canceled) {
+
+                return tcs.TrySetCanceled();
+            }
+
+            if (source.Status == TaskStatus.Faulted) {
+
+                return tcs.TrySetException(source.Exception.InnerExceptions);
+            }
+
+            if (source.Status == TaskStatus.RanToCompletion) {
+
+                Task<TResult> taskOfResult = source as Task<TResult>;
+                return tcs.TrySetResult(taskOfResult == null ? default(TResult) : taskOfResult.Result);
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Used as the T in a "conversion" of a Task into a Task{T}
         /// </summary>
         private struct AsyncVoid { }
