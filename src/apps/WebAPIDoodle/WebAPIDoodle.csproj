@@ -83,6 +83,7 @@
     <Compile Include="Controllers\CatchAllRouteParameterBinding.cs" />
     <Compile Include="Controllers\ComplexTypeUriParamFriendlyActionSelector.cs" />
     <Compile Include="Common\HttpRequestMessageExtensions.cs" />
+    <Compile Include="Http\Handlers\BasicAuthenticationHandler.cs" />
     <Compile Include="Internal\HttpParameterBindingExtensions.cs" />
     <Compile Include="Properties\SRResources.Designer.cs">
       <AutoGen>True</AutoGen>

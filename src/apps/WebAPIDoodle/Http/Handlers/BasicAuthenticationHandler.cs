@@ -5,6 +5,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace WebAPIDoodle.Http {
 
@@ -54,7 +55,7 @@ namespace WebAPIDoodle.Http {
                 }
             }
 
-            var unauthorizedResponseMessage = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            var unauthorizedResponseMessage = request.CreateResponse(HttpStatusCode.Unauthorized);
             unauthorizedResponseMessage.Headers.Add("WWW-Authenticate", _httpBasicSchemeName);
             return TaskHelpers.FromResult<HttpResponseMessage>(unauthorizedResponseMessage);
         }

@@ -50,7 +50,7 @@ namespace WebAPIDoodle.Http.Handlers {
                 }
             }
 
-            return TaskHelpers.FromResult(new HttpResponseMessage(HttpStatusCode.Unauthorized));
+            return TaskHelpers.FromResult(request.CreateResponse(HttpStatusCode.Unauthorized));
         }
 
         /// <summary>
