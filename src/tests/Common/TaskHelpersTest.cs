@@ -76,6 +76,53 @@ namespace WebAPIDoodle.Test {
             Assert.Equal(exceptions, task.Exception.InnerExceptions.ToArray());
         }
 
+        // -----------------------------------------------------------------
+        //  TaskHelpers.TrySetFromTask<T>
+
+        [Fact]
+        public void TrySetFromTask_IfSourceTaskIsCanceled_CancelsTaskCompletionSource() {
+            TaskCompletionSource<string> tcs = new TaskCompletionSource<string>();
+            Task canceledTask = TaskHelpers.Canceled<object>();
+
+            tcs.TrySetFromTask(canceledTask);
+
+            Assert.Equal(TaskStatus.Canceled, tcs.Task.Status);
+        }
+
+        [Fact]
+        public void TrySetFromTask_IfSourceTaskIsFaulted_FaultsTaskCompletionSource() {
+            TaskCompletionSource<string> tcs = new TaskCompletionSource<string>();
+            Exception exception = new Exception();
+            Task faultedTask = TaskHelpers.FromError<object>(exception);
+
+            tcs.TrySetFromTask(faultedTask);
+
+            Assert.Equal(TaskStatus.Faulted, tcs.Task.Status);
+            Assert.Same(exception, tcs.Task.Exception.InnerException);
+        }
+
+        [Fact]
+        public void TrySetFromTask_IfSourceTaskIsSuccessfulAndOfSameResultType_SucceedsTaskCompletionSourceAndSetsResult() {
+            TaskCompletionSource<string> tcs = new TaskCompletionSource<string>();
+            Task<string> successfulTask = TaskHelpers.FromResult("abc");
+
+            tcs.TrySetFromTask(successfulTask);
+
+            Assert.Equal(TaskStatus.RanToCompletion, tcs.Task.Status);
+            Assert.Equal("abc", tcs.Task.Result);
+        }
+
+        [Fact]
+        public void TrySetFromTask_IfSourceTaskIsSuccessfulAndOfDifferentResultType_SucceedsTaskCompletionSourceAndSetsDefaultValueAsResult() {
+            TaskCompletionSource<string> tcs = new TaskCompletionSource<string>();
+            Task<object> successfulTask = TaskHelpers.FromResult(new object());
+
+            tcs.TrySetFromTask(successfulTask);
+
+            Assert.Equal(TaskStatus.RanToCompletion, tcs.Task.Status);
+            Assert.Equal(null, tcs.Task.Result);
+        }
+
         //TODO:
         //TaskHelpers.FromErrors<T>
 

@@ -13,6 +13,416 @@ namespace WebAPIDoodle.Test.Common {
     public class TaskHelperExtensionsTest {
 
         // -----------------------------------------------------------------
+        //  Task.Catch(Func<Exception, Task>)
+
+        [Fact, GCForce]
+        public Task Catch_NoInputValue_CatchesException_Handled() {
+            // Arrange
+            return TaskHelpers.FromError(new InvalidOperationException())
+
+            // Act
+                              .Catch(info => {
+                                  Assert.NotNull(info.Exception);
+                                  Assert.IsType<InvalidOperationException>(info.Exception);
+                                  return info.Handled();
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                              });
+        }
+
+        [Fact, GCForce]
+        public Task Catch_NoInputValue_CatchesException_Rethrow() {
+            // Arrange
+            return TaskHelpers.FromError(new InvalidOperationException())
+
+            // Act
+                              .Catch(info => {
+                                  return info.Throw();
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.Equal(TaskStatus.Faulted, task.Status);
+                                  Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                              });
+        }
+
+        [Fact, GCForce]
+        public Task Catch_NoInputValue_ReturningEmptyCatchResultFromCatchIsProhibited() {
+            // Arrange
+            return TaskHelpers.FromError(new Exception())
+
+            // Act
+                              .Catch(info => {
+                                  return new CatchInfo.CatchResult();
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.Equal(TaskStatus.Faulted, task.Status);
+                                  //Assert.IsException<InvalidOperationException>(task.Exception, "You must set the Task property of the CatchInfo returned from the TaskHelpersExtensions.Catch continuation.");
+                                  Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                              });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_NoInputValue_CompletedTaskOfSuccess_DoesNotRunContinuationAndDoesNotSwitchContexts() {
+            // Arrange
+            bool ranContinuation = false;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            return TaskHelpers.Completed()
+
+            // Act
+                              .Catch(info => {
+                                  ranContinuation = true;
+                                  return info.Handled();
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.False(ranContinuation);
+                                  syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+                              });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_NoInputValue_CompletedTaskOfCancellation_DoesNotRunContinuationAndDoesNotSwitchContexts() {
+            // Arrange
+            bool ranContinuation = false;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            return TaskHelpers.Canceled()
+
+            // Act
+                              .Catch(info => {
+                                  ranContinuation = true;
+                                  return info.Handled();
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.False(ranContinuation);
+                                  syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+                              });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_NoInputValue_CompletedTaskOfFault_RunsOnSameThreadAndDoesNotPostToSynchronizationContext() {
+            // Arrange
+            int outerThreadId = Thread.CurrentThread.ManagedThreadId;
+            int innerThreadId = Int32.MinValue;
+            Exception thrownException = new Exception();
+            Exception caughtException = null;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            return TaskHelpers.FromError(thrownException)
+
+            // Act
+                              .Catch(info => {
+                                  caughtException = info.Exception;
+                                  innerThreadId = Thread.CurrentThread.ManagedThreadId;
+                                  return info.Handled();
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.Same(thrownException, caughtException);
+                                  Assert.Equal(innerThreadId, outerThreadId);
+                                  syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+                              });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_NoInputValue_IncompleteTaskOfSuccess_DoesNotRunContinuationAndDoesNotSwitchContexts() {
+            // Arrange
+            bool ranContinuation = false;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            Task incompleteTask = new Task(() => { });
+
+            // Act
+            Task resultTask = incompleteTask.Catch(info => {
+                ranContinuation = true;
+                return info.Handled();
+            });
+
+            // Assert
+            incompleteTask.Start();
+
+            return resultTask.ContinueWith(task => {
+                Assert.False(ranContinuation);
+                syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+            });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_NoInputValue_IncompleteTaskOfCancellation_DoesNotRunContinuationAndDoesNotSwitchContexts() {
+            // Arrange
+            bool ranContinuation = false;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            Task incompleteTask = new Task(() => { });
+            Task resultTask = incompleteTask.ContinueWith(task => TaskHelpers.Canceled()).Unwrap();
+
+            // Act
+            resultTask = resultTask.Catch(info => {
+                ranContinuation = true;
+                return info.Handled();
+            });
+
+            // Assert
+            incompleteTask.Start();
+
+            return resultTask.ContinueWith(task => {
+                Assert.False(ranContinuation);
+                syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+            });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_NoInputValue_IncompleteTaskOfFault_RunsOnNewThreadAndPostsToSynchronizationContext() {
+            // Arrange
+            int outerThreadId = Thread.CurrentThread.ManagedThreadId;
+            int innerThreadId = Int32.MinValue;
+            Exception thrownException = new Exception();
+            Exception caughtException = null;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            Task incompleteTask = new Task(() => { throw thrownException; });
+
+            // Act
+            Task resultTask = incompleteTask.Catch(info => {
+                caughtException = info.Exception;
+                innerThreadId = Thread.CurrentThread.ManagedThreadId;
+                return info.Handled();
+            });
+
+            // Assert
+            incompleteTask.Start();
+
+            return resultTask.ContinueWith(task => {
+                Assert.Same(thrownException, caughtException);
+                Assert.NotEqual(innerThreadId, outerThreadId);
+                syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Once());
+            });
+        }
+
+        // -----------------------------------------------------------------
+        //  Task<T>.Catch(Func<Exception, Task<T>>)
+
+        [Fact, GCForce]
+        public Task Catch_WithInputValue_CatchesException_Handled() {
+            // Arrange
+            return TaskHelpers.FromError<int>(new InvalidOperationException())
+
+            // Act
+                              .Catch(info => {
+                                  Assert.NotNull(info.Exception);
+                                  Assert.IsType<InvalidOperationException>(info.Exception);
+                                  return info.Handled(42);
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                              });
+        }
+
+        [Fact, GCForce]
+        public Task Catch_WithInputValue_CatchesException_Rethrow() {
+            // Arrange
+            return TaskHelpers.FromError<int>(new InvalidOperationException())
+
+            // Act
+                              .Catch(info => {
+                                  return info.Throw();
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.Equal(TaskStatus.Faulted, task.Status);
+                                  Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                              });
+        }
+
+        [Fact, GCForce]
+        public Task Catch_WithInputValue_ReturningNullFromCatchIsProhibited() {
+            // Arrange
+            return TaskHelpers.FromError<int>(new Exception())
+
+            // Act
+                              .Catch(info => {
+                                  return new CatchInfoBase<Task>.CatchResult();
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.Equal(TaskStatus.Faulted, task.Status);
+                                  //Assert.IsException<InvalidOperationException>(task.Exception, "You must set the Task property of the CatchInfo returned from the TaskHelpersExtensions.Catch continuation.");
+                                  Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                              });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_WithInputValue_CompletedTaskOfSuccess_DoesNotRunContinuationAndDoesNotSwitchContexts() {
+            // Arrange
+            bool ranContinuation = false;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            return TaskHelpers.FromResult(21)
+
+            // Act
+                              .Catch(info => {
+                                  ranContinuation = true;
+                                  return info.Handled(42);
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.False(ranContinuation);
+                                  syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+                              });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_WithInputValue_CompletedTaskOfCancellation_DoesNotRunContinuationAndDoesNotSwitchContexts() {
+            // Arrange
+            bool ranContinuation = false;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            return TaskHelpers.Canceled<int>()
+
+            // Act
+                              .Catch(info => {
+                                  ranContinuation = true;
+                                  return info.Handled(42);
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.False(ranContinuation);
+                                  syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+                              });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_WithInputValue_CompletedTaskOfFault_RunsOnSameThreadAndDoesNotPostToSynchronizationContext() {
+            // Arrange
+            int outerThreadId = Thread.CurrentThread.ManagedThreadId;
+            int innerThreadId = Int32.MinValue;
+            Exception thrownException = new Exception();
+            Exception caughtException = null;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            return TaskHelpers.FromError<int>(thrownException)
+
+            // Act
+                              .Catch(info => {
+                                  caughtException = info.Exception;
+                                  innerThreadId = Thread.CurrentThread.ManagedThreadId;
+                                  return info.Handled(42);
+                              })
+
+            // Assert
+                              .ContinueWith(task => {
+                                  Assert.Same(thrownException, caughtException);
+                                  Assert.Equal(innerThreadId, outerThreadId);
+                                  syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+                              });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_WithInputValue_IncompleteTaskOfSuccess_DoesNotRunContinuationAndDoesNotSwitchContexts() {
+            // Arrange
+            bool ranContinuation = false;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            Task<int> incompleteTask = new Task<int>(() => 42);
+
+            // Act
+            Task<int> resultTask = incompleteTask.Catch(info => {
+                ranContinuation = true;
+                return info.Handled(42);
+            });
+
+            // Assert
+            incompleteTask.Start();
+
+            return resultTask.ContinueWith(task => {
+                Assert.False(ranContinuation);
+                syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+            });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_WithInputValue_IncompleteTaskOfCancellation_DoesNotRunContinuationAndDoesNotSwitchContexts() {
+            // Arrange
+            bool ranContinuation = false;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            Task<int> incompleteTask = new Task<int>(() => 42);
+            Task<int> resultTask = incompleteTask.ContinueWith(task => TaskHelpers.Canceled<int>()).Unwrap();
+
+            // Act
+            resultTask = resultTask.Catch(info => {
+                ranContinuation = true;
+                return info.Handled(2112);
+            });
+
+            // Assert
+            incompleteTask.Start();
+
+            return resultTask.ContinueWith(task => {
+                Assert.False(ranContinuation);
+                syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Never());
+            });
+        }
+
+        [Fact, GCForce, PreserveSyncContext]
+        public Task Catch_WithInputValue_IncompleteTaskOfFault_RunsOnNewThreadAndPostsToSynchronizationContext() {
+            // Arrange
+            int outerThreadId = Thread.CurrentThread.ManagedThreadId;
+            int innerThreadId = Int32.MinValue;
+            Exception thrownException = new Exception();
+            Exception caughtException = null;
+            var syncContext = new Mock<SynchronizationContext> { CallBase = true };
+            SynchronizationContext.SetSynchronizationContext(syncContext.Object);
+
+            Task<int> incompleteTask = new Task<int>(() => { throw thrownException; });
+
+            // Act
+            Task<int> resultTask = incompleteTask.Catch(info => {
+                caughtException = info.Exception;
+                innerThreadId = Thread.CurrentThread.ManagedThreadId;
+                return info.Handled(42);
+            });
+
+            // Assert
+            incompleteTask.Start();
+
+            return resultTask.ContinueWith(task => {
+                Assert.Same(thrownException, caughtException);
+                Assert.NotEqual(innerThreadId, outerThreadId);
+                syncContext.Verify(sc => sc.Post(It.IsAny<SendOrPostCallback>(), null), Times.Once());
+            });
+        }
+
+        // -----------------------------------------------------------------
         //  Task Task.Then(Action)
 
         [Fact, GCForce]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 
@@ -11,6 +12,144 @@ namespace System.Threading.Tasks {
     internal static class TaskHelperExtensions {
 
         private static Task<AsyncVoid> _defaultCompleted = TaskHelpers.FromResult<AsyncVoid>(default(AsyncVoid));
+
+        /// <summary>
+        /// Calls the given continuation, after the given task completes, if it ends in a faulted state.
+        /// Will not be called if the task did not fault (meaning, it will not be called if the task ran
+        /// to completion or was canceled). Intended to roughly emulate C# 5's support for "try/catch" in
+        /// async methods. Note that this method allows you to return a Task, so that you can either return
+        /// a completed Task (indicating that you swallowed the exception) or a faulted task (indicating that
+        /// that the exception should be propagated). In C#, you cannot normally use await within a catch
+        /// block, so returning a real async task should never be done from Catch().
+        /// </summary>
+        internal static Task Catch(this Task task, Func<CatchInfo, CatchInfo.CatchResult> continuation, CancellationToken cancellationToken = default(CancellationToken)) {
+
+            // Fast path for successful tasks, to prevent an extra TCS allocation
+            if (task.Status == TaskStatus.RanToCompletion) {
+
+                return task;
+            }
+
+            return task.CatchImpl(() =>
+                continuation(new CatchInfo(task)).Task.ToTask<AsyncVoid>(), cancellationToken);
+        }
+
+        /// <summary>
+        /// Calls the given continuation, after the given task completes, if it ends in a faulted state.
+        /// Will not be called if the task did not fault (meaning, it will not be called if the task ran
+        /// to completion or was canceled). Intended to roughly emulate C# 5's support for "try/catch" in
+        /// async methods. Note that this method allows you to return a Task, so that you can either return
+        /// a completed Task (indicating that you swallowed the exception) or a faulted task (indicating that
+        /// that the exception should be propagated). In C#, you cannot normally use await within a catch
+        /// block, so returning a real async task should never be done from Catch().
+        /// </summary>
+        internal static Task<TResult> Catch<TResult>(this Task<TResult> task, Func<CatchInfo<TResult>, CatchInfo<TResult>.CatchResult> continuation, CancellationToken cancellationToken = default(CancellationToken)) {
+
+            // Fast path for successful tasks, to prevent an extra TCS allocation
+            if (task.Status == TaskStatus.RanToCompletion) {
+
+                return task;
+            }
+
+            return task.CatchImpl(() => continuation(new CatchInfo<TResult>(task)).Task, cancellationToken);
+        }
+
+        private static Task<TResult> CatchImpl<TResult>(this Task task, Func<Task<TResult>> continuation, CancellationToken cancellationToken) {
+
+            // Stay on the same thread if we can
+            if (task.IsCompleted) {
+
+                if (task.IsFaulted) {
+
+                    try {
+
+                        Task<TResult> resultTask = continuation();
+                        if (resultTask == null) {
+
+                            // Not a resource because this is an internal class, and this is a guard clause that's intended
+                            // to be thrown by us to us, never escaping out to end users.
+                            throw new InvalidOperationException("You must set the Task property of the CatchInfo returned from the TaskHelpersExtensions.Catch continuation.");
+                        }
+
+                        return resultTask;
+                    }
+                    catch (Exception ex) {
+
+                        return TaskHelpers.FromError<TResult>(ex);
+                    }
+                }
+                if (task.IsCanceled || cancellationToken.IsCancellationRequested) {
+
+                    return TaskHelpers.Canceled<TResult>();
+                }
+
+                if (task.Status == TaskStatus.RanToCompletion) {
+
+                    TaskCompletionSource<TResult> tcs = new TaskCompletionSource<TResult>();
+                    tcs.TrySetFromTask(task);
+                    return tcs.Task;
+                }
+            }
+
+            // Split into a continuation method so that we don't create a closure unnecessarily
+            return CatchImplContinuation(task, continuation);
+        }
+
+        private static Task<TResult> CatchImplContinuation<TResult>(Task task, Func<Task<TResult>> continuation) {
+
+            SynchronizationContext syncContext = SynchronizationContext.Current;
+
+            TaskCompletionSource<Task<TResult>> tcs = new TaskCompletionSource<Task<TResult>>();
+
+            // this runs only if the inner task did not fault
+            task.ContinueWith(innerTask => tcs.TrySetFromTask(innerTask), TaskContinuationOptions.NotOnFaulted | TaskContinuationOptions.ExecuteSynchronously);
+
+            // this runs only if the inner task faulted
+            task.ContinueWith(innerTask => {
+
+                if (syncContext != null) {
+
+                    syncContext.Post(state => {
+
+                        try {
+
+                            Task<TResult> resultTask = continuation();
+                            if (resultTask == null) {
+
+                                throw new InvalidOperationException("You cannot return null from the TaskHelpersExtensions.Catch continuation. You must return a valid task or throw an exception.");
+                            }
+
+                            tcs.TrySetResult(resultTask);
+                        }
+                        catch (Exception ex) {
+
+                            tcs.TrySetException(ex);
+                        }
+
+                    }, state: null);
+                }
+                else {
+
+                    try {
+
+                        Task<TResult> resultTask = continuation();
+                        if (resultTask == null) {
+
+                            throw new InvalidOperationException("You cannot return null from the TaskHelpersExtensions.Catch continuation. You must return a valid task or throw an exception.");
+                        }
+
+                        tcs.TrySetResult(resultTask);
+                    }
+                    catch (Exception ex) {
+
+                        tcs.TrySetException(ex);
+                    }
+                }
+
+            }, TaskContinuationOptions.OnlyOnFaulted);
+
+            return tcs.Task.FastUnwrap();
+        }
 
         /// <summary>
         /// A version of task.Unwrap that is optimized to prevent unnecessarily capturing the
@@ -269,5 +408,114 @@ namespace System.Threading.Tasks {
         /// Used as the T in a "conversion" of a Task into a Task{T}
         /// </summary>
         private struct AsyncVoid { }
+    }
+
+    internal abstract class CatchInfoBase<TTask> where TTask : Task {
+
+        private Exception _exception;
+        private TTask _task;
+
+        protected CatchInfoBase(TTask task) {
+
+            if (task == null) {
+
+                throw new ArgumentNullException("task");
+            }
+
+            _task = task;
+            _exception = _task.Exception.GetBaseException(); // Observe the exception early, to prevent tasks tearing down the app domain
+        }
+
+        /// <summary>
+        /// The exception that was thrown to cause the Catch block to execute.
+        /// </summary>
+        public Exception Exception {
+            get { return _exception; }
+        }
+
+        /// <summary>
+        /// Returns a CatchResult that re-throws the original exception.
+        /// </summary>
+        public CatchResult Throw() {
+
+            return new CatchResult { Task = _task };
+        }
+
+        /// <summary>
+        /// Represents a result to be returned from a Catch handler.
+        /// </summary>
+        internal struct CatchResult {
+
+            /// <summary>
+            /// Gets or sets the task to be returned to the caller.
+            /// </summary>
+            internal TTask Task { get; set; }
+        }
+    }
+
+    internal class CatchInfo : CatchInfoBase<Task> {
+
+        private static CatchResult _completed = new CatchResult { Task = TaskHelpers.Completed() };
+
+        public CatchInfo(Task task) : base(task) { }
+
+        /// <summary>
+        /// Returns a CatchResult that returns a completed (non-faulted) task.
+        /// </summary>
+        public CatchResult Handled() {
+
+            return _completed;
+        }
+
+        /// <summary>
+        /// Returns a CatchResult that executes the given task and returns it, in whatever state it finishes.
+        /// </summary>
+        /// <param name="task">The task to return.</param>
+        public CatchResult Task(Task task) {
+
+            return new CatchResult { Task = task };
+        }
+
+        /// <summary>
+        /// Returns a CatchResult that throws the given exception.
+        /// </summary>
+        /// <param name="ex">The exception to throw.</param>
+        public CatchResult Throw(Exception ex) {
+
+            return new CatchResult { Task = TaskHelpers.FromError<object>(ex) };
+        }
+    }
+
+    internal class CatchInfo<T> : CatchInfoBase<Task<T>> {
+        public CatchInfo(Task<T> task)
+            : base(task) {
+        }
+
+        /// <summary>
+        /// Returns a CatchResult that returns a completed (non-faulted) task.
+        /// </summary>
+        /// <param name="returnValue">The return value of the task.</param>
+        public CatchResult Handled(T returnValue) {
+
+            return new CatchResult { Task = TaskHelpers.FromResult(returnValue) };
+        }
+
+        /// <summary>
+        /// Returns a CatchResult that executes the given task and returns it, in whatever state it finishes.
+        /// </summary>
+        /// <param name="task">The task to return.</param>
+        public CatchResult Task(Task<T> task) {
+
+            return new CatchResult { Task = task };
+        }
+
+        /// <summary>
+        /// Returns a CatchResult that throws the given exception.
+        /// </summary>
+        /// <param name="ex">The exception to throw.</param>
+        public CatchResult Throw(Exception ex) {
+
+            return new CatchResult { Task = TaskHelpers.FromError<T>(ex) };
+        }
     }
 }
