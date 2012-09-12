@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using WebAPIDoodle.Http;
-using WebAPIDoodle.Http.Handlers;
 using Xunit;
 
 namespace WebAPIDoodle.Test.MessageHandlers {

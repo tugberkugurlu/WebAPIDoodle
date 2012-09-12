@@ -59,7 +59,6 @@
     <Compile Include="Common\IEnumerableExtensions.cs" />
     <Compile Include="EmptyContent.cs" />
     <Compile Include="Extensions\HttpRequestHeadersExtensions.cs" />
-    <Compile Include="Handlers\RequireHttpsMessageHandler.cs" />
     <Compile Include="HttpStringResponseMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

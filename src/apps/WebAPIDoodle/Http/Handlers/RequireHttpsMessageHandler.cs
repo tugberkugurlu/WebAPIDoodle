@@ -15,8 +15,9 @@ namespace WebAPIDoodle.Http {
 
             if (request.RequestUri.Scheme != Uri.UriSchemeHttps) {
 
-                return TaskHelpers.FromResult<HttpResponseMessage>(
-                    new HttpStringResponseMessage("SSL required", HttpStatusCode.Forbidden));
+                var forbiddenResponse = request.CreateResponse(HttpStatusCode.Forbidden);
+                forbiddenResponse.ReasonPhrase = "SSL Required";
+                return TaskHelpers.FromResult<HttpResponseMessage>(forbiddenResponse);
             }
    
             return base.SendAsync(request, cancellationToken);

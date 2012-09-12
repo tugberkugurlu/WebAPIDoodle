@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebAPIDoodle.Http.Handlers {
+namespace WebAPIDoodle.Http {
 
     public abstract class ApiKeyAuthenticationHandler : DelegatingHandler {
 
