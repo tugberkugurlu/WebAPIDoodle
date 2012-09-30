@@ -39,7 +39,7 @@ namespace WebAPIDoodle.Test.Controllers {
         [Fact]
         public void ComplexTypeUriParamFriendlyActionSelector_SelectAction_Throws_IfContextIsNull() {
 
-            ComplexTypeUriParamFriendlyActionSelector actionSelector = new ComplexTypeUriParamFriendlyActionSelector();
+            ComplexTypeAwareActionSelector actionSelector = new ComplexTypeAwareActionSelector();
             Assert.Throws<ArgumentNullException>(() => actionSelector.SelectAction(null));
         }
 
@@ -109,7 +109,7 @@ namespace WebAPIDoodle.Test.Controllers {
 
         private HttpControllerContext CreateControllerContext(string controllerName, Type controllerType) {
 
-            ComplexTypeUriParamFriendlyActionSelector actionSelector = new ComplexTypeUriParamFriendlyActionSelector();
+            ComplexTypeAwareActionSelector actionSelector = new ComplexTypeAwareActionSelector();
             HttpControllerContext controllerContext = ContextUtil.CreateControllerContext();
             HttpControllerDescriptor controllerDescriptor = new HttpControllerDescriptor(controllerContext.Configuration, controllerName, controllerType);
             controllerDescriptor.Configuration.Services.Replace(typeof(IHttpActionSelector), actionSelector);

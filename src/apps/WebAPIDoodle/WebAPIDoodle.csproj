@@ -81,7 +81,7 @@
     <Compile Include="Common\TypeHelper.cs" />
     <Compile Include="Controllers\BindCatchAllRouteAttribute.cs" />
     <Compile Include="Controllers\CatchAllRouteParameterBinding.cs" />
-    <Compile Include="Controllers\ComplexTypeUriParamFriendlyActionSelector.cs" />
+    <Compile Include="Controllers\ComplexTypeAwareActionSelector.cs" />
     <Compile Include="Common\HttpRequestMessageExtensions.cs" />
     <Compile Include="Http\Handlers\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\Handlers\RequireHttpsMessageHandler.cs" />

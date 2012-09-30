@@ -18,13 +18,13 @@ namespace WebAPIDoodle.Controllers {
     /// <summary>
     /// Reflection based action selector based on ApiControllerActionSelector implementation.
     /// As the private parts cannot be customized, this action selector is very similar with CustomApiControllerActionSelector.
-    /// We optimize for the case where we have an <see cref="ComplexTypeUriParamFriendlyActionSelector"/> instance per <see cref="HttpControllerDescriptor"/>
+    /// We optimize for the case where we have an <see cref="ComplexTypeAwareActionSelector"/> instance per <see cref="HttpControllerDescriptor"/>
     /// instance but can support cases where there are many <see cref="System.Web.Http.Controllers.HttpControllerDescriptor"/> instances for one 
-    /// <see cref="ComplexTypeUriParamFriendlyActionSelector"/> as well. In the latter case the lookup is slightly slower because it goes through
+    /// <see cref="ComplexTypeAwareActionSelector"/> as well. In the latter case the lookup is slightly slower because it goes through
     /// the <see cref="P:System.Web.Http.Controllers.HttpControllerDescriptor.Properties"/> dictionary.
     /// </summary>
     /// <remarks>Most of the code has been taken from <see cref="System.Web.Http.Controllers.ApiControllerActionSelector"/>.</remarks>
-    public class ComplexTypeUriParamFriendlyActionSelector : IHttpActionSelector {
+    public class ComplexTypeAwareActionSelector : IHttpActionSelector {
 
         private const string ActionRouteKey = "action";
         private const string ControllerRouteKey = "controller";
