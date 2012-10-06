@@ -14,7 +14,7 @@ using System.ComponentModel;
 
 namespace WebAPIDoodle.Test.Controllers {
     
-    public class ComplexTypeUriParamFriendlyActionSelectorTest {
+    public class ComplexTypeAwareActionSelectorTest {
 
         [Fact]
         public void ComplexTypeUriParamFriendlyActionSelector_SelectAction_With_DifferentExecutionContexts() {

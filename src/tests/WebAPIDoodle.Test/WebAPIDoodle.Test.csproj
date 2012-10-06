@@ -72,7 +72,7 @@
     </Compile>
     <Compile Include="Controllers\ApiControllerBaseTest.cs" />
     <Compile Include="Controllers\Apis\UsersController.cs" />
-    <Compile Include="Controllers\ComplexTypeUriParamFriendlyActionSelectorTest.cs" />
+    <Compile Include="Controllers\ComplexTypeAwareActionSelectorTest.cs" />
     <Compile Include="Filters\ValidateModelStateAttributeTest.cs" />
     <Compile Include="MessageHandlers\ApiKeyAuthenticationHandlerTest.cs" />
     <Compile Include="MessageHandlers\BasicAuthenticationHandlerTest.cs" />
