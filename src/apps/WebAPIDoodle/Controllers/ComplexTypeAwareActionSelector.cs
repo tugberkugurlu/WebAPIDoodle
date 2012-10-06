@@ -221,7 +221,7 @@ namespace WebAPIDoodle.Controllers {
                 //TODO: We can cache the type here and returned the cached item
 
                 return from propInfo in type.GetProperties()
-                       where TypeHelper.IsSimpleType(propInfo.PropertyType)
+                       where TypeHelper.IsSimpleUnderlyingType(propInfo.PropertyType)
                        let noBindingAttr = propInfo.GetCustomAttributes().FirstOrDefault(attr => attr.GetType() == typeof(BindingInfoAttribute)) as BindingInfoAttribute
                        where (noBindingAttr != null) ? noBindingAttr.NoBinding == false : true
                        select propInfo;
