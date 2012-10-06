@@ -5,6 +5,7 @@ using System.Text;
 
 namespace WebAPIDoodle.Controllers {
 
+    [Obsolete("You don't have to use this anymore. This attribute will be removed some time in the future.")]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
     public class UriParametersAttribute : Attribute {
 

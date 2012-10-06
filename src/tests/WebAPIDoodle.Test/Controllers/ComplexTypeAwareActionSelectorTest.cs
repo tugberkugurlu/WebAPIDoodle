@@ -131,8 +131,7 @@ namespace WebAPIDoodle.Test.Controllers {
 
         public class Cars1Controller : ApiController {
 
-            [UriParameters("Foo")]
-            public HttpResponseMessage GetCarsForCmd1(Cmd1 cmd) {
+            public HttpResponseMessage GetCarsForCmd1([FromUri]Cmd1 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd1")
@@ -175,16 +174,14 @@ namespace WebAPIDoodle.Test.Controllers {
 
         public class Cars3Controller : ApiController {
 
-            [UriParameters("Foo")]
-            public HttpResponseMessage GetCarsForCmd1(Cmd1 cmd) {
+            public HttpResponseMessage GetCarsForCmd1([FromUri]Cmd1 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd1")
                 };
             }
 
-            [UriParameters("Foo", "Bar")]
-            public HttpResponseMessage GetCarsForCmd2(string foo, int bar, Cmd2 cmd) {
+            public HttpResponseMessage GetCarsForCmd2(string foo, int bar, [FromUri]Cmd2 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd2")
@@ -194,16 +191,14 @@ namespace WebAPIDoodle.Test.Controllers {
 
         public class Cars4Controller : ApiController {
 
-            [UriParameters("Foo")]
-            public HttpResponseMessage GetCarsForCmd1(Cmd1 cmd) {
+            public HttpResponseMessage GetCarsForCmd1([FromUri]Cmd1 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd1")
                 };
             }
 
-            [UriParameters("Foo", "Bar")]
-            public HttpResponseMessage GetCarsForCmd2(string foo, int bar, string baz, Cmd2 cmd) {
+            public HttpResponseMessage GetCarsForCmd2(string foo, int bar, string baz, [FromUri]Cmd2 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd2")
@@ -213,16 +208,14 @@ namespace WebAPIDoodle.Test.Controllers {
 
         public class Cars5Controller : ApiController {
 
-            [UriParameters("Foo")]
-            public HttpResponseMessage GetCarsForCmd1(string baz, Cmd1 cmd) {
+            public HttpResponseMessage GetCarsForCmd1(string baz, [FromUri]Cmd1 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd1")
                 };
             }
 
-            [UriParameters("Foo", "Bar")]
-            public HttpResponseMessage GetCarsForCmd2(string foo, int bar, string baz, Cmd2 cmd) {
+            public HttpResponseMessage GetCarsForCmd2(string foo, int bar, string baz, [FromUri]Cmd2 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd2")

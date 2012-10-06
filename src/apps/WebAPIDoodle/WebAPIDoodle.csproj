@@ -113,6 +113,10 @@
       <Project>{4c07c35b-d14b-4f20-969d-ec6630bc2a99}</Project>
       <Name>WebAPIDoodle.Http</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WebAPIDoodle.Meta\WebAPIDoodle.Meta.csproj">
+      <Project>{6f3c5937-b51d-4117-8276-7c50806bfccf}</Project>
+      <Name>WebAPIDoodle.Meta</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

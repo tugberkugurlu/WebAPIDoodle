@@ -17,5 +17,15 @@ namespace WebAPIDoodle {
 
             return Attribute.GetCustomAttribute(element, attributeType);
         }
+
+        public static IEnumerable<Attribute> GetCustomAttributes(this MemberInfo element) {
+
+            return Attribute.GetCustomAttributes(element);
+        }
+
+        public static IEnumerable<Attribute> GetCustomAttributes(this ParameterInfo element) {
+
+            return Attribute.GetCustomAttributes(element);
+        }
     }
 }

@@ -123,9 +123,13 @@ namespace WebAPIDoodle.Controllers {
                     _actionParameterNames.Add(
                         actionDescriptor,
                         actionBinding.ParameterBindings
-                            .Where(binding => !binding.Descriptor.IsOptional && TypeHelper.IsSimpleUnderlyingType(binding.Descriptor.ParameterType) && binding.WillReadUri())
-                            .Select(binding => binding.Descriptor.Prefix ?? binding.Descriptor.ParameterName)
-                            .Union(Attribute.IsDefined(method, typeof(UriParametersAttribute)) ? method.GetAttribute<UriParametersAttribute>().Parameters : Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase).ToArray());
+                            .Where(binding => 
+                                !binding.Descriptor.IsOptional && 
+                                binding.WillReadUri()
+                            )
+                            .SelectMany(SelectActionParameterNames)
+                            .Distinct(StringComparer.OrdinalIgnoreCase).ToArray());
+                            //.Union(Attribute.IsDefined(method, typeof(UriParametersAttribute)) ? method.GetAttribute<UriParametersAttribute>().Parameters : Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase).ToArray());
                 }
 
                 _actionNameMapping = _actionDescriptors.ToLookup(actionDesc => actionDesc.ActionName, StringComparer.OrdinalIgnoreCase);
@@ -210,6 +214,28 @@ namespace WebAPIDoodle.Controllers {
             public ILookup<string, HttpActionDescriptor> GetActionMapping() {
 
                 return new LookupAdapter() { Source = _actionNameMapping };
+            }
+
+            private IEnumerable<PropertyInfo> GetComplexTypeActionParameterProperties(Type type) {
+
+                //TODO: We can cache the type here and returned the cached item
+
+                return from propInfo in type.GetProperties()
+                       where TypeHelper.IsSimpleType(propInfo.PropertyType)
+                       let noBindingAttr = propInfo.GetCustomAttributes().FirstOrDefault(attr => attr.GetType() == typeof(BindingInfoAttribute)) as BindingInfoAttribute
+                       where (noBindingAttr != null) ? noBindingAttr.NoBinding == false : true
+                       select propInfo;
+            }
+
+            private IEnumerable<string> SelectActionParameterNames(HttpParameterBinding binding) {
+
+                if (TypeHelper.IsSimpleUnderlyingType(binding.Descriptor.ParameterType)) {
+
+                    return new[] { binding.Descriptor.Prefix ?? binding.Descriptor.ParameterName };
+                }
+
+                return GetComplexTypeActionParameterProperties(binding.Descriptor.ParameterType)
+                    .Select(propInfo => propInfo.Name);
             }
 
             private IEnumerable<ReflectedHttpActionDescriptor> FindActionUsingRouteAndQueryParameters(HttpControllerContext controllerContext, IEnumerable<ReflectedHttpActionDescriptor> actionsFound, bool hasActionRouteKey) {
