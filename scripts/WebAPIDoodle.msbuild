@@ -16,7 +16,7 @@
   <ItemGroup>
     <AppProjFiles Include="$(SolutionDir)\src\apps\**\*.csproj" />
     <TestProjFiles Include="$(SolutionDir)\src\test\**\*.csproj" />
-    <NuGetPackageProjects Include="$(SolutionDir)\src\apps\WebAPIDoodle\WebAPIDoodle.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.SignalR\WebAPIDoodle.SignalR.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.Formatting\WebAPIDoodle.Formatting.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.Http\WebAPIDoodle.Http.csproj" />
+    <NuGetPackageProjects Include="$(SolutionDir)\src\apps\WebAPIDoodle\WebAPIDoodle.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.SignalR\WebAPIDoodle.SignalR.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.Formatting\WebAPIDoodle.Formatting.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.Http\WebAPIDoodle.Http.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.Meta\WebAPIDoodle.Meta.csproj" />
   </ItemGroup>
 
   <Target Name="Default" DependsOnTargets="Compile; Package" />

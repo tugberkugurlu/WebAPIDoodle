@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDoodle.Formatting", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDoodle.Http", "src\apps\WebAPIDoodle.Http\WebAPIDoodle.Http.csproj", "{4C07C35B-D14B-4F20-969D-EC6630BC2A99}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIDoodle.Meta", "src\apps\WebAPIDoodle.Meta\WebAPIDoodle.Meta.csproj", "{6F3C5937-B51D-4117-8276-7C50806BFCCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,10 @@ Global
 		{4C07C35B-D14B-4F20-969D-EC6630BC2A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C07C35B-D14B-4F20-969D-EC6630BC2A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C07C35B-D14B-4F20-969D-EC6630BC2A99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F3C5937-B51D-4117-8276-7C50806BFCCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F3C5937-B51D-4117-8276-7C50806BFCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F3C5937-B51D-4117-8276-7C50806BFCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F3C5937-B51D-4117-8276-7C50806BFCCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
