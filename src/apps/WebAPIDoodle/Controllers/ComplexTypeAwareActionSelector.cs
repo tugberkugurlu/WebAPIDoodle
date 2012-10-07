@@ -129,7 +129,6 @@ namespace WebAPIDoodle.Controllers {
                             )
                             .SelectMany(SelectActionParameterNames)
                             .Distinct(StringComparer.OrdinalIgnoreCase).ToArray());
-                            //.Union(Attribute.IsDefined(method, typeof(UriParametersAttribute)) ? method.GetAttribute<UriParametersAttribute>().Parameters : Enumerable.Empty<string>(), StringComparer.OrdinalIgnoreCase).ToArray());
                 }
 
                 _actionNameMapping = _actionDescriptors.ToLookup(actionDesc => actionDesc.ActionName, StringComparer.OrdinalIgnoreCase);
@@ -218,7 +217,7 @@ namespace WebAPIDoodle.Controllers {
 
             private IEnumerable<PropertyInfo> GetComplexTypeActionParameterProperties(Type type) {
 
-                //TODO: We can cache the type here and returned the cached item
+                //TODO: We can cache the type here and return the cached item
 
                 return from propInfo in type.GetProperties()
                        where TypeHelper.IsSimpleUnderlyingType(propInfo.PropertyType)
