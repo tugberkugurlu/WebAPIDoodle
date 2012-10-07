@@ -92,6 +92,10 @@
       <Project>{4c07c35b-d14b-4f20-969d-ec6630bc2a99}</Project>
       <Name>WebAPIDoodle.Http</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\apps\WebAPIDoodle.Meta\WebAPIDoodle.Meta.csproj">
+      <Project>{6f3c5937-b51d-4117-8276-7c50806bfccf}</Project>
+      <Name>WebAPIDoodle.Meta</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\apps\WebAPIDoodle\WebAPIDoodle.csproj">
       <Project>{215ff16a-9fd4-44c9-8727-97ae045f0161}</Project>
       <Name>WebAPIDoodle</Name>
