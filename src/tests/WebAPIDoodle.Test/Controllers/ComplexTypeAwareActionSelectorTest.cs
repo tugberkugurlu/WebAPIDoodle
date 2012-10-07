@@ -109,6 +109,31 @@ namespace WebAPIDoodle.Test.Controllers {
                 () => getControllerContext.ControllerDescriptor.Configuration.Services.GetActionSelector().SelectAction(getControllerContext));
         }
 
+        [Fact]
+        public void ComplexTypeUriParamFriendlyActionSelector_SelectAction_With_ActionSelectorParams_And_NonPubliclySetableSetSimpleTypeInsideTheComplexTypeActionParam_ShouldNotBeConsidered() {
+
+            HttpControllerContext getControllerContext = CreateControllerContext("Cars6", typeof(Cars6Controller));
+            getControllerContext.Request = new HttpRequestMessage {
+                RequestUri = new Uri("http://localhost/api/cars?foo=fooVal&bar=barVal")
+            };
+
+            HttpActionDescriptor getActionDescriptor = getControllerContext.ControllerDescriptor.Configuration.Services.GetActionSelector().SelectAction(getControllerContext);
+
+            Assert.Equal("GetCarsForCmd21", getActionDescriptor.ActionName);
+        }
+
+        [Fact]
+        public void ComplexTypeUriParamFriendlyActionSelector_SelectAction_With_ActionSelectorParams_And_NonPubliclySetableSetSimpleTypeInsideTheComplexTypeActionParam_ShouldNotBeConsidered_And_Throws() {
+
+            HttpControllerContext getControllerContext = CreateControllerContext("Cars7", typeof(Cars7Controller));
+            getControllerContext.Request = new HttpRequestMessage {
+                RequestUri = new Uri("http://localhost/api/cars?foo=fooVal&bar=barVal")
+            };
+
+            Assert.Throws<InvalidOperationException>(
+                () => getControllerContext.ControllerDescriptor.Configuration.Services.GetActionSelector().SelectAction(getControllerContext));
+        }
+
         private HttpControllerContext CreateControllerContext(string controllerName, Type controllerType) {
 
             ComplexTypeAwareActionSelector actionSelector = new ComplexTypeAwareActionSelector();
@@ -140,8 +165,7 @@ namespace WebAPIDoodle.Test.Controllers {
                 };
             }
 
-            [UriParameters("Foo", "Bar")]
-            public HttpResponseMessage GetCarsForCmd2(Cmd2 cmd) {
+            public HttpResponseMessage GetCarsForCmd2([FromUri]Cmd2 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd2")
@@ -157,16 +181,14 @@ namespace WebAPIDoodle.Test.Controllers {
 
         public class Cars2Controller : ApiController {
 
-            [UriParameters("Foo")]
-            public HttpResponseMessage GetCarsForCmd1(Cmd1 cmd) {
+            public HttpResponseMessage GetCarsForCmd1([FromUri]Cmd1 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd1")
                 };
             }
 
-            [UriParameters("Foo", "Bar")]
-            public HttpResponseMessage GetCarsForCmd2(string bar, Cmd2 cmd) {
+            public HttpResponseMessage GetCarsForCmd2(string bar, [FromUri]Cmd2 cmd) {
 
                 return new HttpResponseMessage(HttpStatusCode.OK) {
                     Content = new StringContent("Default Car for Cmd2")
@@ -224,5 +246,72 @@ namespace WebAPIDoodle.Test.Controllers {
                 };
             }
         }
+
+        #region readonly properties
+
+        public class Cmd11 {
+
+            public string Foo { get; set; }
+            public string FooBar { get { return Foo.ToLower(); } }
+        }
+
+        public class Cmd21 {
+
+            public string Foo { get; set; }
+            public string Bar { get; set; }
+
+            public string FooBar { get { return string.Format("{0}{1}", Foo, Bar); } }
+        }
+
+        public class Cars6Controller : ApiController {
+
+            public HttpResponseMessage GetCarsForCmd11([FromUri]Cmd11 cmd) {
+
+                return new HttpResponseMessage(HttpStatusCode.OK) {
+                    Content = new StringContent("Default Car for Cmd1")
+                };
+            }
+
+            public HttpResponseMessage GetCarsForCmd21([FromUri]Cmd21 cmd) {
+
+                return new HttpResponseMessage(HttpStatusCode.OK) {
+                    Content = new StringContent("Default Car for Cmd2")
+                };
+            }
+        }
+
+        #endregion
+
+        #region readonly properties which throws
+
+        public class Cmd12 {
+
+            public string Foo { get; set; }
+        }
+
+        public class Cmd22 {
+
+            public string Foo { get; set; }
+            public string Bar { get { return string.Format("_{0}_", Foo); } }
+        }
+
+        public class Cars7Controller : ApiController {
+
+            public HttpResponseMessage GetCarsForCmd11([FromUri]Cmd12 cmd) {
+
+                return new HttpResponseMessage(HttpStatusCode.OK) {
+                    Content = new StringContent("Default Car for Cmd1")
+                };
+            }
+
+            public HttpResponseMessage GetCarsForCmd21([FromUri]Cmd22 cmd) {
+
+                return new HttpResponseMessage(HttpStatusCode.OK) {
+                    Content = new StringContent("Default Car for Cmd2")
+                };
+            }
+        }
+
+        #endregion
     }
 }
