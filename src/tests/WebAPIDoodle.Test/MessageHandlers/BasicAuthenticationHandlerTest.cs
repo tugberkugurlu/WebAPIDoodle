@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -18,8 +16,8 @@ namespace WebAPIDoodle.Test.MessageHandlers {
         private const string UserName = "foo";
         private const string Password = "bar";
 
-        [Fact, GCForce]
-        public Task BasicAuthenticationHandler_ReturnsUnauthorizedIfAuthorizationHeaderIsNotSupplied() { 
+        [Fact, NullUpCurrentPrincipal, GCForce]
+        public Task ReturnsUnauthorizedIfAuthorizationHeaderIsNotSupplied() { 
 
             //Arange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
@@ -36,8 +34,8 @@ namespace WebAPIDoodle.Test.MessageHandlers {
                 });
         }
 
-        [Fact, GCForce]
-        public Task BasicAuthenticationHandler_ReturnsUnauthorizedWhenAuthorizationHeaderIsNotVerified() { 
+        [Fact, NullUpCurrentPrincipal, GCForce]
+        public Task ReturnsUnauthorizedWhenAuthorizationHeaderIsNotVerified() { 
 
             //Arange
             string usernameAndPassword = string.Format("{0}:{1}", "guydy", "efuıry");
@@ -56,8 +54,8 @@ namespace WebAPIDoodle.Test.MessageHandlers {
                 });
         }
 
-        [Fact, GCForce]
-        public Task BasicAuthenticationHandler_Returns200WhenAuthorizationHeaderIsVerified() {
+        [Fact, NullUpCurrentPrincipal, GCForce]
+        public Task Returns200WhenAuthorizationHeaderIsVerified() {
 
             //Arange
             string usernameAndPassword = string.Format("{0}:{1}", UserName, Password);
@@ -76,8 +74,8 @@ namespace WebAPIDoodle.Test.MessageHandlers {
                 });
         }
 
-        [Fact, GCForce]
-        public Task BasicAuthenticationHandler_SetsCurrentThreadPrincipalWhenAuthorizationHeaderIsVerified() {
+        [Fact, NullUpCurrentPrincipal, GCForce]
+        public Task SetsCurrentThreadPrincipalWhenAuthorizationHeaderIsVerified() {
 
             //Arange
             string usernameAndPassword = string.Format("{0}:{1}", UserName, Password);
@@ -94,6 +92,66 @@ namespace WebAPIDoodle.Test.MessageHandlers {
                     Assert.Equal(TaskStatus.RanToCompletion, task.Status);
                     Assert.NotNull(Thread.CurrentPrincipal);
                     Assert.IsType<GenericPrincipal>(Thread.CurrentPrincipal);
+                });
+        }
+
+        [Fact, NullUpCurrentPrincipal, GCForce]
+        public Task SuppressesTheAuthIfAlreadyAuthenticatedAndSuppressIsRequested() {
+
+            //Arange
+            Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(UserName), null);
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
+            var suppressedCustomBasicAuthHandler = new SuppressedCustomBasicAuthHandler();
+
+            //Act
+            return TestHelper.InvokeMessageHandler(request, suppressedCustomBasicAuthHandler)
+
+                .ContinueWith(task => {
+
+                    Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                    Assert.False(suppressedCustomBasicAuthHandler.IsAuthenticateUserCalled);
+                    Assert.Equal(HttpStatusCode.OK, task.Result.StatusCode);
+                });
+        }
+
+        [Fact, NullUpCurrentPrincipal, GCForce]
+        public Task HonorsTheOverriddenHandleUnauthenticatedRequestAndSetsTheResponse() {
+
+            //Arange
+            string usernameAndPassword = string.Format("{0}:{1}", UserName, Password);
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", EncodeToBase64(usernameAndPassword));
+            var customBasicAuthHandlerWithUnauthImpl = new CustomBasicAuthHandlerWithUnauthImpl();
+
+            //Act
+            return TestHelper.InvokeMessageHandler(request, customBasicAuthHandlerWithUnauthImpl)
+
+                .ContinueWith(task => {
+
+                    //Assert
+                    Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                    Assert.Equal(HttpStatusCode.Ambiguous, task.Result.StatusCode);
+                });
+        }
+
+        [Fact, NullUpCurrentPrincipal, GCForce]
+        public Task HonorsTheOverriddenHandleUnauthenticatedRequestAndCallsTheInnerHandler() {
+
+            //Arange
+            string usernameAndPassword = string.Format("{0}:{1}", UserName, Password);
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Basic", EncodeToBase64(usernameAndPassword));
+            var customBasicAuthHandlerWithEmptyUnauthImpl = new CustomBasicAuthHandlerWithEmptyUnauthImpl();
+
+            //Act
+            return TestHelper.InvokeMessageHandler(request, customBasicAuthHandlerWithEmptyUnauthImpl)
+
+                .ContinueWith(task => {
+
+                    //Assert
+                    Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                    Assert.Equal(HttpStatusCode.OK, task.Result.StatusCode);
+                    Assert.False(Thread.CurrentPrincipal.Identity.IsAuthenticated);
                 });
         }
 
@@ -115,6 +173,48 @@ namespace WebAPIDoodle.Test.MessageHandlers {
 
                 return null;
             }
+        }
+
+        public class SuppressedCustomBasicAuthHandler : BasicAuthenticationHandler {
+
+            public SuppressedCustomBasicAuthHandler() 
+                : base(suppressIfAlreadyAuthenticated: true) { 
+            }
+
+            public bool IsAuthenticateUserCalled { get; private set; }
+
+            protected override IPrincipal AuthenticateUser(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken) {
+
+                IsAuthenticateUserCalled = true;
+                return null;
+            }
+        }
+
+        public class CustomBasicAuthHandlerWithUnauthImpl : BasicAuthenticationHandler {
+
+            protected override IPrincipal AuthenticateUser(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken) {
+
+                return null;
+            }
+
+            protected override void HandleUnauthenticatedRequest(
+                UnauthenticatedRequestContext context) {
+
+                context.Response = new HttpResponseMessage(HttpStatusCode.Ambiguous);
+            }
+        }
+
+        public class CustomBasicAuthHandlerWithEmptyUnauthImpl : BasicAuthenticationHandler {
+
+            protected override IPrincipal AuthenticateUser(
+                HttpRequestMessage request, string username, string password, 
+                CancellationToken cancellationToken) {
+
+                return null;
+            }
+
+            protected override void HandleUnauthenticatedRequest(
+                UnauthenticatedRequestContext context) { }
         }
     }
 }

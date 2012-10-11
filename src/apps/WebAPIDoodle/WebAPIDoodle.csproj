@@ -85,6 +85,7 @@
     <Compile Include="Common\HttpRequestMessageExtensions.cs" />
     <Compile Include="Http\Handlers\BasicAuthenticationHandler.cs" />
     <Compile Include="Http\Handlers\RequireHttpsMessageHandler.cs" />
+    <Compile Include="Http\UnauthenticatedRequestContext.cs" />
     <Compile Include="Internal\HttpParameterBindingExtensions.cs" />
     <Compile Include="Properties\SRResources.Designer.cs">
       <AutoGen>True</AutoGen>

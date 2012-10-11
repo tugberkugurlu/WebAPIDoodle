@@ -23,51 +23,103 @@ namespace WebAPIDoodle.Http {
         // HTTP 1.1 Credential username and password separator
         private const char _httpCredentialSeparator = ':';
 
+        /// <summary>
+        /// Indicates whether the authenticated should be suppressed if 
+        /// the request is already authenticated
+        /// </summary>
+        public bool SuppressIfAlreadyAuthenticated { get; private set; }
+
+        /// <summary>
+        /// Parameterless constructor. Sets the SuppressIfAlreadyAuthenticated to false.
+        /// </summary>
+        public BasicAuthenticationHandler() : this(false) { }
+
+        /// <summary>
+        /// Constructor to supply the SuppressIfAlreadyAuthenticated value.
+        /// </summary>
+        /// <param name="suppressIfAlreadyAuthenticated">Indicates whether the authentication should be suppressed if the request is already authenticated.</param>
+        public BasicAuthenticationHandler(bool suppressIfAlreadyAuthenticated) {
+
+            SuppressIfAlreadyAuthenticated = suppressIfAlreadyAuthenticated;
+        }
+
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
 
-            if (request.Headers.Authorization != null && request.Headers.Authorization.Scheme == _httpBasicSchemeName) { 
-                
-                string username;
-                string password;
+            if (!Thread.CurrentPrincipal.Identity.IsAuthenticated || !SuppressIfAlreadyAuthenticated) {
 
-                if (TryExtractBasicAuthCredentialsFromHeader(request.Headers.Authorization.Parameter, out username, out password)) {
+                if (request.Headers.Authorization != null && request.Headers.Authorization.Scheme == _httpBasicSchemeName) {
 
-                    IPrincipal principal;
+                    string username, password;
 
-                    try {
+                    if (TryExtractBasicAuthCredentialsFromHeader(request.Headers.Authorization.Parameter, out username, out password)) {
 
-                        //BasicAuth credentials has been extracted.
-                        //Authenticate the user now
-                        principal = AuthenticateUser(request, username, password, cancellationToken);
-                    }
-                    catch (Exception e) {
+                        IPrincipal principal;
 
-                        return TaskHelpers.FromError<HttpResponseMessage>(e);
-                    }
+                        try {
 
-                    //check if the user has been authenticated successfully
-                    if (principal != null) {
+                            //BasicAuth credentials has been extracted.
+                            //Authenticate the user now
+                            principal = AuthenticateUser(request, username, password, cancellationToken);
+                        }
+                        catch (Exception e) {
 
-                        Thread.CurrentPrincipal = principal;
-                        return base.SendAsync(request, cancellationToken);
+                            return TaskHelpers.FromError<HttpResponseMessage>(e);
+                        }
+
+                        //check if the user has been authenticated successfully
+                        if (principal != null) {
+
+                            Thread.CurrentPrincipal = principal;
+                            return base.SendAsync(request, cancellationToken);
+                        }
                     }
                 }
-            }
 
-            var unauthorizedResponseMessage = request.CreateResponse(HttpStatusCode.Unauthorized);
-            unauthorizedResponseMessage.Headers.Add("WWW-Authenticate", _httpBasicSchemeName);
-            return TaskHelpers.FromResult<HttpResponseMessage>(unauthorizedResponseMessage);
+                try {
+
+                    var unauthanticatedRequestContext = new UnauthenticatedRequestContext(request);
+                    HandleUnauthenticatedRequest(unauthanticatedRequestContext);
+
+                    if (unauthanticatedRequestContext.Response != null) {
+
+                        return TaskHelpers.FromResult<HttpResponseMessage>(unauthanticatedRequestContext.Response);
+                    }
+
+                    return base.SendAsync(request, cancellationToken);
+                }
+                catch (Exception e) {
+
+                    return TaskHelpers.FromError<HttpResponseMessage>(e);
+                }
+            }
+            else {
+
+                // The request is already authenticated and it is requested 
+                // to suppress the authentication in this case
+                return base.SendAsync(request, cancellationToken);
+            }
         }
 
         /// <summary>
         /// The method which is responsable for authenticating the user based on the provided credentials.
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="username">The username value extracted from BasicAuth header</param>
-        /// <param name="password">The password value extracted from BasicAuth header</param>
-        /// <param name="cancellationToken"></param>
+        /// <param name="username">The username value extracted from BasicAuth header.</param>
+        /// <param name="password">The password value extracted from BasicAuth header.</param>
+        /// <param name="cancellationToken">A cancellation token to cancel operation.</param>
         /// <returns></returns>
         protected abstract IPrincipal AuthenticateUser(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Called when the request is unauthenticated.
+        /// </summary>
+        /// <param name="context">Context object which carries the HTTP request message to send to the server and the empty HTTP response property.</param>
+        protected virtual void HandleUnauthenticatedRequest(UnauthenticatedRequestContext context) {
+
+            HttpResponseMessage unauthorizedResponseMessage = context.Request.CreateResponse(HttpStatusCode.Unauthorized);
+            unauthorizedResponseMessage.Headers.Add("WWW-Authenticate", _httpBasicSchemeName);
+            context.Response = unauthorizedResponseMessage;
+        }
 
         private static bool TryExtractBasicAuthCredentialsFromHeader(string authorizationHeader, out string username, out string password) {
 
