@@ -57,8 +57,8 @@ namespace WebAPIDoodle.Http {
 
                         try {
 
-                            //BasicAuth credentials has been extracted.
-                            //Authenticate the user now
+                            // BasicAuth credentials has been extracted.
+                            // Authenticate the user now
                             principal = AuthenticateUser(request, username, password, cancellationToken);
                         }
                         catch (Exception e) {
@@ -82,6 +82,7 @@ namespace WebAPIDoodle.Http {
 
                     if (unauthanticatedRequestContext.Response != null) {
 
+                        EnsureRequestMessageExistence(unauthanticatedRequestContext.Response, request);
                         return TaskHelpers.FromResult<HttpResponseMessage>(unauthanticatedRequestContext.Response);
                     }
 
@@ -152,6 +153,14 @@ namespace WebAPIDoodle.Http {
             }
 
             return true;
+        }
+
+        private void EnsureRequestMessageExistence(HttpResponseMessage response, HttpRequestMessage request) {
+
+            if (response.RequestMessage == null) {
+
+                response.RequestMessage = request;
+            }
         }
     }
 }
