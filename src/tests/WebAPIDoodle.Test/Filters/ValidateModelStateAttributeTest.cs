@@ -27,7 +27,7 @@ namespace WebAPIDoodle.Test.Filters {
 
             //Assert
             Assert.NotNull(actionContext.Response);
-            Assert.Equal(actionContext.Response.StatusCode, HttpStatusCode.BadRequest);
+            Assert.Equal(HttpStatusCode.BadRequest, actionContext.Response.StatusCode);
         }
 
         [Fact]
