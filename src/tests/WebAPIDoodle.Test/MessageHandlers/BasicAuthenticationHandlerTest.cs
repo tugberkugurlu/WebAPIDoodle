@@ -163,15 +163,15 @@ namespace WebAPIDoodle.Test.MessageHandlers {
 
         public class CustomBasicAuthHandler : BasicAuthenticationHandler {
 
-            protected override IPrincipal AuthenticateUser(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken) {
+            protected override Task<IPrincipal> AuthenticateUserAsync(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken) {
 
                 if (username == UserName && password == Password) {
 
                     var identity = new GenericIdentity(username);
-                    return new GenericPrincipal(identity, null);
+                    return TaskHelpers.FromResult<IPrincipal>(new GenericPrincipal(identity, null));
                 }
 
-                return null;
+                return TaskHelpers.FromResult<IPrincipal>(null);
             }
         }
 
@@ -183,18 +183,18 @@ namespace WebAPIDoodle.Test.MessageHandlers {
 
             public bool IsAuthenticateUserCalled { get; private set; }
 
-            protected override IPrincipal AuthenticateUser(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken) {
+            protected override Task<IPrincipal> AuthenticateUserAsync(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken) {
 
                 IsAuthenticateUserCalled = true;
-                return null;
+                return TaskHelpers.FromResult<IPrincipal>(null);
             }
         }
 
         public class CustomBasicAuthHandlerWithUnauthImpl : BasicAuthenticationHandler {
 
-            protected override IPrincipal AuthenticateUser(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken) {
+            protected override Task<IPrincipal> AuthenticateUserAsync(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken) {
 
-                return null;
+                return TaskHelpers.FromResult<IPrincipal>(null);
             }
 
             protected override void HandleUnauthenticatedRequest(
@@ -206,11 +206,11 @@ namespace WebAPIDoodle.Test.MessageHandlers {
 
         public class CustomBasicAuthHandlerWithEmptyUnauthImpl : BasicAuthenticationHandler {
 
-            protected override IPrincipal AuthenticateUser(
+            protected override Task<IPrincipal> AuthenticateUserAsync(
                 HttpRequestMessage request, string username, string password, 
                 CancellationToken cancellationToken) {
 
-                return null;
+                return TaskHelpers.FromResult<IPrincipal>(null);
             }
 
             protected override void HandleUnauthenticatedRequest(

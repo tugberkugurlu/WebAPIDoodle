@@ -50,48 +50,25 @@ namespace WebAPIDoodle.Http {
                 if (request.Headers.Authorization != null && request.Headers.Authorization.Scheme == _httpBasicSchemeName) {
 
                     string username, password;
-
                     if (TryExtractBasicAuthCredentialsFromHeader(request.Headers.Authorization.Parameter, out username, out password)) {
 
-                        IPrincipal principal;
+                        return AuthenticateUserAsync(request, username, password, cancellationToken).Then<IPrincipal, HttpResponseMessage>(principal => {
 
-                        try {
+                            // Check if the user has been authenticated successfully
+                            if (principal != null) {
 
-                            // BasicAuth credentials has been extracted.
-                            // Authenticate the user now
-                            principal = AuthenticateUser(request, username, password, cancellationToken);
-                        }
-                        catch (Exception e) {
+                                Thread.CurrentPrincipal = principal;
+                                return base.SendAsync(request, cancellationToken);
+                            }
 
-                            return TaskHelpers.FromError<HttpResponseMessage>(e);
-                        }
-
-                        //check if the user has been authenticated successfully
-                        if (principal != null) {
-
-                            Thread.CurrentPrincipal = principal;
-                            return base.SendAsync(request, cancellationToken);
-                        }
+                            // Request is not authanticated. Handle unauthenticated request.
+                            return HandleUnauthenticatedRequestImpl(request, cancellationToken);
+                        });
                     }
                 }
 
-                try {
-
-                    var unauthanticatedRequestContext = new UnauthenticatedRequestContext(request);
-                    HandleUnauthenticatedRequest(unauthanticatedRequestContext);
-
-                    if (unauthanticatedRequestContext.Response != null) {
-
-                        EnsureRequestMessageExistence(unauthanticatedRequestContext.Response, request);
-                        return TaskHelpers.FromResult<HttpResponseMessage>(unauthanticatedRequestContext.Response);
-                    }
-
-                    return base.SendAsync(request, cancellationToken);
-                }
-                catch (Exception e) {
-
-                    return TaskHelpers.FromError<HttpResponseMessage>(e);
-                }
+                // Request is not authanticated. Handle unauthenticated request.
+                return HandleUnauthenticatedRequestImpl(request, cancellationToken);
             }
             else {
 
@@ -109,7 +86,7 @@ namespace WebAPIDoodle.Http {
         /// <param name="password">The password value extracted from BasicAuth header.</param>
         /// <param name="cancellationToken">A cancellation token to cancel operation.</param>
         /// <returns></returns>
-        protected abstract IPrincipal AuthenticateUser(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken);
+        protected abstract Task<IPrincipal> AuthenticateUserAsync(HttpRequestMessage request, string username, string password, CancellationToken cancellationToken);
 
         /// <summary>
         /// Called when the request is unauthenticated.
@@ -160,6 +137,27 @@ namespace WebAPIDoodle.Http {
             if (response.RequestMessage == null) {
 
                 response.RequestMessage = request;
+            }
+        }
+
+        private Task<HttpResponseMessage> HandleUnauthenticatedRequestImpl(HttpRequestMessage request, CancellationToken cancellationToken) {
+
+            try {
+
+                var unauthanticatedRequestContext = new UnauthenticatedRequestContext(request);
+                HandleUnauthenticatedRequest(unauthanticatedRequestContext);
+
+                if (unauthanticatedRequestContext.Response != null) {
+
+                    EnsureRequestMessageExistence(unauthanticatedRequestContext.Response, request);
+                    return TaskHelpers.FromResult<HttpResponseMessage>(unauthanticatedRequestContext.Response);
+                }
+
+                return base.SendAsync(request, cancellationToken);
+            }
+            catch (Exception e) {
+
+                return TaskHelpers.FromError<HttpResponseMessage>(e);
             }
         }
     }
