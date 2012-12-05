@@ -63,7 +63,7 @@ namespace WebAPIDoodle.Http {
 
                             // Request is not authanticated. Handle unauthenticated request.
                             return HandleUnauthenticatedRequestImpl(request, cancellationToken);
-                        });
+                        }, runSynchronously: true);
                     }
                 }
 
