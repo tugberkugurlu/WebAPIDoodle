@@ -44,18 +44,8 @@ namespace WebAPIDoodle.Http {
 
             timer.Change(_milliseconds, -1);
 
-            return base.SendAsync(request, linkedToken).ContinueWith(task => {
-
-                if (task.Status == TaskStatus.Canceled) {
-
-                    return request.CreateResponse(HttpStatusCode.RequestTimeout);
-                }
-
-                //TODO: Handle faulted task as well
-
-                return task.Result;
-
-            }, TaskContinuationOptions.ExecuteSynchronously);
+            return base.SendAsync(request, linkedToken).ContinueWith(task => 
+                request.CreateResponse(HttpStatusCode.RequestTimeout), TaskContinuationOptions.ExecuteSynchronously | TaskContinuationOptions.OnlyOnCanceled);
         }
 
         private static void TimerCallbackLogic(object obj) {
