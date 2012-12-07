@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace WSystem.Net.Http {
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DelegatingHandlerExtensions {
 
         internal static Task<HttpResponseMessage> InvokeAsync(

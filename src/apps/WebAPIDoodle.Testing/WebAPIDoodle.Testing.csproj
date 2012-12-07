@@ -65,6 +65,7 @@
     <Compile Include="..\Common\TaskHelpers.cs">
       <Link>Common\TaskHelpers.cs</Link>
     </Compile>
+    <Compile Include="IntegrationTest\HttpRequestMessageExtensions.cs" />
     <Compile Include="MessageHandlers\DelegatingHandlerExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
