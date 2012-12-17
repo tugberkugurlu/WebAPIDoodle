@@ -13,11 +13,11 @@ namespace System.Net.Http {
 
         public static Task<HttpResponseMessage> InvokeServerAsync(this HttpRequestMessage request, HttpConfiguration configuration) {
 
-            using (var httpServer = new HttpServer(configuration))
-            using (var httpClient = HttpClientFactory.Create(httpServer)) {
+            var httpServer = new HttpServer(configuration);
+            var httpClient = HttpClientFactory.Create(innerHandler: httpServer);
 
-                return httpClient.SendAsync(request);
-            }
+            // TODO: Dispose the HttpClient here by using the Finally method.
+            return httpClient.SendAsync(request);
         }
 
         public static Task<TResult> InvokeServerAsync<TResult>(this HttpRequestMessage request, HttpConfiguration configuration, Func<HttpResponseMessage, bool> successor) {
