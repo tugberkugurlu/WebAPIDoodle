@@ -42,6 +42,7 @@ namespace System.Web.Http {
                     return true;
 
                 case IncludeErrorDetailPolicy.Never:
+                    return false;
 
                 default:
                     return false;
