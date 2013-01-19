@@ -13,7 +13,7 @@
     <copyright>Copyright Tugberk Ugurlu 2012</copyright>
     <tags>aspnetwebapi aspnet webapi formatting</tags>
     <dependencies>
-      <dependency id="WebAPIDoodle.Http" version="$version$" />
+      <dependency id="WebApiDoodle.Net.Http" version="$version$" />
     </dependencies>
   </metadata>
 </package>
