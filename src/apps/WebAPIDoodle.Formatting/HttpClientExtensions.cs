@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebAPIDoodle.Formatting {
+namespace WebApiDoodle.Net.Http.Formatting {
 
     public static class HttpClientExtensions {
 

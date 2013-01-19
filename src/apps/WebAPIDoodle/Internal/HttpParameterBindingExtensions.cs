@@ -7,7 +7,7 @@ using System.Web.Http.ModelBinding;
 using System.Web.Http.ValueProviders;
 using System.Web.Http.ValueProviders.Providers;
 
-namespace WebAPIDoodle.Internal {
+namespace WebApiDoodle.Web.Internal {
 
     internal static class HttpParameterBindingExtensions {
 

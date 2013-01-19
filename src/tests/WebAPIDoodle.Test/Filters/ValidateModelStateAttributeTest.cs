@@ -6,10 +6,10 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
-using WebAPIDoodle.Filters;
+using WebApiDoodle.Web.Filters;
 using Xunit;
 
-namespace WebAPIDoodle.Test.Filters {
+namespace WebApiDoodle.Web.Test.Filters {
     
     public class ValidateModelStateAttributeTest {
 

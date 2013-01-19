@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Hosting;
 
-namespace WebAPIDoodle.Hosts.WebHost45 {
+namespace WebApiDoodle.Web.Hosting.WebHost45 {
 
     public class WebHostBufferPolicySelector : IHostBufferPolicySelector {
 

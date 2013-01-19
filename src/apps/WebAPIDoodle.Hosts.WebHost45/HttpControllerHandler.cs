@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Hosting;
 
-namespace WebAPIDoodle.Hosts.WebHost45 {
+namespace WebApiDoodle.Web.Hosting.WebHost45 {
     
     public class HttpControllerHandler : HttpTaskAsyncHandler {
 

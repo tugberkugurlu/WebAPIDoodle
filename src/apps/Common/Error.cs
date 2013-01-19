@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 
-namespace WebAPIDoodle {
+namespace WebApiDoodle.Web {
 
     /// <summary>
     /// Utility class for creating and unwrapping <see cref="Exception"/> instances.

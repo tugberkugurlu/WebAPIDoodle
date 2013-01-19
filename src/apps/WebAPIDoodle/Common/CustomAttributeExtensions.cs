@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace WebAPIDoodle {
+namespace WebApiDoodle.Web {
     
     internal static class CustomAttributeExtensions {
 

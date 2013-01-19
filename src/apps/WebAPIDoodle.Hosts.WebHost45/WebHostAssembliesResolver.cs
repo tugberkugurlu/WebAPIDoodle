@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Compilation;
 using System.Web.Http.Dispatcher;
 
-namespace WebAPIDoodle.Hosts.WebHost45 {
+namespace WebApiDoodle.Web.Hosting.WebHost45 {
 
     /// <summary>
     /// Provides an implementation of <see cref="IAssembliesResolver"/> using <see cref="BuildManager"/>.

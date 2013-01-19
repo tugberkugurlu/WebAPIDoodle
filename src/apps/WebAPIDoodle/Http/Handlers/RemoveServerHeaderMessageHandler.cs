@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace WebAPIDoodle.Http {
+namespace WebApiDoodle.Web.Http {
 
     public class RemoveServerHeaderMessageHandler : DelegatingHandler {
 

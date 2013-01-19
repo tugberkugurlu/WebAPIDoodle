@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using Xunit;
 
-namespace WebAPIDoodle.Test {
+namespace WebApiDoodle.Web.Test {
 
     public class GCForce : BeforeAfterTestAttribute {
 

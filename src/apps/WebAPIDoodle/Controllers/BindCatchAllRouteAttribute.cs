@@ -5,7 +5,7 @@ using System.Text;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 
-namespace WebAPIDoodle.Controllers {
+namespace WebApiDoodle.Web.Controllers {
 
     public class BindCatchAllRouteAttribute : ParameterBindingAttribute {
 

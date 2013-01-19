@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Net;
 using System;
 
-namespace WebAPIDoodle.Filters {
+namespace WebApiDoodle.Web.Filters {
 
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public class InvalidModelStateFilterAttribute : ActionFilterAttribute {

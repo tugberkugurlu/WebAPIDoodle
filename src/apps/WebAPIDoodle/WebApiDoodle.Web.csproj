@@ -7,8 +7,8 @@
     <ProjectGuid>{215FF16A-9FD4-44C9-8727-97AE045F0161}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebAPIDoodle</RootNamespace>
-    <AssemblyName>WebAPIDoodle</AssemblyName>
+    <RootNamespace>WebApiDoodle.Web</RootNamespace>
+    <AssemblyName>WebApiDoodle.Web</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
@@ -110,13 +110,13 @@
     <Compile Include="Routes\OptionalRegExConstraint.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WebAPIDoodle.Http\WebAPIDoodle.Http.csproj">
+    <ProjectReference Include="..\WebAPIDoodle.Http\WebApiDoodle.Net.Http.csproj">
       <Project>{4c07c35b-d14b-4f20-969d-ec6630bc2a99}</Project>
-      <Name>WebAPIDoodle.Http</Name>
+      <Name>WebApiDoodle.Net.Http</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WebAPIDoodle.Meta\WebAPIDoodle.Meta.csproj">
+    <ProjectReference Include="..\WebAPIDoodle.Meta\WebApiDoodle.Web.Meta.csproj">
       <Project>{6f3c5937-b51d-4117-8276-7c50806bfccf}</Project>
-      <Name>WebAPIDoodle.Meta</Name>
+      <Name>WebApiDoodle.Web.Meta</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

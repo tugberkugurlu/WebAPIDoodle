@@ -4,15 +4,16 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Web.Http.Controllers;
-using WebAPIDoodle.Controllers;
-using WebAPIDoodle.Test.Controllers.Apis;
+using WebApiDoodle.Web.Controllers;
+using WebApiDoodle.Web.Test.Controllers.Apis;
 using System.Web.Http;
 using Xunit;
 using System.Net;
 using Moq;
 using System.ComponentModel;
+using WebApiDoodle.Web.Meta;
 
-namespace WebAPIDoodle.Test.Controllers {
+namespace WebApiDoodle.Web.Test.Controllers {
     
     public class ComplexTypeAwareActionSelectorTest {
 

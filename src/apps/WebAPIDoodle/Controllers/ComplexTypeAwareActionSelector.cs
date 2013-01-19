@@ -11,9 +11,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
-using WebAPIDoodle.Internal;
+using WebApiDoodle.Web.Internal;
+using WebApiDoodle.Web.Meta;
 
-namespace WebAPIDoodle.Controllers {
+namespace WebApiDoodle.Web.Controllers {
 
     /// <summary>
     /// Reflection based action selector based on ApiControllerActionSelector implementation.

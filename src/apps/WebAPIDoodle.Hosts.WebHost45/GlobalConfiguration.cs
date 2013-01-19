@@ -8,9 +8,9 @@ using System.Web.Http;
 using System.Web.Http.Dispatcher;
 using System.Web.Http.Hosting;
 using System.Web.Routing;
-using WebAPIDoodle.Hosts.WebHost45.Routing;
+using WebApiDoodle.Web.Hosting.WebHost45.Routing;
 
-namespace WebAPIDoodle.Hosts.WebHost45 {
+namespace WebApiDoodle.Web.Hosting.WebHost45 {
     
     public static class GlobalConfiguration {
 

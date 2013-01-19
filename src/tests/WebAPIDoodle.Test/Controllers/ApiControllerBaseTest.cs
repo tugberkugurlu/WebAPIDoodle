@@ -10,10 +10,10 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Routing;
 using Moq;
-using WebAPIDoodle.Controllers;
+using WebApiDoodle.Web.Controllers;
 using Xunit;
 
-namespace WebAPIDoodle.Test.Controllers {
+namespace WebApiDoodle.Web.Test.Controllers {
 
     public class ApiControllerBaseTest {
 

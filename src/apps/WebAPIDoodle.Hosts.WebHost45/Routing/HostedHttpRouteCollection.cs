@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Routing;
 
-namespace WebAPIDoodle.Hosts.WebHost45.Routing {
+namespace WebApiDoodle.Web.Hosting.WebHost45.Routing {
     
     public class HostedHttpRouteCollection : HttpRouteCollection {
 

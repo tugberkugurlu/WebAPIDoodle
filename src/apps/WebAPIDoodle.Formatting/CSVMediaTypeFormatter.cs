@@ -10,7 +10,7 @@ using System.Net.Http;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace WebAPIDoodle.Formatting {
+namespace WebApiDoodle.Net.Http.Formatting {
 
     public class CSVMediaTypeFormatter : MediaTypeFormatter {
 

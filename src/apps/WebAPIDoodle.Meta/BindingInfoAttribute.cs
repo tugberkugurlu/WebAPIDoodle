@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WebAPIDoodle {
+namespace WebApiDoodle.Web.Meta {
 
     /// <summary>
     /// Provides the binding information for the properties of the complex type action parameters

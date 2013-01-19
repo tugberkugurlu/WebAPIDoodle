@@ -7,8 +7,8 @@
     <ProjectGuid>{72A10F73-8FB8-40F4-AB18-EAF828C1B32D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebAPIDoodle.Testing</RootNamespace>
-    <AssemblyName>WebAPIDoodle.Testing</AssemblyName>
+    <RootNamespace>WebApiDoodle.Testing</RootNamespace>
+    <AssemblyName>WebApiDoodle.Testing</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>

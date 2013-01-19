@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 
-namespace WebAPIDoodle.Http {
+namespace WebApiDoodle.Net.Http {
 
     public class EmptyContent : StringContent {
 

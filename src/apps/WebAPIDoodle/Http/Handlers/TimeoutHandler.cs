@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebAPIDoodle.Http {
+namespace WebApiDoodle.Web.Http {
 
     public class TimeoutHandler : DelegatingHandler {
 

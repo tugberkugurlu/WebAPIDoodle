@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Moq;
 using Xunit;
 
-namespace WebAPIDoodle.Test.Common {
+namespace WebApiDoodle.Web.Test.Common {
 
     //Mostly taken from ASP.NET Web Stack source: http://aspnetwebstack.codeplex.com
     public class TaskHelperExtensionsTest {

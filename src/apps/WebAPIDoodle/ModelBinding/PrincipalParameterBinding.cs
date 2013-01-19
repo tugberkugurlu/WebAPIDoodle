@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.Metadata;
 
-namespace WebAPIDoodle.ModelBinding {
+namespace WebApiDoodle.Web.ModelBinding {
 
     public class PrincipalParameterBinding : HttpParameterBinding {
 

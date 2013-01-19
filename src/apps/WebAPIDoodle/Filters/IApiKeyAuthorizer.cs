@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WebAPIDoodle.Filters {
+namespace WebApiDoodle.Web.Filters {
 
     public interface IApiKeyAuthorizer {
 

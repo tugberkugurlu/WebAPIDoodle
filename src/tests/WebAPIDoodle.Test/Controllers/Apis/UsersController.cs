@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Http;
 
-namespace WebAPIDoodle.Test.Controllers.Apis {
+namespace WebApiDoodle.Web.Test.Controllers.Apis {
 
     public class UsersController : ApiController {
 

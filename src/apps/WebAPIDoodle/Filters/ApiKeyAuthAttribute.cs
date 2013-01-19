@@ -9,7 +9,7 @@ using System.Web.Http;
 using System.Web;
 using System.Net;
 
-namespace WebAPIDoodle.Filters {
+namespace WebApiDoodle.Web.Filters {
 
     /// <summary>
     /// QueryString Api Key Authorization filter for ASP.NET Web API.

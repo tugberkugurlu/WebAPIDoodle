@@ -7,7 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Http;
 
-namespace WebAPIDoodle.Formatting {
+namespace WebApiDoodle.Web.Formatting {
 
     public class RouteDataMapping : MediaTypeMapping {
 

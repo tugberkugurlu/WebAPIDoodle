@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Dispatcher;
 
-namespace WebAPIDoodle.Hosts.WebHost45 {
+namespace WebApiDoodle.Web.Hosting.WebHost45 {
     
     public class WebHostHttpControllerTypeResolver : IHttpControllerTypeResolver {
 

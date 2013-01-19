@@ -5,9 +5,10 @@ using System.Text;
 using System.Web.Http.Filters;
 using System.Web.Http.Controllers;
 using System.Net;
-using WebAPIDoodle.Http;
+using WebApiDoodle.Web.Http;
+using WebApiDoodle.Net.Http;
 
-namespace WebAPIDoodle.Filters {
+namespace WebApiDoodle.Web.Filters {
 
     public class RequireHttpsAttribute : AuthorizationFilterAttribute {
 

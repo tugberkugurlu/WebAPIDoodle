@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using Xunit;
 
-namespace WebAPIDoodle.Test {
+namespace WebApiDoodle.Web.Test {
     
     public class PreserveSyncContextAttribute : BeforeAfterTestAttribute {
 

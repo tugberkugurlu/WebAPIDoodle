@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace WebAPIDoodle.Test {
+namespace WebApiDoodle.Web.Test {
 
     //mostly taken from ASP.NET Web Stack source: http://aspnetwebstack.codeplex.com
     public class TaskHelpersTest {

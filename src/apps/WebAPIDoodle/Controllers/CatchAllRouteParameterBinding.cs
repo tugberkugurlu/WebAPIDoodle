@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 
-namespace WebAPIDoodle.Controllers {
+namespace WebApiDoodle.Web.Controllers {
 
     public class CatchAllRouteParameterBinding : HttpParameterBinding {
 

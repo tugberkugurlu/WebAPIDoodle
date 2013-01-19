@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WSystem.Net.Http {
+namespace System.Net.Http {
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DelegatingHandlerExtensions {

@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Http.Routing;
-using WebAPIDoodle.Routes;
+using WebApiDoodle.Web.Routes;
 using Xunit;
 
-namespace WebAPIDoodle.Test.Routes {
+namespace WebApiDoodle.Web.Test.Routes {
     
     public class OptionalRegExConstraintTest {
 

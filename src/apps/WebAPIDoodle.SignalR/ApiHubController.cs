@@ -6,7 +6,7 @@ using System.Web.Http;
 using SignalR;
 using SignalR.Hubs;
 
-namespace WebAPIDoodle.SignalR {
+namespace WebApiDoodle.Web.SignalR {
 
     public abstract class ApiHubController<THub> : ApiController where THub : Hub {
 

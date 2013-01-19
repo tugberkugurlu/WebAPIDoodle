@@ -7,8 +7,8 @@
     <ProjectGuid>{4E9C705E-8964-401E-B2B1-A766B5FF9B32}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebAPIDoodle.Formatting</RootNamespace>
-    <AssemblyName>WebAPIDoodle.Formatting</AssemblyName>
+    <RootNamespace>WebApiDoodle.Net.Http.Formatting</RootNamespace>
+    <AssemblyName>WebApiDoodle.Net.Http.Formatting</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>

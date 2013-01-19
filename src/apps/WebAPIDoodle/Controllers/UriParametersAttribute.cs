@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace WebAPIDoodle.Controllers {
+namespace WebApiDoodle.Web.Controllers {
 
     [Obsolete("UriParametersAttribute is no more in use. This attribute will be removed at some time in the future.")]
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]

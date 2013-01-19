@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebAPIDoodle.Test {
+namespace WebApiDoodle.Web.Test {
 
     internal static class TestHelper {
 

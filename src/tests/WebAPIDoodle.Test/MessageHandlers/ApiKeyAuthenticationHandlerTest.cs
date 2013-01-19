@@ -7,10 +7,10 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using WebAPIDoodle.Http;
+using WebApiDoodle.Web.Http;
 using Xunit;
 
-namespace WebAPIDoodle.Test.MessageHandlers {
+namespace WebApiDoodle.Web.Test.MessageHandlers {
     
     public class ApiKeyAuthenticationHandlerTest {
 

@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Web.Http;
 using System.Web.Http.Routing;
 
-namespace WebAPIDoodle.Routes {
+namespace WebApiDoodle.Web.Routes {
 
     public class OptionalRegExConstraint : IHttpRouteConstraint {
 
