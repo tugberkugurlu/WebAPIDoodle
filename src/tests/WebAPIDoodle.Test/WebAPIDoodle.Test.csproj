@@ -7,8 +7,8 @@
     <ProjectGuid>{11DABFEE-B3FD-4AC0-B0A4-145C317AFB03}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WebAPIDoodle.Test</RootNamespace>
-    <AssemblyName>WebAPIDoodle.Test</AssemblyName>
+    <RootNamespace>WebApiDoodle.Test</RootNamespace>
+    <AssemblyName>WebApiDoodle.Test</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\</SolutionDir>
@@ -89,15 +89,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\apps\WebAPIDoodle.Http\WebApiDoodle.Net.Http.csproj">
-      <Project>{4c07c35b-d14b-4f20-969d-ec6630bc2a99}</Project>
-      <Name>WebApiDoodle.Net.Http</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\apps\WebAPIDoodle.Meta\WebApiDoodle.Web.Meta.csproj">
+    <ProjectReference Include="..\..\apps\WebApiDoodle.Web.Meta\WebApiDoodle.Web.Meta.csproj">
       <Project>{6f3c5937-b51d-4117-8276-7c50806bfccf}</Project>
       <Name>WebApiDoodle.Web.Meta</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\apps\WebAPIDoodle\WebApiDoodle.Web.csproj">
+    <ProjectReference Include="..\..\apps\WebApiDoodle.Web\WebApiDoodle.Web.csproj">
       <Project>{215ff16a-9fd4-44c9-8727-97ae045f0161}</Project>
       <Name>WebApiDoodle.Web</Name>
     </ProjectReference>

@@ -110,11 +110,11 @@
     <Compile Include="Routes\OptionalRegExConstraint.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WebAPIDoodle.Http\WebApiDoodle.Net.Http.csproj">
+    <ProjectReference Include="..\WebApiDoodle.Net.Http\WebApiDoodle.Net.Http.csproj">
       <Project>{4c07c35b-d14b-4f20-969d-ec6630bc2a99}</Project>
       <Name>WebApiDoodle.Net.Http</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WebAPIDoodle.Meta\WebApiDoodle.Web.Meta.csproj">
+    <ProjectReference Include="..\WebApiDoodle.Web.Meta\WebApiDoodle.Web.Meta.csproj">
       <Project>{6f3c5937-b51d-4117-8276-7c50806bfccf}</Project>
       <Name>WebApiDoodle.Web.Meta</Name>
     </ProjectReference>

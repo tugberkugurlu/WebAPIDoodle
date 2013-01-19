@@ -8,7 +8,7 @@
     <SolutionDir Condition="'$(SolutionDir)' == ''">$([System.IO.Path]::GetDirectoryName($(MSBuildProjectDirectory)))</SolutionDir>
     <ScriptsDir>$(SolutionDir)\scripts</ScriptsDir>
     <NugetExeDir>$(SolutionDir)\.nuget</NugetExeDir>
-    <Solutionfile>$(SolutionDir)\WebAPIDoodle.sln</Solutionfile>
+    <Solutionfile>$(SolutionDir)\WebApiDoodle.sln</Solutionfile>
     <BuildArtifactsDir>$(SolutionDir)\artifacts</BuildArtifactsDir>
     <NuGetPackageOutputDir>$(BuildArtifactsDir)\packages</NuGetPackageOutputDir>
   </PropertyGroup>
@@ -16,7 +16,7 @@
   <ItemGroup>
     <AppProjFiles Include="$(SolutionDir)\src\apps\**\*.csproj" />
     <TestProjFiles Include="$(SolutionDir)\src\test\**\*.csproj" />
-    <NuGetPackageProjects Include="$(SolutionDir)\src\apps\WebAPIDoodle\WebAPIDoodle.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.SignalR\WebAPIDoodle.SignalR.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.Formatting\WebAPIDoodle.Formatting.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.Http\WebAPIDoodle.Http.csproj;$(SolutionDir)\src\apps\WebAPIDoodle.Meta\WebAPIDoodle.Meta.csproj" />
+    <NuGetPackageProjects Include="$(SolutionDir)\src\apps\WebApiDoodle.Web\WebApiDoodle.Web.csproj;$(SolutionDir)\src\apps\WebApiDoodle.Web.SignalR\WebApiDoodle.Web.SignalR.csproj;$(SolutionDir)\src\apps\WebApiDoodle.Net.Http.Formatting\WebApiDoodle.Net.Http.Formatting.csproj;$(SolutionDir)\src\apps\WebApiDoodle.Net.Http\WebApiDoodle.Net.Http.csproj;$(SolutionDir)\src\apps\WebApiDoodle.Web.Meta\WebApiDoodle.Web.Meta.csproj" />
   </ItemGroup>
 
   <Target Name="Default" DependsOnTargets="Compile; Package" />
