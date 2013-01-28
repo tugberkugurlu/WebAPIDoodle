@@ -65,11 +65,11 @@
     <Compile Include="..\Common\Error.cs">
       <Link>Common\Error.cs</Link>
     </Compile>
-    <Compile Include="..\Common\TaskHelperExtensions.cs">
-      <Link>Common\TaskHelperExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\Common\TaskHelpers.cs">
       <Link>Common\TaskHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\TaskHelpersExtensions.cs">
+      <Link>Common\TaskHelpersExtensions.cs</Link>
     </Compile>
     <Compile Include="Common\CustomAttributeExtensions.cs" />
     <Compile Include="Common\HttpConfigurationExtensions.cs" />

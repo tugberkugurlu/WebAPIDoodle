@@ -44,6 +44,8 @@
     </Compile>
     <Compile Include="IDto%271.cs" />
     <Compile Include="IDto.cs" />
+    <Compile Include="IPaginatedDto.cs" />
+    <Compile Include="PaginatedDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

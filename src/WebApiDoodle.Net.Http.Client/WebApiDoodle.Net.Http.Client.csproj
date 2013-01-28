@@ -54,15 +54,16 @@
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\Common\TaskHelperExtensions.cs">
-      <Link>Common\TaskHelperExtensions.cs</Link>
-    </Compile>
     <Compile Include="..\Common\TaskHelpers.cs">
       <Link>Common\TaskHelpers.cs</Link>
+    </Compile>
+    <Compile Include="..\Common\TaskHelpersExtensions.cs">
+      <Link>Common\TaskHelpersExtensions.cs</Link>
     </Compile>
     <Compile Include="HttpApiClient.cs" />
     <Compile Include="HttpApiResponseMessage%271.cs" />
     <Compile Include="HttpApiResponseMessage.cs" />
+    <Compile Include="HttpResponseMessageExtensions.cs" />
     <Compile Include="InternalResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
