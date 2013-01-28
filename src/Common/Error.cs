@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 
-namespace WebApiDoodle.Web {
+namespace WebApiDoodle {
 
     /// <summary>
     /// Utility class for creating and unwrapping <see cref="Exception"/> instances.
@@ -23,7 +23,7 @@ namespace WebApiDoodle.Web {
 
         internal static ArgumentException ArgumentNullOrEmpty(string parameterName) {
 
-            return Error.Argument(parameterName, CommonResources.ArgumentNullOrEmpty, parameterName);
+            return Error.Argument(parameterName, "The argument '{0}' is null or empty.", parameterName);
         }
 
         internal static ArgumentNullException PropertyNull() {

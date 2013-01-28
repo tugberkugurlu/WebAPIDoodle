@@ -127,20 +127,6 @@
       <CustomToolNamespace>WebAPIDoodle</CustomToolNamespace>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="..\Common\CommonResources.resx">
-      <Link>Properties\CommonResources.resx</Link>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommonResources.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>WebAPIDoodle</CustomToolNamespace>
-    </EmbeddedResource>
-    <Compile Include="..\Common\CommonResources.Designer.cs">
-      <Link>Properties\CommonResources.Designer.cs</Link>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommonResources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

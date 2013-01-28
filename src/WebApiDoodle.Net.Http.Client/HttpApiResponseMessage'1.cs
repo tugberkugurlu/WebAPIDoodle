@@ -9,7 +9,7 @@ namespace WebApiDoodle.Net.Http.Client {
             : base(response) {
         }
 
-        public HttpApiResponseMessage(HttpResponseMessage response, JToken httpError)
+        public HttpApiResponseMessage(HttpResponseMessage response, HttpApiError httpError)
             : base(response, httpError) {
         }
 

@@ -9,18 +9,19 @@ namespace WebApiDoodle.Net.Http.Client {
 
         internal const string ModelStateKey = "ModelState";
 
-        public HttpApiResponseMessage(HttpResponseMessage response, JToken httpError) : this(response) {
+        public HttpApiResponseMessage(HttpResponseMessage response, HttpApiError httpError)
+            : this(response) {
 
             if (httpError == null) {
 
                 throw new ArgumentNullException("httpError");
             }
 
-            JToken modelState = httpError[ModelStateKey];
+            HttpApiError modelState = httpError[ModelStateKey] as HttpApiError;
 
             if (modelState != null) {
 
-                ModelState = httpError[ModelStateKey].ToObject<Dictionary<string, string[]>>();
+                ModelState = httpError[ModelStateKey] as Dictionary<string, string[]>;
             }
 
             HttpError = httpError;
@@ -53,7 +54,7 @@ namespace WebApiDoodle.Net.Http.Client {
         /// <summary>
         /// Represents the HTTP error message retrieved from the server if the response has "400 Bad Request" status code.
         /// </summary>
-        public JToken HttpError { get; private set; }
+        public HttpApiError HttpError { get; private set; }
 
         /// <summary>
         /// Represents the ModelState if the response has "400 Bad Request" status code and ModelState is available.
