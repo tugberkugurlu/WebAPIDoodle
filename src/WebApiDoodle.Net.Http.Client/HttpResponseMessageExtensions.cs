@@ -92,13 +92,31 @@ namespace WebApiDoodle.Net.Http.Client {
 
             if (response.IsSuccessStatusCode) {
 
-                return response.Content.ReadAsAsync<TEntity>(formatters).Then<TEntity, HttpApiResponseMessage<TEntity>>(
-                    entity => response.GetHttpApiResponse(entity), runSynchronously: true, continueOnCapturedContext: false);
+                try {
+
+                    Task<HttpApiResponseMessage<TEntity>> serializationTask = response.Content.ReadAsAsync<TEntity>(formatters).Then<TEntity, HttpApiResponseMessage<TEntity>>(
+                        entity => response.GetHttpApiResponse(entity), runSynchronously: true, continueOnCapturedContext: false);
+
+                    return serializationTask;
+                }
+                catch (Exception ex) {
+
+                    return TaskHelpers.FromError<HttpApiResponseMessage<TEntity>>(ex);
+                }
             }
             else if (response.StatusCode == HttpStatusCode.BadRequest) {
 
-                return response.Content.ReadAsAsync<HttpApiError>(formatters).Then<HttpApiError, HttpApiResponseMessage<TEntity>>(
-                    httpError => response.GetHttpApiResponse<TEntity>(httpError), runSynchronously: true, continueOnCapturedContext: false);
+                try {
+
+                    Task<HttpApiResponseMessage<TEntity>> serializationTask = response.Content.ReadAsAsync<HttpApiError>(formatters).Then<HttpApiError, HttpApiResponseMessage<TEntity>>(
+                        httpError => response.GetHttpApiResponse<TEntity>(httpError), runSynchronously: true, continueOnCapturedContext: false);
+
+                    return serializationTask;
+                }
+                catch (Exception ex) {
+
+                    return TaskHelpers.FromError<HttpApiResponseMessage<TEntity>>(ex);
+                }
             }
 
             return TaskHelpers.FromResult(response.GetHttpApiResponse<TEntity>());
