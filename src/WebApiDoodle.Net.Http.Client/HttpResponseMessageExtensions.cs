@@ -106,14 +106,24 @@ namespace WebApiDoodle.Net.Http.Client {
 
         internal static Task<HttpApiResponseMessage> GetHttpApiResponseAsync(this HttpResponseMessage response, IEnumerable<MediaTypeFormatter> formatters) {
 
-            // TODO: Test-1: For any success status codes.
-            //       Test-2: For BadRequest status code.
-            //       Test-3: Any other status codes.
-
             if (response.StatusCode == HttpStatusCode.BadRequest) {
 
-                return response.Content.ReadAsAsync<HttpApiError>(formatters).Then<HttpApiError, HttpApiResponseMessage>(
-                    httpError => response.GetHttpApiResponse(httpError), runSynchronously: true, continueOnCapturedContext: false);
+                try {
+
+                    // NOTE: HttpContentExtensions.ReadAsAsync extension methods for HttpContent 
+                    // inside the System.Net.Http.Formatting project directly throws instead of 
+                    // returning a faulted Task. This is why we put the inside the try/catch block 
+                    // for better API method.
+
+                    Task<HttpApiResponseMessage> serializationTask = response.Content.ReadAsAsync<HttpApiError>(formatters).Then<HttpApiError, HttpApiResponseMessage>(
+                        httpError => response.GetHttpApiResponse(httpError), runSynchronously: true, continueOnCapturedContext: false);
+
+                    return serializationTask;
+                }
+                catch (Exception ex) {
+
+                    return TaskHelpers.FromError<HttpApiResponseMessage>(ex);
+                }
             }
 
             return TaskHelpers.FromResult(new HttpApiResponseMessage(response));
