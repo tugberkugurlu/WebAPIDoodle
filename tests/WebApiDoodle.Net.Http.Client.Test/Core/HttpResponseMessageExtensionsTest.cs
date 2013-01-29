@@ -17,10 +17,29 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
         public class GetHttpApiResponseAsync_For_HttpResponseMessage {
 
             [Fact]
-            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Should_Deserialize_To_HttpApiError_For_400() {
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Should_Deserialize_To_HttpApiError_For_400_Json() {
 
                 // Arrange
                 HttpResponseMessage response = GetDummy400JsonResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+
+                // Act
+                return response.GetHttpApiResponseAsync(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result);
+                        Assert.NotNull(task.Result.HttpError);
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Should_Deserialize_To_HttpApiError_For_400_Xml() {
+
+                // Arrange
+                HttpResponseMessage response = GetDummy400XmlResponse();
                 IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
 
                 // Act
@@ -41,10 +60,23 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
             return RunDelayed(50, () => GetDummy400JsonResponse());
         }
 
+        private static Task<HttpResponseMessage> GetDummy400XmlResponseAsync() {
+
+            return RunDelayed(50, () => GetDummy400XmlResponse());
+        }
+
         private static HttpResponseMessage GetDummy400JsonResponse() {
 
             string jsonError = "{\"Message\":\"The request is invalid.\",\"ModelState\":{\"Page\":[\"The Page field value must be minimum 1.\"],\"Take\":[\"The Take field value must be minimum 1.\"]}}";
             HttpContent content = new StringContent(jsonError, Encoding.UTF8, "application/json");
+
+            return GetDummy400Response(content);
+        }
+
+        private static HttpResponseMessage GetDummy400XmlResponse() { 
+
+            string xmlError = "<Error><Message>The request is invalid.</Message><ModelState><car.Make>The field Make must be a string with a maximum length of 20.</car.Make><car.Model>The Model field is required.</car.Model></ModelState></Error>";
+            HttpContent content = new StringContent(xmlError, Encoding.UTF8, "application/xml");
 
             return GetDummy400Response(content);
         }
