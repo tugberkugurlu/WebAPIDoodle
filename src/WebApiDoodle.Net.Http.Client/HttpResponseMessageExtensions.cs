@@ -129,6 +129,11 @@ namespace WebApiDoodle.Net.Http.Client {
             return new HttpApiResponseMessage<TEntity>(response, entity);
         }
 
+        internal static HttpApiResponseMessage GetHttpApiResponse(this HttpResponseMessage response, HttpApiError httpError) {
+
+            return new HttpApiResponseMessage(response, httpError);
+        }
+
         internal static HttpApiResponseMessage<TEntity> GetHttpApiResponse<TEntity>(this HttpResponseMessage response, HttpApiError httpError) {
 
             return new HttpApiResponseMessage<TEntity>(response, httpError);
