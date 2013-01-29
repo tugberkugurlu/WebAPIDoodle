@@ -20,7 +20,7 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
             public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Should_Deserialize_To_HttpApiError_For_400() {
 
                 // Arrange
-                HttpResponseMessage response = GetDummy400Response();
+                HttpResponseMessage response = GetDummy400JsonResponse();
                 IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
 
                 // Act
@@ -36,15 +36,21 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
             }
         }
 
-        private static Task<HttpResponseMessage> GetDummy400ResponseAsync() {
+        private static Task<HttpResponseMessage> GetDummy400JsonResponseAsync() {
 
-            return RunDelayed(50, () => GetDummy400Response());
+            return RunDelayed(50, () => GetDummy400JsonResponse());
         }
 
-        private static HttpResponseMessage GetDummy400Response() {
+        private static HttpResponseMessage GetDummy400JsonResponse() {
 
             string jsonError = "{\"Message\":\"The request is invalid.\",\"ModelState\":{\"Page\":[\"The Page field value must be minimum 1.\"],\"Take\":[\"The Take field value must be minimum 1.\"]}}";
             HttpContent content = new StringContent(jsonError, Encoding.UTF8, "application/json");
+
+            return GetDummy400Response(content);
+        }
+
+        private static HttpResponseMessage GetDummy400Response(HttpContent content) {
+
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://localhost/api/cars");
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.BadRequest) {
                 Content = content,
