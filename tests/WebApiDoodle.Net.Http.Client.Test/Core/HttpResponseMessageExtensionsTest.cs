@@ -17,6 +17,26 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
         public class GetHttpApiResponseAsync_For_HttpResponseMessage {
 
             [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Should_Directly_Return_The_Response_For_Success() {
+
+                // Arrange
+                HttpStatusCode statusCode = HttpStatusCode.NoContent;
+                HttpResponseMessage response = GetDummyResponse(HttpMethod.Delete, new ByteArrayContent(new byte[0]), statusCode);
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+
+                // Act
+                return response.GetHttpApiResponseAsync(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.Response);
+                        Assert.Equal(statusCode, task.Result.Response.StatusCode);
+                    });
+            }
+
+            [Fact]
             public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Should_Deserialize_To_HttpApiError_For_400_Json() {
 
                 // Arrange
@@ -53,16 +73,24 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
                         Assert.NotNull(task.Result.HttpError);
                     });
             }
-        }
 
-        private static Task<HttpResponseMessage> GetDummy400JsonResponseAsync() {
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Should_Throw_While_Deserializing_To_HttpApiError_For_400_With_No_Proper_Formatter() {
 
-            return RunDelayed(50, () => GetDummy400JsonResponse());
-        }
+                // Arrange
+                HttpResponseMessage response = GetDummy400XmlResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new List<MediaTypeFormatter> { new JsonMediaTypeFormatter() };
 
-        private static Task<HttpResponseMessage> GetDummy400XmlResponseAsync() {
+                // Act
+                return response.GetHttpApiResponseAsync(formatters)
 
-            return RunDelayed(50, () => GetDummy400XmlResponse());
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.Faulted, task.Status);
+                        Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                    });
+            }
         }
 
         private static HttpResponseMessage GetDummy400JsonResponse() {
@@ -78,13 +106,26 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
             string xmlError = "<Error><Message>The request is invalid.</Message><ModelState><car.Make>The field Make must be a string with a maximum length of 20.</car.Make><car.Model>The Model field is required.</car.Model></ModelState></Error>";
             HttpContent content = new StringContent(xmlError, Encoding.UTF8, "application/xml");
 
-            return GetDummy400Response(content);
+            return GetDummyResponse(HttpMethod.Post, content, HttpStatusCode.BadRequest);
+        }
+
+        private static HttpResponseMessage GetDummy200JsonResponse() {
+
+            string jsonPayload = "[{\"Id\":1,\"Make\":\"Make1\",\"Model\":\"Model1\",\"Year\":2010,\"Price\":10732.2},{\"Id\":2,\"Make\":\"Make2\",\"Model\":\"Model2\",\"Year\":2008,\"Price\":27233.1},{\"Id\":3,\"Make\":\"Make3\",\"Model\":\"Model1\",\"Year\":2009,\"Price\":67437.0}]";
+            HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/xml");
+
+            return GetDummyResponse(HttpMethod.Get, content, HttpStatusCode.OK);
         }
 
         private static HttpResponseMessage GetDummy400Response(HttpContent content) {
 
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, "https://localhost/api/cars");
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.BadRequest) {
+            return GetDummyResponse(HttpMethod.Post, content, HttpStatusCode.BadRequest);
+        }
+
+        private static HttpResponseMessage GetDummyResponse(HttpMethod httpMethod, HttpContent content, HttpStatusCode statusCode) {
+
+            HttpRequestMessage request = new HttpRequestMessage(httpMethod, "https://localhost/api/cars");
+            HttpResponseMessage response = new HttpResponseMessage(statusCode) {
                 Content = content,
                 RequestMessage = request
             };
