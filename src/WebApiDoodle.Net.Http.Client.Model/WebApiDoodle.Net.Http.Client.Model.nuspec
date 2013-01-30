@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>$author$</authors>
+    <owners>$author$</owners>
+    <licenseUrl>https://raw.github.com/WebAPIDoodle/WebAPIDoodle/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/WebAPIDoodle/WebAPIDoodle</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+    <copyright>Copyright $author$ 2012</copyright>
+    <tags>http client httpclient webapi aspnetwebapi dotnet</tags>
+  </metadata>
+</package>

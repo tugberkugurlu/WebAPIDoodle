@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="WebApiDoodle.Net.Http.Client.nuspec" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="InternalResource.resx">
