@@ -52,7 +52,6 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
                     .ContinueWith(task => {
 
                         Assert.Equal(TaskStatus.RanToCompletion, task.Status);
-                        Assert.NotNull(task.Result);
                         Assert.NotNull(task.Result.HttpError);
                     });
             }
@@ -71,7 +70,6 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
                     .ContinueWith(task => {
 
                         Assert.Equal(TaskStatus.RanToCompletion, task.Status);
-                        Assert.NotNull(task.Result);
                         Assert.NotNull(task.Result.HttpError);
                     });
             }
@@ -91,6 +89,26 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
 
                         Assert.Equal(TaskStatus.Faulted, task.Status);
                         Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Should_Return_The_Wraped_Direct_Response_For_Any_NonSuccess_Other_Than_400() {
+
+                // Arrange
+                HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError;
+                HttpResponseMessage response = GetDummyResponse(HttpMethod.Post, new ByteArrayContent(new byte[0]), httpStatusCode);
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+
+                // Act
+                return response.GetHttpApiResponseAsync(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.Response);
+                        Assert.Equal(httpStatusCode, task.Result.Response.StatusCode);
                     });
             }
         }
@@ -114,13 +132,6 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
 
                 [DataMember]
                 public float Price { get; set; }
-            }
-
-            [DataContract(Namespace = "", Name = "ArrayOfCar")]
-            private class CarGallery {
-
-                [XmlArrayItem("Car")]
-                public List<Car> Cars { get; set; }
             }
 
             [Fact]
@@ -162,13 +173,76 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
             [Fact]
             public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Should_Deserialize_To_HttpApiError_For_400_Json() {
 
-                throw new NotImplementedException();
+                // Arrange
+                HttpResponseMessage response = GetDummy400JsonResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+
+                // Act
+                return response.GetHttpApiResponseAsync<IEnumerable<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.Null(task.Result.Model);
+                        Assert.NotNull(task.Result.HttpError);
+                    });
             }
 
             [Fact]
             public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Should_Deserialize_To_HttpApiError_For_400_Xml() {
 
-                throw new NotImplementedException();
+                // Arrange
+                HttpResponseMessage response = GetDummy400XmlResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+
+                // Act
+                return response.GetHttpApiResponseAsync<List<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.HttpError);
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Should_Throw_While_Deserializing_To_TEntity_For_Success_With_No_Proper_Formatter() {
+
+                // Arrange
+                HttpResponseMessage response = GetDummy200XmlResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new List<MediaTypeFormatter> { new JsonMediaTypeFormatter() };
+
+                // Act
+                return response.GetHttpApiResponseAsync<List<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.Faulted, task.Status);
+                        Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Should_Return_The_Wraped_Direct_Response_For_Any_NonSuccess_Other_Than_400() { 
+
+                // Arrange
+                HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError;
+                HttpResponseMessage response = GetDummyResponse(HttpMethod.Post, new ByteArrayContent(new byte[0]), httpStatusCode);
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+
+                // Act
+                return response.GetHttpApiResponseAsync<List<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.Response);
+                        Assert.Equal(httpStatusCode, task.Result.Response.StatusCode);
+                    });
             }
         }
 

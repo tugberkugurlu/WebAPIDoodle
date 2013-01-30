@@ -86,10 +86,6 @@ namespace WebApiDoodle.Net.Http.Client {
             // Structure the HttpApiResponseMessage and HttpApiResponseMessage<T> that way
             // and handle it here accordingly.
 
-            // TODO: Test-1: For any success status codes.
-            //       Test-2: For BadRequest status code.
-            //       Test-3: Any other status codes.
-
             if (response.IsSuccessStatusCode) {
 
                 try {
