@@ -32,16 +32,11 @@ namespace WebApiDoodle.Net.Http.Client {
                 }, runSynchronously: true, continueOnCapturedContext: false).Catch<HttpApiResponseMessage<TEntity>>(info => {
 
                     tcs.SetException(info.Exception);
-                    return new CatchInfoBase<Task<HttpApiResponseMessage<TEntity>>>.CatchResult { Task = tcs.Task };
+                    return info.Task(tcs.Task);
 
                 }, continueOnCapturedContext: false);
 
-            }, runSynchronously: true, continueOnCapturedContext: false).Catch<HttpApiResponseMessage<TEntity>>(info => {
-
-                tcs.SetException(info.Exception);
-                return new CatchInfoBase<Task<HttpApiResponseMessage<TEntity>>>.CatchResult { Task = tcs.Task };
-
-            }, continueOnCapturedContext: false);
+            }, runSynchronously: true, continueOnCapturedContext: false);
         }
 
         internal static Task<HttpApiResponseMessage> GetHttpApiResponseAsync(this Task<HttpResponseMessage> responseTask, IEnumerable<MediaTypeFormatter> formatters) {
@@ -65,16 +60,11 @@ namespace WebApiDoodle.Net.Http.Client {
                 }, runSynchronously: true, continueOnCapturedContext: false).Catch<HttpApiResponseMessage>(info => {
 
                     tcs.SetException(info.Exception);
-                    return new CatchInfoBase<Task<HttpApiResponseMessage>>.CatchResult { Task = tcs.Task };
+                    return info.Task(tcs.Task);
 
                 }, continueOnCapturedContext: false);
 
-            }, runSynchronously: true, continueOnCapturedContext: false).Catch<HttpApiResponseMessage>(info => {
-
-                tcs.SetException(info.Exception);
-                return new CatchInfoBase<Task<HttpApiResponseMessage>>.CatchResult { Task = tcs.Task };
-
-            }, continueOnCapturedContext: false);
+            }, runSynchronously: true, continueOnCapturedContext: false);
         }
 
         internal static Task<HttpApiResponseMessage<TEntity>> GetHttpApiResponseAsync<TEntity>(this HttpResponseMessage response, IEnumerable<MediaTypeFormatter> formatters) {
