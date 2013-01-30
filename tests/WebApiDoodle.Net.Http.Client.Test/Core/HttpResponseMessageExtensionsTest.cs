@@ -142,6 +142,169 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
             }
         }
 
+        public class GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Task {
+
+            [DataContract(Namespace = "", Name = "Car")]
+            private class Car {
+
+                [DataMember]
+                public int Id { get; set; }
+
+                [DataMember]
+                public string Make { get; set; }
+
+                [DataMember]
+                public string Model { get; set; }
+
+                [DataMember]
+                public int Year { get; set; }
+
+                [DataMember]
+                public float Price { get; set; }
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Task_Should_Deserialize_To_TEntity_For_Success_Json() {
+
+                // Arrange
+                HttpResponseMessage response = GetDummy200JsonResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+                Task<HttpResponseMessage> responseTask = RunDelayed(40, () => response);
+
+                // Act
+                return responseTask.GetHttpApiResponseAsync<IEnumerable<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.Model);
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Task_Should_Deserialize_To_TEntity_For_Success_Xml() {
+
+                // Arrange
+                HttpResponseMessage response = GetDummy200XmlResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+                Task<HttpResponseMessage> responseTask = RunDelayed(40, () => response);
+                
+                // Act
+                return responseTask.GetHttpApiResponseAsync<List<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.Model);
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Task_Should_Deserialize_To_HttpApiError_For_400_Json() {
+
+                // Arrange
+                HttpResponseMessage response = GetDummy400JsonResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+                Task<HttpResponseMessage> responseTask = RunDelayed(40, () => response);
+
+                // Act
+                return responseTask.GetHttpApiResponseAsync<IEnumerable<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.Null(task.Result.Model);
+                        Assert.NotNull(task.Result.HttpError);
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Task_Should_Deserialize_To_HttpApiError_For_400_Xml() {
+
+                // Arrange
+                HttpResponseMessage response = GetDummy400XmlResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+                Task<HttpResponseMessage> responseTask = RunDelayed(40, () => response);
+
+                // Act
+                return responseTask.GetHttpApiResponseAsync<List<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.HttpError);
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Task_Should_Throw_While_Deserializing_To_TEntity_For_Success_With_No_Proper_Formatter() {
+
+                // Arrange
+                HttpResponseMessage response = GetDummy200XmlResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new List<MediaTypeFormatter> { new JsonMediaTypeFormatter() };
+                Task<HttpResponseMessage> responseTask = RunDelayed(40, () => response);
+
+                // Act
+                return responseTask.GetHttpApiResponseAsync<List<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.Faulted, task.Status);
+                        Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Task_Should_Return_The_Wraped_Direct_Response_For_Any_NonSuccess_Other_Than_400() {
+
+                // Arrange
+                HttpStatusCode httpStatusCode = HttpStatusCode.InternalServerError;
+                HttpResponseMessage response = GetDummyResponse(HttpMethod.Post, new ByteArrayContent(new byte[0]), httpStatusCode);
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+                Task<HttpResponseMessage> responseTask = RunDelayed(40, () => response);
+
+                // Act
+                return responseTask.GetHttpApiResponseAsync<List<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.Response);
+                        Assert.Equal(httpStatusCode, task.Result.Response.StatusCode);
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Task_Should_Propagate_Back_The_Exception_From_ResponseTask() {
+
+                // Arrange
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+                Task<HttpResponseMessage> responseTask = RunDelayed<HttpResponseMessage>(40, () => {
+
+                    // This will throw DivideByZeroException
+                    int left = 1, right = 0;
+                    int result = left / right;
+                    return default(HttpResponseMessage);
+                });
+
+                // Act
+                return responseTask.GetHttpApiResponseAsync<IEnumerable<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.Faulted, task.Status);
+                        Assert.IsType<DivideByZeroException>(task.Exception.GetBaseException());
+                    });
+            }
+        }
+
         public class GetHttpApiResponseAsync_For_HttpResponseMessage {
 
             [Fact]
