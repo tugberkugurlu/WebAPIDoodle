@@ -143,22 +143,24 @@ namespace WebApiDoodle.Net.Http.Client {
             return TaskHelpers.FromResult(new HttpApiResponseMessage(response));
         }
 
-        internal static HttpApiResponseMessage<TEntity> GetHttpApiResponse<TEntity>(this HttpResponseMessage response) {
+        // private helpers
+
+        private static HttpApiResponseMessage<TEntity> GetHttpApiResponse<TEntity>(this HttpResponseMessage response) {
 
             return new HttpApiResponseMessage<TEntity>(response);
         }
 
-        internal static HttpApiResponseMessage<TEntity> GetHttpApiResponse<TEntity>(this HttpResponseMessage response, TEntity entity) {
+        private static HttpApiResponseMessage<TEntity> GetHttpApiResponse<TEntity>(this HttpResponseMessage response, TEntity entity) {
 
             return new HttpApiResponseMessage<TEntity>(response, entity);
         }
 
-        internal static HttpApiResponseMessage GetHttpApiResponse(this HttpResponseMessage response, HttpApiError httpError) {
+        private static HttpApiResponseMessage GetHttpApiResponse(this HttpResponseMessage response, HttpApiError httpError) {
 
             return new HttpApiResponseMessage(response, httpError);
         }
 
-        internal static HttpApiResponseMessage<TEntity> GetHttpApiResponse<TEntity>(this HttpResponseMessage response, HttpApiError httpError) {
+        private static HttpApiResponseMessage<TEntity> GetHttpApiResponse<TEntity>(this HttpResponseMessage response, HttpApiError httpError) {
 
             return new HttpApiResponseMessage<TEntity>(response, httpError);
         }
