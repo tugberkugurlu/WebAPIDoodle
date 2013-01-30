@@ -5,9 +5,11 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using Xunit;
 
 namespace WebApiDoodle.Net.Http.Client.Test.Core {
@@ -93,12 +95,89 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
             }
         }
 
+        public class GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity {
+
+            [DataContract(Namespace = "", Name = "Car")]
+            private class Car {
+
+                [DataMember]
+                public int Id { get; set; }
+
+                [DataMember]
+                public string Make { get; set; }
+
+                [DataMember]
+                public string Model { get; set; }
+
+                [DataMember]
+                public int Year { get; set; }
+
+                [DataMember]
+                public float Price { get; set; }
+            }
+
+            [DataContract(Namespace = "", Name = "ArrayOfCar")]
+            private class CarGallery {
+
+                [XmlArrayItem("Car")]
+                public List<Car> Cars { get; set; }
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Should_Deserialize_To_TEntity_For_Success_Json() {
+
+                // Arrange
+                HttpResponseMessage response = GetDummy200JsonResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+
+                // Act
+                return response.GetHttpApiResponseAsync<IEnumerable<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.Model);
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Should_Deserialize_To_TEntity_For_Success_Xml() {
+
+                // Arrange
+                HttpResponseMessage response = GetDummy200XmlResponse();
+                IEnumerable<MediaTypeFormatter> formatters = new MediaTypeFormatterCollection();
+
+                // Act
+                return response.GetHttpApiResponseAsync<List<Car>>(formatters)
+
+                    // Assert
+                    .ContinueWith(task => {
+
+                        Assert.Equal(TaskStatus.RanToCompletion, task.Status);
+                        Assert.NotNull(task.Result.Model);
+                    });
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Should_Deserialize_To_HttpApiError_For_400_Json() {
+
+                throw new NotImplementedException();
+            }
+
+            [Fact]
+            public Task GetHttpApiResponseAsync_For_HttpResponseMessage_Of_TEntity_Should_Deserialize_To_HttpApiError_For_400_Xml() {
+
+                throw new NotImplementedException();
+            }
+        }
+
         private static HttpResponseMessage GetDummy400JsonResponse() {
 
             string jsonError = "{\"Message\":\"The request is invalid.\",\"ModelState\":{\"Page\":[\"The Page field value must be minimum 1.\"],\"Take\":[\"The Take field value must be minimum 1.\"]}}";
             HttpContent content = new StringContent(jsonError, Encoding.UTF8, "application/json");
 
-            return GetDummy400Response(content);
+            return GetDummyResponse(HttpMethod.Post, content, HttpStatusCode.BadRequest);
         }
 
         private static HttpResponseMessage GetDummy400XmlResponse() { 
@@ -112,14 +191,17 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
         private static HttpResponseMessage GetDummy200JsonResponse() {
 
             string jsonPayload = "[{\"Id\":1,\"Make\":\"Make1\",\"Model\":\"Model1\",\"Year\":2010,\"Price\":10732.2},{\"Id\":2,\"Make\":\"Make2\",\"Model\":\"Model2\",\"Year\":2008,\"Price\":27233.1},{\"Id\":3,\"Make\":\"Make3\",\"Model\":\"Model1\",\"Year\":2009,\"Price\":67437.0}]";
-            HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/xml");
+            HttpContent content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
             return GetDummyResponse(HttpMethod.Get, content, HttpStatusCode.OK);
         }
 
-        private static HttpResponseMessage GetDummy400Response(HttpContent content) {
+        private static HttpResponseMessage GetDummy200XmlResponse() {
 
-            return GetDummyResponse(HttpMethod.Post, content, HttpStatusCode.BadRequest);
+            string xmlPayload = "<ArrayOfCar xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Car><Id>1</Id><Make>Make1</Make><Model>Model1</Model><Price>10732.2</Price><Year>2010</Year></Car><Car><Id>2</Id><Make>Make2</Make><Model>Model2</Model><Price>27233.1</Price><Year>2008</Year></Car><Car><Id>3</Id><Make>Make3</Make><Model>Model1</Model><Price>67437</Price><Year>2009</Year></Car><Car><Id>4</Id><Make>Make4</Make><Model>Model3</Model><Price>78984.2</Price><Year>2007</Year></Car></ArrayOfCar>";
+            HttpContent content = new StringContent(xmlPayload, Encoding.UTF8, "application/xml");
+
+            return GetDummyResponse(HttpMethod.Get, content, HttpStatusCode.OK);
         }
 
         private static HttpResponseMessage GetDummyResponse(HttpMethod httpMethod, HttpContent content, HttpStatusCode statusCode) {
