@@ -66,6 +66,7 @@
     <Compile Include="..\Common\TaskHelpersExtensions.cs">
       <Link>Common\TaskHelpersExtensions.cs</Link>
     </Compile>
+    <Compile Include="HttpApiResponseException.cs" />
     <Compile Include="HttpApiClient.cs" />
     <Compile Include="HttpApiError.cs" />
     <Compile Include="HttpApiResponseMessage%271.cs" />
@@ -87,7 +88,6 @@
   <ItemGroup>
     <EmbeddedResource Include="InternalResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>InternalResource.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

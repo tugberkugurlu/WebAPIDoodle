@@ -77,5 +77,14 @@ namespace WebApiDoodle.Net.Http.Client {
                 return ResourceManager.GetString("ResolveUriTemplate_PassedParamaterValueAmountErrorMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Response status code does not indicate success: {0} ({1}).
+        /// </summary>
+        internal static string net_http_message_not_success_statuscode {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
+            }
+        }
     }
 }

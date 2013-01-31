@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -104,7 +105,14 @@ namespace WebApiDoodle.Net.Http.Client {
                 }
             }
 
-            return TaskHelpers.FromResult(response.GetHttpApiResponse<TEntity>());
+            // NOTE: Response status doesn't indicate success and it's not 400.
+            //       Flow the HttpApiResponseException.
+
+            HttpApiResponseException apiResponseException = new HttpApiResponseException(
+                string.Format(CultureInfo.InvariantCulture, InternalResource.net_http_message_not_success_statuscode, (int)response.StatusCode, response.ReasonPhrase),
+                response.GetHttpApiResponse<TEntity>());
+
+            return TaskHelpers.FromError<HttpApiResponseMessage<TEntity>>(apiResponseException);
         }
 
         internal static Task<HttpApiResponseMessage> GetHttpApiResponseAsync(this HttpResponseMessage response, IEnumerable<MediaTypeFormatter> formatters) {
@@ -129,7 +137,14 @@ namespace WebApiDoodle.Net.Http.Client {
                 }
             }
 
-            return TaskHelpers.FromResult(new HttpApiResponseMessage(response));
+            // NOTE: Response status doesn't indicate success and it's not 400.
+            //       Flow the HttpApiResponseException.
+
+            HttpApiResponseException apiResponseException = new HttpApiResponseException(
+                string.Format(CultureInfo.InvariantCulture, InternalResource.net_http_message_not_success_statuscode, (int)response.StatusCode, response.ReasonPhrase),
+                new HttpApiResponseMessage(response));
+
+            return TaskHelpers.FromError<HttpApiResponseMessage>(apiResponseException);
         }
 
         // private helpers

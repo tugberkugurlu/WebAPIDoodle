@@ -67,7 +67,7 @@ namespace WebApiDoodle.Net.Http.Client {
 
         protected Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate) {
 
-            return GetAsync(uriTemplate, CancellationToken.None);
+            return GetAsync(uriTemplate, null, CancellationToken.None);
         }
 
         protected Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate, CancellationToken cancellationToken) {
@@ -90,7 +90,7 @@ namespace WebApiDoodle.Net.Http.Client {
 
         protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate, TId id) {
 
-            return GetSingleAsync(uriTemplate, id, CancellationToken.None);
+            return GetSingleAsync(uriTemplate, id, null, CancellationToken.None);
         }
 
         protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate, TId id, CancellationToken cancellationToken) {
@@ -113,7 +113,7 @@ namespace WebApiDoodle.Net.Http.Client {
 
         protected Task<HttpApiResponseMessage<TResult>> PostAsync<TRequestModel>(string uriTemplate, TRequestModel requestModel) {
 
-            return PostAsync(uriTemplate, requestModel, CancellationToken.None);
+            return PostAsync(uriTemplate, requestModel, null, CancellationToken.None);
         }
 
         protected Task<HttpApiResponseMessage<TResult>> PostAsync<TRequestModel>(string uriTemplate, TRequestModel requestModel, CancellationToken cancellationToken) {
@@ -137,7 +137,7 @@ namespace WebApiDoodle.Net.Http.Client {
 
         protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TId id, TRequestModel requestModel) {
 
-            return PutAsync(uriTemplate, id, requestModel, CancellationToken.None);
+            return PutAsync(uriTemplate, id, requestModel, null, CancellationToken.None);
         }
 
         protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TId id, TRequestModel requestModel, CancellationToken cancellationToken) {
@@ -161,7 +161,7 @@ namespace WebApiDoodle.Net.Http.Client {
 
         protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate, TId id) {
 
-            return DeleteAsync(uriTemplate, id, CancellationToken.None);
+            return DeleteAsync(uriTemplate, id, null, CancellationToken.None);
         }
 
         protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate, TId id, CancellationToken cancellationToken) {
