@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\HttpApiClientTest.cs" />
     <Compile Include="Core\HttpResponseMessageExtensionsTest.cs" />
     <Compile Include="Internal\UriUtilTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

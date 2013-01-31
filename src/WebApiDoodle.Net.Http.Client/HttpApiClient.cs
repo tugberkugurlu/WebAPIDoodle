@@ -65,22 +65,22 @@ namespace WebApiDoodle.Net.Http.Client {
 
         // GET Requests (Collection)
 
-        public Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate) {
+        protected Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate) {
 
             return GetAsync(uriTemplate, CancellationToken.None);
         }
 
-        public Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate, CancellationToken cancellationToken) {
+        protected Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate, CancellationToken cancellationToken) {
 
             return GetAsync(uriTemplate, null, cancellationToken);
         }
 
-        public Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate, object uriParameters) {
+        protected Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate, object uriParameters) {
 
             return GetAsync(uriTemplate, uriParameters, CancellationToken.None);
         }
 
-        public Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate, object uriParameters, CancellationToken cancellationToken) {
+        protected Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate, object uriParameters, CancellationToken cancellationToken) {
 
             string requestUri = UriUtil.BuildRequestUri<TId>(_baseUri, uriTemplate, uriParameters: uriParameters);
             return _httpClient.GetAsync(requestUri, cancellationToken).GetHttpApiResponseAsync<PaginatedDto<TResult>>(_formatters);
