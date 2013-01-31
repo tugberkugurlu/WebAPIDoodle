@@ -45,6 +45,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiDoodle.Net.Http.Clien
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiDoodle.Net.Http.Client.Model", "src\WebApiDoodle.Net.Http.Client.Model\WebApiDoodle.Net.Http.Client.Model.csproj", "{73F9AF6E-4DDF-4051-B714-C4B41106DAE8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{84C6C0AD-1243-4DF1-897F-97CE04EAE78E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiDoodle.Net.Http.Client.Sample45", "samples\WebApiDoodle.Net.Http.Client.Sample45\WebApiDoodle.Net.Http.Client.Sample45.csproj", "{5D2C709D-3179-493C-8386-2DC3A69FB4E5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +99,10 @@ Global
 		{73F9AF6E-4DDF-4051-B714-C4B41106DAE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73F9AF6E-4DDF-4051-B714-C4B41106DAE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73F9AF6E-4DDF-4051-B714-C4B41106DAE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D2C709D-3179-493C-8386-2DC3A69FB4E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D2C709D-3179-493C-8386-2DC3A69FB4E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D2C709D-3179-493C-8386-2DC3A69FB4E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D2C709D-3179-493C-8386-2DC3A69FB4E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,5 +119,6 @@ Global
 		{72A10F73-8FB8-40F4-AB18-EAF828C1B32D} = {BEFF8066-C70D-42E9-97F9-8785FFC98731}
 		{11DABFEE-B3FD-4AC0-B0A4-145C317AFB03} = {2BA00989-FB6D-4A7A-AA32-2AB75065DDCC}
 		{9E54CB6F-F483-4130-815A-84745D2462A8} = {2BA00989-FB6D-4A7A-AA32-2AB75065DDCC}
+		{5D2C709D-3179-493C-8386-2DC3A69FB4E5} = {84C6C0AD-1243-4DF1-897F-97CE04EAE78E}
 	EndGlobalSection
 EndGlobal
