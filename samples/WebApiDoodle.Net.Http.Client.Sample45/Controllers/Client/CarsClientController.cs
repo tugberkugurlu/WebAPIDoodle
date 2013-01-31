@@ -12,12 +12,14 @@ using WebApiDoodle.Net.Http.Client.Sample45.RequestCommands;
 namespace WebApiDoodle.Net.Http.Client.Sample45.Controllers.Client {
 
     /// <summary>
-    /// This is the client controller. This should have been an ASP.NET MVC controller,
+    /// This is the client controller. This would be an ASP.NET MVC controller,
     /// a WPF application or any other .NET application. It just doesn't matter.
     /// We used a Web API controller here to act as a client.
     /// </summary>
     [InvalidModelStateFilter]
     public class CarsClientController : ApiController {
+
+        // TODO: Handle expections & unsuccessful responses.
 
         private readonly ICarsClient _carsClient;
         public CarsClientController(ICarsClient carsClient) {
