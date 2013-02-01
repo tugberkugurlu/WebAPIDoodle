@@ -12,7 +12,6 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
     public class CarsClient : HttpApiClient<Car, int>, ICarsClient {
 
         // TODO: Handle exceptions with HttpApiError.
-        // TODO: Handle response disposition.
 
         private const string BaseUriTemplate = "api/cars";
         public CarsClient(HttpClient httpClient) 
@@ -29,15 +28,17 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
         /// </exception>
         public async Task<PaginatedDto<Car>> GetCars(PaginatedRequestCommand paginationCmd) {
 
-            var apiResponse = await base.GetAsync(BaseUriTemplate, paginationCmd);
-            if (apiResponse.IsSuccess) { 
+            using (var apiResponse = await base.GetAsync(BaseUriTemplate, paginationCmd)) {
 
-                return apiResponse.Model;
+                if (apiResponse.IsSuccess) {
+
+                    return apiResponse.Model;
+                }
+
+                throw new HttpApiRequestException(
+                    string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                    apiResponse.Response.StatusCode);
             }
-
-            throw new HttpApiRequestException(
-                string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                apiResponse.Response.StatusCode);
         }
 
         /// <summary>
@@ -50,15 +51,17 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
         /// </exception>
         public async Task<Car> GetCar(int carId) {
 
-            var apiResponse = await base.GetSingleAsync(string.Concat(BaseUriTemplate, "/{id}"), carId);
-            if (apiResponse.IsSuccess) {
+            using (var apiResponse = await base.GetSingleAsync(string.Concat(BaseUriTemplate, "/{id}"), carId)) {
 
-                return apiResponse.Model;
+                if (apiResponse.IsSuccess) {
+
+                    return apiResponse.Model;
+                }
+
+                throw new HttpApiRequestException(
+                    string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                    apiResponse.Response.StatusCode);
             }
-
-            throw new HttpApiRequestException(
-                string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                apiResponse.Response.StatusCode);
         }
 
         /// <summary>
@@ -71,15 +74,17 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
         /// </exception>
         public async Task<Car> AddCar(Car car) {
 
-            var apiResponse = await base.PostAsync(BaseUriTemplate, car);
-            if (apiResponse.IsSuccess) {
+            using (var apiResponse = await base.PostAsync(BaseUriTemplate, car)) {
 
-                return apiResponse.Model;
+                if (apiResponse.IsSuccess) {
+
+                    return apiResponse.Model;
+                }
+
+                throw new HttpApiRequestException(
+                    string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                    apiResponse.Response.StatusCode);
             }
-
-            throw new HttpApiRequestException(
-                string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                apiResponse.Response.StatusCode);
         }
 
         /// <summary>
@@ -93,15 +98,17 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
         /// </exception>
         public async Task<Car> UpdateCar(int carId, Car car) {
 
-            var apiResponse = await base.PutAsync(string.Concat(BaseUriTemplate, "/{id}"), carId, car);
-            if (apiResponse.IsSuccess) {
+            using (var apiResponse = await base.PutAsync(string.Concat(BaseUriTemplate, "/{id}"), carId, car)) {
 
-                return apiResponse.Model;
+                if (apiResponse.IsSuccess) {
+
+                    return apiResponse.Model;
+                }
+
+                throw new HttpApiRequestException(
+                    string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                    apiResponse.Response.StatusCode);
             }
-
-            throw new HttpApiRequestException(
-                string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                apiResponse.Response.StatusCode);
         }
 
         /// <summary>
@@ -114,12 +121,14 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
         /// </exception>
         public async Task RemoveCar(int carId) {
 
-            var apiResponse = await base.DeleteAsync(string.Concat(BaseUriTemplate, "/{id}"), carId);
-            if (!apiResponse.IsSuccess) {
+            using (var apiResponse = await base.DeleteAsync(string.Concat(BaseUriTemplate, "/{id}"), carId)) {
 
-                throw new HttpApiRequestException(
-                    string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                    apiResponse.Response.StatusCode);
+                if (!apiResponse.IsSuccess) {
+
+                    throw new HttpApiRequestException(
+                        string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                        apiResponse.Response.StatusCode);
+                }
             }
         }
     }
