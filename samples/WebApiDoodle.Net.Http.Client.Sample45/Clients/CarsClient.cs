@@ -6,6 +6,9 @@ using WebApiDoodle.Net.Http.Client.Sample45.RequestCommands;
 
 namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
 
+    /// <summary>
+    /// HTTP API Client for Cars resource.
+    /// </summary>
     public class CarsClient : HttpApiClient<Car, int>, ICarsClient {
 
         // TODO: Handle exceptions with HttpApiError.
