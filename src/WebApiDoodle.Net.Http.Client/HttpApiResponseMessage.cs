@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 
 namespace WebApiDoodle.Net.Http.Client {
     
-    public class HttpApiResponseMessage {
+    public class HttpApiResponseMessage : IDisposable {
 
         internal const string ModelStateKey = "ModelState";
 
@@ -60,5 +59,13 @@ namespace WebApiDoodle.Net.Http.Client {
         /// Represents the ModelState if the response has "400 Bad Request" status code and ModelState is available.
         /// </summary>
         public Dictionary<string, string[]> ModelState { get; private set; }
+
+        public void Dispose() {
+
+            if (Response != null) {
+
+                Response.Dispose();
+            }
+        }
     }
 }
