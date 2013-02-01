@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 
 namespace WebApiDoodle.Net.Http.Client {
  
@@ -17,6 +14,16 @@ namespace WebApiDoodle.Net.Http.Client {
             StatusCode = httpStatusCode;
         }
 
+        public HttpApiRequestException(
+            string message,
+            HttpStatusCode httpStatusCode, 
+            HttpApiError httpError) : base(message) {
+
+            StatusCode = httpStatusCode;
+            HttpError = httpError;
+        }
+
         public HttpStatusCode StatusCode { get; private set; }
+        public HttpApiError HttpError { get; private set; }
     }
 }
