@@ -11,9 +11,9 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
     /// </summary>
     public class CarsClient : HttpApiClient<Car, int>, ICarsClient {
 
-        // TODO: Handle exceptions with HttpApiError.
-
         private const string BaseUriTemplate = "api/cars";
+        private const string HttpRequestErrorFormat = "Response status code does not indicate success: {0} ({1})";
+
         public CarsClient(HttpClient httpClient) 
             : base(httpClient) {
         }
@@ -36,8 +36,8 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
                 }
 
                 throw new HttpApiRequestException(
-                    string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                    apiResponse.Response.StatusCode);
+                    string.Format(HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                    apiResponse.Response.StatusCode, apiResponse.HttpError);
             }
         }
 
@@ -59,8 +59,8 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
                 }
 
                 throw new HttpApiRequestException(
-                    string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                    apiResponse.Response.StatusCode);
+                    string.Format(HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                    apiResponse.Response.StatusCode, apiResponse.HttpError);
             }
         }
 
@@ -82,8 +82,8 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
                 }
 
                 throw new HttpApiRequestException(
-                    string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                    apiResponse.Response.StatusCode);
+                    string.Format(HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                    apiResponse.Response.StatusCode, apiResponse.HttpError);
             }
         }
 
@@ -106,8 +106,8 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
                 }
 
                 throw new HttpApiRequestException(
-                    string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                    apiResponse.Response.StatusCode);
+                    string.Format(HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                    apiResponse.Response.StatusCode, apiResponse.HttpError);
             }
         }
 
@@ -126,8 +126,8 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
                 if (!apiResponse.IsSuccess) {
 
                     throw new HttpApiRequestException(
-                        string.Format("Response status code does not indicate success: {0} ({1})", (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
-                        apiResponse.Response.StatusCode);
+                        string.Format(HttpRequestErrorFormat, (int)apiResponse.Response.StatusCode, apiResponse.Response.ReasonPhrase),
+                        apiResponse.Response.StatusCode, apiResponse.HttpError);
                 }
             }
         }
