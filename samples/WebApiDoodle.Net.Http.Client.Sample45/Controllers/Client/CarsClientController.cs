@@ -17,6 +17,7 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Controllers.Client {
     /// We used a Web API controller here to act as a client.
     /// </summary>
     [InvalidModelStateFilter]
+    [HttpApiRequestExceptionFilter]
     public class CarsClientController : ApiController {
 
         // TODO: Handle expections & unsuccessful responses.
@@ -35,9 +36,10 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Controllers.Client {
         }
 
         // GET /carsclient/cars/{id}
-        public Task<Car> GetCar(int id) {
+        public async Task<Car> GetCar(int id) {
 
-            return _carsClient.GetCar(id);
+            var car = await _carsClient.GetCar(id);
+            return car;
         }
 
         // POST /carsclient/cars

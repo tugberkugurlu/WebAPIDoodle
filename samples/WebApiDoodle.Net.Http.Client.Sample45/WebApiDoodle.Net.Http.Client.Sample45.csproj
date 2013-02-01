@@ -97,6 +97,7 @@
     <Compile Include="Clients\Core\ApiClientContext.cs" />
     <Compile Include="Clients\Core\ApiClientContextExtensions.cs" />
     <Compile Include="Clients\ICarsClient.cs" />
+    <Compile Include="Filters\HttpApiRequestExceptionFilterAttribute.cs" />
     <Compile Include="Filters\InvalidModelStateFilterAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
