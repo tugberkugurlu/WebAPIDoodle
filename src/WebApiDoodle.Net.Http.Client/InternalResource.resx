@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="net_http_message_not_success_statuscode" xml:space="preserve">
-    <value>Response status code does not indicate success: {0} ({1})</value>
-  </data>
   <data name="ResolveUriTemplate_NoValueForRequestedParam" xml:space="preserve">
     <value>Value for requested parameter named '{0}' is not available.</value>
   </data>
