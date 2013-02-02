@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace WebApiDoodle.Web.Meta {
 
     /// <summary>
-    /// Provides the binding information for the properties of the complex type action parameters
+    /// Provides the binding information for the properties of the complex type action parameters.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
     public class BindingInfoAttribute : Attribute {

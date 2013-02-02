@@ -32,7 +32,7 @@ namespace WebApiDoodle.Net.Http.Client {
         /// WebApiDoodle.Net.Http.Client.HttpApiClient instance as a System.Net.Http.HttpClient 
         /// instance can be used throughout the application lifecycle.
         /// </remarks>
-        /// <param name="httpClient">The <see cref="System.Net.Http.HttpClient"/> instance to use for handling requests.</param>
+        /// <param name="httpClient">The <see cref="HttpClient"/> instance to use for handling requests.</param>
         public HttpApiClient(HttpClient httpClient) 
             : this(httpClient, new MediaTypeFormatterCollection()) {
         }
@@ -46,8 +46,8 @@ namespace WebApiDoodle.Net.Http.Client {
         /// WebApiDoodle.Net.Http.Client.HttpApiClient instance as a System.Net.Http.HttpClient 
         /// instance can be used throughout the application lifecycle.
         /// </remarks>
-        /// <param name="httpClient">The <see cref="System.Net.Http.HttpClient"/> instance to use for handling requests.</param>
-        /// <param name="formatters">The collection of <see cref="System.Net.Http.MediaTypeFormatter"/> instances to use.</param>
+        /// <param name="httpClient">The <see cref="HttpClient"/> instance to use for handling requests.</param>
+        /// <param name="formatters">The collection of <see cref="MediaTypeFormatter"/> instances to use.</param>
         public HttpApiClient(HttpClient httpClient, IEnumerable<MediaTypeFormatter> formatters) {
 
             if (httpClient == null) {

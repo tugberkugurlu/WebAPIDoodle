@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Web.Http.Filters;
-using System.Web.Http.Controllers;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web;
-using System.Net;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 
 namespace WebApiDoodle.Web.Filters {
 
@@ -114,8 +112,7 @@ namespace WebApiDoodle.Web.Filters {
 
         private bool AuthorizeCore(HttpRequestMessage request) {
 
-            var apiKey = HttpUtility.ParseQueryString(request.RequestUri.Query)[_apiKeyQueryParameter];
-
+            var apiKey = request.RequestUri.ParseQueryString()[_apiKeyQueryParameter];
             return IsAuthorized(apiKey);
         }
 

@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
-using WebApiDoodle.Web.Http;
+using WebApiDoodle.Web.MessageHandlers;
 
 namespace WebApiDoodle.Net.Http.Client.Sample45.MessageHandlers {
     

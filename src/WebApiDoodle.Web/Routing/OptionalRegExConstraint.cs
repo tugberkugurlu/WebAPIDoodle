@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Http;
 using System.Web.Http.Routing;
 
-namespace WebApiDoodle.Web.Routes {
+namespace WebApiDoodle.Web.Routing {
 
     public class OptionalRegExConstraint : IHttpRouteConstraint {
 

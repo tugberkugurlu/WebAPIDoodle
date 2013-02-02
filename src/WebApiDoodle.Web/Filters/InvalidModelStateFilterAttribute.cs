@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http.Filters;
-using System.Web.Http.Controllers;
-using System.Net.Http;
+﻿using System;
 using System.Net;
-using System;
+using System.Net.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 
 namespace WebApiDoodle.Web.Filters {
 

@@ -9,6 +9,8 @@ using Xunit;
 
 namespace WebApiDoodle.Web.Test.Common {
 
+#pragma warning disable 0162
+    
     //Mostly taken from ASP.NET Web Stack source: http://aspnetwebstack.codeplex.com
     public class TaskHelperExtensionsTest {
 
@@ -1646,4 +1648,7 @@ namespace WebApiDoodle.Web.Test.Common {
                               });
         }
     }
+
+#pragma warning disable 0162
+
 }

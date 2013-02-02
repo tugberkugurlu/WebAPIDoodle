@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
-using WebApiDoodle.Web.Http;
 using Xunit;
+using WebApiDoodle.Web.MessageHandlers;
 
 namespace WebApiDoodle.Web.Test.MessageHandlers {
 

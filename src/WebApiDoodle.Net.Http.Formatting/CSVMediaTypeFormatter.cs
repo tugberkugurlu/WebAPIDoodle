@@ -1,13 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Text;
+using System.Net;
+using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using System.Collections;
-using System.IO;
-using System.Net.Http;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace WebApiDoodle.Net.Http.Formatting {
@@ -44,10 +43,10 @@ namespace WebApiDoodle.Net.Http.Formatting {
             return isTypeOfIEnumerable(type);
         }
 
-        public override Task WriteToStreamAsync(Type type, object value, Stream stream, HttpContentHeaders contentHeaders, TransportContext transportContext) {
+        public override Task WriteToStreamAsync(Type type, object value, Stream writeStream, HttpContent content, TransportContext transportContext) {
 
             return TaskHelpers.RunSynchronously(() => {
-                writeToStream(type, value, stream, contentHeaders);
+                writeToStream(type, value, writeStream, content.Headers);
             });
         }
 

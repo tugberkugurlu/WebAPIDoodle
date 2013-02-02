@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Net;
+using System.Net.Http;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Net.Http;
 
-namespace WebApiDoodle.Web.Http {
+namespace WebApiDoodle.Web.MessageHandlers {
 
     //reference: https://github.com/davidfowl/MessengR/blob/master/MessengR/Account/Login.ashx.cs
     //         : https://github.com/WebApiContrib/WebAPIContrib/blob/master/src/WebApiContrib/MessageHandlers/BasicAuthenticationHandler.cs

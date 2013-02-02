@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 
-namespace WebApiDoodle.Web.Controllers {
+namespace WebApiDoodle.Web.ModelBinding {
 
     public class CatchAllRouteParameterBinding : HttpParameterBinding {
 

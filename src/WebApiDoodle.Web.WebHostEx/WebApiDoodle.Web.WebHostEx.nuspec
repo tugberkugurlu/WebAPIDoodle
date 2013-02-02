@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package >
+<package>
   <metadata>
     <id>$id$</id>
     <version>$version$</version>
@@ -11,9 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <copyright>Copyright $author$ 2012</copyright>
-    <tags>aspnetwebapi aspnet webapi</tags>
+    <tags>aspnetwebapi aspnet $author$ webhost</tags>
     <dependencies>
-      <dependency id="WebApiDoodle.Web.Meta" version="$version$" />
+      <dependency id="WebApiDoodle.Web" version="$version$" />
     </dependencies>
   </metadata>
 </package>

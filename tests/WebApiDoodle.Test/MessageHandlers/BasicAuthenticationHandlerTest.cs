@@ -6,7 +6,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using WebApiDoodle.Web.Http;
+using WebApiDoodle.Web.MessageHandlers;
 using Xunit;
 
 namespace WebApiDoodle.Web.Test.MessageHandlers {

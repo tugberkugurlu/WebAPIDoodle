@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace WebApiDoodle.Web.Http {
+namespace WebApiDoodle.Web {
     
     public class UnauthenticatedRequestContext {
 

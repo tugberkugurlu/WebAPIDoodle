@@ -10,10 +10,7 @@
     <projectUrl>https://github.com/WebAPIDoodle/WebAPIDoodle</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <copyright>Copyright Tugberk Ugurlu 2012</copyright>
+    <copyright>Copyright $author$ 2012</copyright>
     <tags>aspnetwebapi aspnet webapi formatting</tags>
-    <dependencies>
-      <dependency id="WebApiDoodle.Net.Http" version="$version$" />
-    </dependencies>
   </metadata>
 </package>

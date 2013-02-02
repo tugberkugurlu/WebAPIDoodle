@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Http.Routing;
-using WebApiDoodle.Web.Routes;
+using WebApiDoodle.Web.Routing;
 using Xunit;
 
 namespace WebApiDoodle.Web.Test.Routes {

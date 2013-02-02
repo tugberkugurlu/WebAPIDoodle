@@ -16,7 +16,7 @@
   <ItemGroup>
     <AppProjFiles Include="$(SolutionDir)\src\**\*.csproj" />
     <TestProjFiles Include="$(SolutionDir)\src\**\*.csproj" />
-    <NuGetPackageProjects Include="$(SolutionDir)\src\WebApiDoodle.Web\WebApiDoodle.Web.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http.Client.Model\WebApiDoodle.Net.Http.Client.Model.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http.Client\WebApiDoodle.Net.Http.Client.csproj;$(SolutionDir)\src\WebApiDoodle.Web.SignalR\WebApiDoodle.Web.SignalR.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http.Formatting\WebApiDoodle.Net.Http.Formatting.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http\WebApiDoodle.Net.Http.csproj;$(SolutionDir)\src\WebApiDoodle.Web.Meta\WebApiDoodle.Web.Meta.csproj" />
+    <NuGetPackageProjects Include="$(SolutionDir)\src\WebApiDoodle.Web\WebApiDoodle.Web.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http.Client.Model\WebApiDoodle.Net.Http.Client.Model.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http.Client\WebApiDoodle.Net.Http.Client.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http.Formatting\WebApiDoodle.Net.Http.Formatting.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http\WebApiDoodle.Net.Http.csproj;$(SolutionDir)\src\WebApiDoodle.Web.Meta\WebApiDoodle.Web.Meta.csproj;$(SolutionDir)\src\WebApiDoodle.Web.WebHostEx\WebApiDoodle.Web.WebHostEx.csproj" />
   </ItemGroup>
 
   <Target Name="Default" DependsOnTargets="Compile; Package" />
