@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web.Http.Filters;
-using System.Web.Http.Controllers;
 using System.Net;
-using WebApiDoodle.Web.Http;
-using WebApiDoodle.Net.Http;
+using System.Net.Http;
+using System.Web.Http.Controllers;
+using System.Web.Http.Filters;
 
 namespace WebApiDoodle.Web.Filters {
 
@@ -16,7 +12,9 @@ namespace WebApiDoodle.Web.Filters {
 
             if (actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps) {
 
-                actionContext.Response = new HttpStringResponseMessage("SSL required", HttpStatusCode.Forbidden);
+                actionContext.Response = new HttpResponseMessage(HttpStatusCode.Forbidden) {
+                    ReasonPhrase = "Forbidden (SSL Required)"
+                };
             }
         }
     }
