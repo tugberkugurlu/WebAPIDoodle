@@ -46,7 +46,6 @@
     <Compile Include="..\Common\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="IDto%271.cs" />
     <Compile Include="IDto.cs" />
     <Compile Include="IPaginatedDto.cs" />
     <Compile Include="PaginatedDto.cs" />
