@@ -8,7 +8,7 @@ namespace WebApiDoodle.Net.Http.Client.Internal {
 
         private static readonly Regex _uriParamRegex = new Regex(@"(?<=\{)(.*?)(?=\})", RegexOptions.Compiled);
 
-        internal static string BuildRequestUri<TId>(string baseUri, string uriTemplate, TId id = default(TId), object uriParameters = null) {
+        internal static string BuildRequestUri(string baseUri, string uriTemplate, object uriParameters = null) {
 
             var trimedUriTemplate = uriTemplate.TrimEnd('/').TrimStart('/').ToLowerInvariant();
             QueryStringCollection queryStringCollection = null;
@@ -16,13 +16,13 @@ namespace WebApiDoodle.Net.Http.Client.Internal {
                 queryStringCollection = new QueryStringCollection(uriParameters);
             }
 
-            string resolvedUriTemplate = ResolveUriTemplate(trimedUriTemplate, id, queryStringCollection);
+            string resolvedUriTemplate = ResolveUriTemplate(trimedUriTemplate, queryStringCollection);
             string appendedUriTemplate = string.Format("{0}/{1}", baseUri, resolvedUriTemplate);
 
             return appendedUriTemplate;
         }
 
-        internal static string ResolveUriTemplate<TId>(string uriTemplate, TId id, QueryStringCollection queryStringCollection) {
+        internal static string ResolveUriTemplate(string uriTemplate, QueryStringCollection queryStringCollection) {
 
             var createdUriPath = uriTemplate;
             MatchCollection matchedParamNames = _uriParamRegex.Matches(uriTemplate);
@@ -41,39 +41,35 @@ namespace WebApiDoodle.Net.Http.Client.Internal {
 
                 // Check here that enough number of parameters are available.
                 // We assume here that we have the queryStringCollection.Count and id parameter if queryStringCollection is not null
-                if (((queryStringCollection != null) ? queryStringCollection.Count + 1 : 1) < matchedParamNameAmount) {
+                if (((queryStringCollection != null) ? queryStringCollection.Count : 0) < matchedParamNameAmount) {
 
                     throw new InvalidOperationException(InternalResource.ResolveUriTemplate_PassedParamaterValueAmountErrorMessage);
                 }
 
                 foreach (var paramName in matchedParameterNameArray) {
 
-                    bool isParamNameId = paramName.ToString().Equals("id", StringComparison.InvariantCultureIgnoreCase);
                     string paramValueFromQueryStringCollection = null;
-                    if (!isParamNameId) {
+                    if (queryStringCollection == null) {
 
-                        if (queryStringCollection == null) {
+                        throw new InvalidOperationException(
+                            string.Format(InternalResource.ResolveUriTemplate_PassedParamaterValueAmountErrorMessage, paramName));
+                    }
+                    else {
+
+                        var paramFromQueryStringCollection = queryStringCollection.FirstOrDefault(x => x.Key.Equals(paramName, StringComparison.InvariantCultureIgnoreCase));
+                        paramValueFromQueryStringCollection = paramFromQueryStringCollection.Value;
+                        if (paramValueFromQueryStringCollection == null) {
 
                             throw new InvalidOperationException(
                                 string.Format(InternalResource.ResolveUriTemplate_PassedParamaterValueAmountErrorMessage, paramName));
                         }
-                        else {
 
-                            var paramFromQueryStringCollection = queryStringCollection.FirstOrDefault(x => x.Key.Equals(paramName, StringComparison.InvariantCultureIgnoreCase));
-                            paramValueFromQueryStringCollection = paramFromQueryStringCollection.Value;
-                            if (paramValueFromQueryStringCollection == null) {
-
-                                throw new InvalidOperationException(
-                                    string.Format(InternalResource.ResolveUriTemplate_PassedParamaterValueAmountErrorMessage, paramName));
-                            }
-
-                            // Remove the selected one because it will be 
-                            // used for querystring composition.
-                            queryStringCollection.Remove(paramFromQueryStringCollection);
-                        }
+                        // Remove the selected one because it will be 
+                        // used for querystring composition.
+                        queryStringCollection.Remove(paramFromQueryStringCollection);
                     }
 
-                    string paramValue = isParamNameId ? id.ToString() : paramValueFromQueryStringCollection;
+                    string paramValue = paramValueFromQueryStringCollection;
                     createdUriPath = createdUriPath.Replace("{" + paramName + "}", paramValue);
                 }
             }

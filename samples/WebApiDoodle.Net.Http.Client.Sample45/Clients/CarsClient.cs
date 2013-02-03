@@ -9,7 +9,7 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
     /// <summary>
     /// HTTP API Client for Cars resource.
     /// </summary>
-    public class CarsClient : HttpApiClient<Car, int>, ICarsClient {
+    public class CarsClient : HttpApiClient<Car>, ICarsClient {
 
         private const string BaseUriTemplate = "api/cars";
         private const string HttpRequestErrorFormat = "Response status code does not indicate success: {0} ({1})";
@@ -51,7 +51,7 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
         /// </exception>
         public async Task<Car> GetCar(int carId) {
 
-            using (var apiResponse = await base.GetSingleAsync(string.Concat(BaseUriTemplate, "/{id}"), carId)) {
+            using (var apiResponse = await base.GetSingleAsync(string.Concat(BaseUriTemplate, "/{id}"), new { id = carId })) {
 
                 if (apiResponse.IsSuccess) {
 
@@ -98,7 +98,7 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
         /// </exception>
         public async Task<Car> UpdateCar(int carId, Car car) {
 
-            using (var apiResponse = await base.PutAsync(string.Concat(BaseUriTemplate, "/{id}"), carId, car)) {
+            using (var apiResponse = await base.PutAsync(string.Concat(BaseUriTemplate, "/{id}"), car, new { id = carId })) {
 
                 if (apiResponse.IsSuccess) {
 
@@ -121,7 +121,7 @@ namespace WebApiDoodle.Net.Http.Client.Sample45.Clients {
         /// </exception>
         public async Task RemoveCar(int carId) {
 
-            using (var apiResponse = await base.DeleteAsync(string.Concat(BaseUriTemplate, "/{id}"), carId)) {
+            using (var apiResponse = await base.DeleteAsync(string.Concat(BaseUriTemplate, "/{id}"), new { id = carId })) {
 
                 if (!apiResponse.IsSuccess) {
 

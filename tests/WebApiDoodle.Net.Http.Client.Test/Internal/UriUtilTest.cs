@@ -21,51 +21,22 @@ namespace WebApiDoodle.Net.Http.Client.Test.Internal {
                 // Arrange
                 var id = Guid.NewGuid().ToString();
                 var requestCommand = new FakeNameRequestCommand { Name = "foo" };
+                var parameters = new { id = id, name = requestCommand.Name  };
 
                 // Act
                 var requestUri = UriUtil.ResolveUriTemplate(
-                    "api/cars/{id}?name={name}", id,
-                    new QueryStringCollection(requestCommand));
+                    "api/cars/{id}?name={name}",
+                    new QueryStringCollection(parameters));
 
                 // Assert
                 Assert.Equal(string.Format("api/cars/{0}?name={1}", id, requestCommand.Name.ToLowerInvariant()), requestUri, StringComparer.InvariantCulture);
             }
 
             [Fact]
-            public void Returns_The_Expected_Uri_When_The_Inputs_Valid_With_No_QueryStringCollection() {
-
-                // Arrange
-                var id = Guid.NewGuid().ToString();
-
-                // Act
-                var requestUri = UriUtil.ResolveUriTemplate(
-                    "api/cars/{id}", id, null);
-
-                // Assert
-                Assert.Equal(string.Format("api/cars/{0}", id), requestUri, StringComparer.InvariantCulture);
-            }
-
-            [Fact]
-            public void Returns_The_Expected_Uri_When_The_Inputs_Valid_With_No_Id() {
-
-                // Arrange
-                var requestCommand = new FakeNameRequestCommand { Name = "foo" };
-
-                // Act
-                var requestUri = UriUtil.ResolveUriTemplate<string>(
-                    "api/cars?name={name}", null, 
-                    new QueryStringCollection(requestCommand));
-
-                // Assert
-                Assert.Equal(string.Format("api/cars?name={0}", requestCommand.Name.ToLowerInvariant()), requestUri, StringComparer.InvariantCulture);
-            }
-
-            [Fact]
             public void Returns_The_Expected_Uri_When_The_Inputs_Valid_With_No_Template() {
 
                 // Act
-                var requestUri = UriUtil.ResolveUriTemplate<string>(
-                    "api/cars", null, null);
+                var requestUri = UriUtil.ResolveUriTemplate("api/cars", null);
 
                 // Assert
                 Assert.Equal("api/cars", requestUri, StringComparer.InvariantCulture);
@@ -78,9 +49,8 @@ namespace WebApiDoodle.Net.Http.Client.Test.Internal {
                 var requestCommand = new FakeNameAgeRequestCommand { Name = "Foo", Age = 36 };
 
                 // Act
-                var requestUri = UriUtil.ResolveUriTemplate<string>(
-                    "api/cars", null, 
-                    new QueryStringCollection(requestCommand));
+                var requestUri = UriUtil.ResolveUriTemplate(
+                    "api/cars", new QueryStringCollection(requestCommand));
 
                 // Assert
                 Assert.Equal(string.Format("api/cars?age={1}&name={0}", requestCommand.Name.ToLowerInvariant(), requestCommand.Age.ToString()), requestUri, StringComparer.InvariantCulture);
@@ -94,9 +64,9 @@ namespace WebApiDoodle.Net.Http.Client.Test.Internal {
 
                 // Assert
                 Assert.Throws<InvalidOperationException>(() => // Act
-                    UriUtil.ResolveUriTemplate<string>(
+                    UriUtil.ResolveUriTemplate(
                         "api/cars?name={name}&surname={surname}", 
-                        null, new QueryStringCollection(requestCommand)));
+                        new QueryStringCollection(requestCommand)));
             }
 
             [Fact]
@@ -104,8 +74,8 @@ namespace WebApiDoodle.Net.Http.Client.Test.Internal {
 
                 // Assert
                 Assert.Throws<InvalidOperationException>(() => // Act
-                    UriUtil.ResolveUriTemplate<string>(
-                        "api/cars?name={name}&surname={surname}", null, null));
+                    UriUtil.ResolveUriTemplate(
+                        "api/cars?name={name}&surname={surname}", null));
             }
         }
 

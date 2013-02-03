@@ -37,7 +37,7 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
             public float Price { get; set; }
         }
 
-        private class CarsClient : HttpApiClient<Car, int> {
+        private class CarsClient : HttpApiClient<Car> {
 
             public CarsClient(HttpClient httpClient) : base(httpClient) { }
 

@@ -10,11 +10,10 @@ using WebApiDoodle.Net.Http.Client.Model;
 namespace WebApiDoodle.Net.Http.Client {
 
     /// <summary>
-    /// Base generic HttpClient class for the more specified clients.
+    /// Generic base class for the .NET HTTP clients.
     /// </summary>
     /// <typeparam name="TResult">Type of the result type which is expected.</typeparam>
-    /// <typeparam name="TId">Type of the id parameter for this client.</typeparam>
-    public abstract class HttpApiClient<TResult, TId> where TResult : IDto {
+    public abstract class HttpApiClient<TResult> where TResult : IDto {
 
         // TODO: Make it possible to inject _writerMediaTypeFormatter
 
@@ -82,30 +81,30 @@ namespace WebApiDoodle.Net.Http.Client {
 
         protected Task<HttpApiResponseMessage<PaginatedDto<TResult>>> GetAsync(string uriTemplate, object uriParameters, CancellationToken cancellationToken) {
 
-            string requestUri = UriUtil.BuildRequestUri<TId>(_baseUri, uriTemplate, uriParameters: uriParameters);
+            string requestUri = UriUtil.BuildRequestUri(_baseUri, uriTemplate, uriParameters: uriParameters);
             return _httpClient.GetAsync(requestUri, cancellationToken).GetHttpApiResponseAsync<PaginatedDto<TResult>>(_formatters);
         }
 
         // GET Requests (Single)
 
-        protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate, TId id) {
+        protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate) {
 
-            return GetSingleAsync(uriTemplate, id, null, CancellationToken.None);
+            return GetSingleAsync(uriTemplate, null, CancellationToken.None);
         }
 
-        protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate, TId id, CancellationToken cancellationToken) {
+        protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate, CancellationToken cancellationToken) {
 
-            return GetSingleAsync(uriTemplate, id, null, cancellationToken);
+            return GetSingleAsync(uriTemplate, null, cancellationToken);
         }
 
-        protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate, TId id, object uriParameters) {
+        protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate, object uriParameters) {
 
-            return GetSingleAsync(uriTemplate, id, uriParameters, CancellationToken.None);
+            return GetSingleAsync(uriTemplate, uriParameters, CancellationToken.None);
         }
 
-        protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate, TId id, object uriParameters, CancellationToken cancellationToken) {
+        protected Task<HttpApiResponseMessage<TResult>> GetSingleAsync(string uriTemplate, object uriParameters, CancellationToken cancellationToken) {
 
-            string requestUri = UriUtil.BuildRequestUri<TId>(_baseUri, uriTemplate, id: id);
+            string requestUri = UriUtil.BuildRequestUri(_baseUri, uriTemplate, uriParameters: uriParameters);
             return _httpClient.GetAsync(requestUri, cancellationToken).GetHttpApiResponseAsync<TResult>(_formatters);
         }
 
@@ -128,55 +127,55 @@ namespace WebApiDoodle.Net.Http.Client {
 
         protected Task<HttpApiResponseMessage<TResult>> PostAsync<TRequestModel>(string uriTemplate, TRequestModel requestModel, object uriParameters, CancellationToken cancellationToken) {
 
-            string requestUri = UriUtil.BuildRequestUri<TId>(_baseUri, uriTemplate, uriParameters: uriParameters);
+            string requestUri = UriUtil.BuildRequestUri(_baseUri, uriTemplate, uriParameters: uriParameters);
             return _httpClient.PostAsync<TRequestModel>(requestUri, requestModel, _writerMediaTypeFormatter, cancellationToken)
                 .GetHttpApiResponseAsync<TResult>(_formatters);
         }
 
         // PUT Requests
 
-        protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TId id, TRequestModel requestModel) {
+        protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TRequestModel requestModel) {
 
-            return PutAsync(uriTemplate, id, requestModel, null, CancellationToken.None);
+            return PutAsync(uriTemplate, requestModel, null, CancellationToken.None);
         }
 
-        protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TId id, TRequestModel requestModel, CancellationToken cancellationToken) {
+        protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TRequestModel requestModel, CancellationToken cancellationToken) {
 
-            return PutAsync(uriTemplate, id, requestModel, null, cancellationToken);
+            return PutAsync(uriTemplate, requestModel, null, cancellationToken);
         }
 
-        protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TId id, TRequestModel requestModel, object uriParameters) {
+        protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TRequestModel requestModel, object uriParameters) {
 
-            return PutAsync(uriTemplate, id, requestModel, uriParameters, CancellationToken.None);
+            return PutAsync(uriTemplate, requestModel, uriParameters, CancellationToken.None);
         }
 
-        protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TId id, TRequestModel requestModel, object uriParameters, CancellationToken cancellationToken) {
+        protected Task<HttpApiResponseMessage<TResult>> PutAsync<TRequestModel>(string uriTemplate, TRequestModel requestModel, object uriParameters, CancellationToken cancellationToken) {
 
-            string requestUri = UriUtil.BuildRequestUri<TId>(_baseUri, uriTemplate, id: id, uriParameters: uriParameters);
+            string requestUri = UriUtil.BuildRequestUri(_baseUri, uriTemplate, uriParameters: uriParameters);
             return _httpClient.PutAsync<TRequestModel>(requestUri, requestModel, _writerMediaTypeFormatter, cancellationToken)
                               .GetHttpApiResponseAsync<TResult>(_formatters);
         }
 
         // DELETE Requests
 
-        protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate, TId id) {
+        protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate) {
 
-            return DeleteAsync(uriTemplate, id, null, CancellationToken.None);
+            return DeleteAsync(uriTemplate, null, CancellationToken.None);
         }
 
-        protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate, TId id, CancellationToken cancellationToken) {
+        protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate, CancellationToken cancellationToken) {
 
-            return DeleteAsync(uriTemplate, id, null, cancellationToken);
+            return DeleteAsync(uriTemplate, null, cancellationToken);
         }
 
-        protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate, TId id, object uriParameters) {
+        protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate, object uriParameters) {
 
-            return DeleteAsync(uriTemplate, id, uriParameters, CancellationToken.None);
+            return DeleteAsync(uriTemplate, uriParameters, CancellationToken.None);
         }
 
-        protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate, TId id, object uriParameters, CancellationToken cancellationToken) {
+        protected Task<HttpApiResponseMessage> DeleteAsync(string uriTemplate, object uriParameters, CancellationToken cancellationToken) {
 
-            string requestUri = UriUtil.BuildRequestUri<TId>(_baseUri, uriTemplate, id: id, uriParameters: uriParameters);
+            string requestUri = UriUtil.BuildRequestUri(_baseUri, uriTemplate, uriParameters: uriParameters);
             return _httpClient.DeleteAsync(requestUri, cancellationToken).GetHttpApiResponseAsync(_formatters);
         }
     }
