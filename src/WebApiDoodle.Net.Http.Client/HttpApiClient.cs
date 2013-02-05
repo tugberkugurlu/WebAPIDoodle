@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading;
 using System.Threading.Tasks;
+using WebApiDoodle.Net.Http.Client.Formatting;
 using WebApiDoodle.Net.Http.Client.Internal;
 using WebApiDoodle.Net.Http.Client.Model;
 
@@ -15,12 +16,10 @@ namespace WebApiDoodle.Net.Http.Client {
     /// <typeparam name="TResult">Type of the result type which is expected.</typeparam>
     public abstract class HttpApiClient<TResult> where TResult : IDto {
 
-        // TODO: Make it possible to inject _writerMediaTypeFormatter
-
         private readonly HttpClient _httpClient;
         private readonly string _baseUri;
         private readonly IEnumerable<MediaTypeFormatter> _formatters;
-        private readonly MediaTypeFormatter _writerMediaTypeFormatter = new JsonMediaTypeFormatter();
+        private readonly MediaTypeFormatter _writerMediaTypeFormatter;
 
         /// <summary>
         /// Initializes a new instance of the WebApiDoodle.Net.Http.Client.HttpApiClient
@@ -32,8 +31,8 @@ namespace WebApiDoodle.Net.Http.Client {
         /// instance can be used throughout the application lifecycle.
         /// </remarks>
         /// <param name="httpClient">The <see cref="HttpClient"/> instance to use for handling requests.</param>
-        public HttpApiClient(HttpClient httpClient) 
-            : this(httpClient, new MediaTypeFormatterCollection()) {
+        public HttpApiClient(HttpClient httpClient)
+            : this(httpClient, DefaultMediaTypeFormatterCollection.Instance, DefaultWriterMediaTypeFormatter.Instance) {
         }
 
         /// <summary>
@@ -47,7 +46,23 @@ namespace WebApiDoodle.Net.Http.Client {
         /// </remarks>
         /// <param name="httpClient">The <see cref="HttpClient"/> instance to use for handling requests.</param>
         /// <param name="formatters">The collection of <see cref="MediaTypeFormatter"/> instances to use.</param>
-        public HttpApiClient(HttpClient httpClient, IEnumerable<MediaTypeFormatter> formatters) {
+        public HttpApiClient(HttpClient httpClient, IEnumerable<MediaTypeFormatter> formatters)
+            : this(httpClient, formatters, DefaultWriterMediaTypeFormatter.Instance) { 
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the WebApiDoodle.Net.Http.Client.HttpApiClient
+        /// with a specific System.Net.Http.HttpClient.
+        /// </summary>
+        /// <remarks>
+        /// The specified System.Net.Http.HttpClient is not going to be disposed by the 
+        /// WebApiDoodle.Net.Http.Client.HttpApiClient instance as a System.Net.Http.HttpClient 
+        /// instance can be used throughout the application lifecycle.
+        /// </remarks>
+        /// <param name="httpClient">The <see cref="HttpClient"/> instance to use for handling requests.</param>
+        /// <param name="formatters">The collection of <see cref="MediaTypeFormatter"/> instances to use.</param>
+        /// <param name="writerMediaTypeFormatter">The writer formatter which is of type <see cref="MediaTypeFormatter"/> will be used to serialize the request body.</param>
+        public HttpApiClient(HttpClient httpClient, IEnumerable<MediaTypeFormatter> formatters, MediaTypeFormatter writerMediaTypeFormatter) {
 
             if (httpClient == null) {
                 throw new ArgumentNullException("httpClient");
@@ -57,8 +72,13 @@ namespace WebApiDoodle.Net.Http.Client {
                 throw new ArgumentNullException("formatters");
             }
 
+            if (writerMediaTypeFormatter == null) {
+                throw new ArgumentNullException("writerMediaTypeFormatter");
+            }
+
             _httpClient = httpClient;
             _formatters = formatters;
+            _writerMediaTypeFormatter = writerMediaTypeFormatter;
             _baseUri = httpClient.BaseAddress.ToString().TrimEnd('/').ToLowerInvariant();
         }
 

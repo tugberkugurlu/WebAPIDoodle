@@ -70,6 +70,8 @@
     <Compile Include="..\Common\TaskHelpersExtensions.cs">
       <Link>Common\TaskHelpersExtensions.cs</Link>
     </Compile>
+    <Compile Include="Formatting\DefaultMediaTypeFormatterCollection.cs" />
+    <Compile Include="Formatting\DefaultWriterMediaTypeFormatter.cs" />
     <Compile Include="HttpApiRequestException.cs" />
     <Compile Include="HttpApiClient.cs" />
     <Compile Include="HttpApiError.cs" />
