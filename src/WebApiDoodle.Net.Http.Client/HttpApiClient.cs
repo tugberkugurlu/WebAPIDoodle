@@ -178,5 +178,28 @@ namespace WebApiDoodle.Net.Http.Client {
             string requestUri = UriUtil.BuildRequestUri(_baseUri, uriTemplate, uriParameters: uriParameters);
             return _httpClient.DeleteAsync(requestUri, cancellationToken).GetHttpApiResponseAsync(_formatters);
         }
+
+        // Generic SendAsync Methods
+
+        protected Task<HttpApiResponseMessage> SendAsync(HttpRequestMessage request) {
+
+            return SendAsync(request, HttpCompletionOption.ResponseContentRead, CancellationToken.None);
+        }
+
+        protected Task<HttpApiResponseMessage> SendAsync(HttpRequestMessage request, HttpCompletionOption httpCompletionOption) {
+
+            return SendAsync(request, httpCompletionOption, CancellationToken.None);
+        }
+
+        protected Task<HttpApiResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken) {
+
+            return SendAsync(request, HttpCompletionOption.ResponseContentRead, cancellationToken);
+        }
+
+        protected Task<HttpApiResponseMessage> SendAsync(HttpRequestMessage request, HttpCompletionOption httpCompletionOption, CancellationToken cancellationToken) {
+
+            return _httpClient.SendAsync(request, httpCompletionOption, cancellationToken)
+                .GetHttpApiResponseAsync(_formatters);
+        }
     }
 }
