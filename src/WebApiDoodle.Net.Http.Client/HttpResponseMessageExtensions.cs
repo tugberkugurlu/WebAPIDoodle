@@ -90,7 +90,10 @@ namespace WebApiDoodle.Net.Http.Client {
                     return TaskHelpers.FromError<HttpApiResponseMessage<TEntity>>(ex);
                 }
             }
-            else if (response.StatusCode == HttpStatusCode.BadRequest) {
+            else if (response.Content != null && response.Content.Headers.ContentLength > 0) {
+
+                // NOTE: Not just for HttpStatusCode.BadRequest, 
+                // doing this for every NonSuccess status code.
 
                 try {
 
@@ -110,7 +113,9 @@ namespace WebApiDoodle.Net.Http.Client {
 
         internal static Task<HttpApiResponseMessage> GetHttpApiResponseAsync(this HttpResponseMessage response, IEnumerable<MediaTypeFormatter> formatters) {
 
-            if (response.StatusCode == HttpStatusCode.BadRequest) {
+            // Not just for HttpStatusCode.BadRequest, 
+            // doing this for every NonSuccess status code.
+            if (!response.IsSuccessStatusCode && response.Content != null && response.Content.Headers.ContentLength > 0) {
 
                 try {
 

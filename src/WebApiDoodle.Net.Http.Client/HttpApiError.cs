@@ -25,9 +25,10 @@ namespace WebApiDoodle.Net.Http.Client {
             set { this[MessageKey] = value; }
         }
 
-        public HttpApiError ModelState {
-            get { return GetPropertyValue<HttpApiError>(ModelStateKey); }
-        }
+        // NOTE: Couldn't make it work in a formatter agnostic way.
+        //public HttpApiError ModelState {
+        //    get { return GetPropertyValue<HttpApiError>(ModelStateKey); }
+        //}
 
         public string MessageDetail {
             get { return GetPropertyValue<String>(MessageDetailKey); }
