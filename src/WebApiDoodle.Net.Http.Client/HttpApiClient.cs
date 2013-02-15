@@ -142,7 +142,7 @@ namespace WebApiDoodle.Net.Http.Client {
 
         protected Task<HttpApiResponseMessage<TResult>> PostAsync<TRequestModel>(string uriTemplate, TRequestModel requestModel, object uriParameters) {
 
-            return PostAsync(uriTemplate, requestModel, CancellationToken.None);
+            return PostAsync(uriTemplate, requestModel, uriParameters, CancellationToken.None);
         }
 
         protected Task<HttpApiResponseMessage<TResult>> PostAsync<TRequestModel>(string uriTemplate, TRequestModel requestModel, object uriParameters, CancellationToken cancellationToken) {
