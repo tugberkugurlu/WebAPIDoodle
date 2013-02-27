@@ -17,6 +17,7 @@
     <AppProjFiles Include="$(SolutionDir)\src\**\*.csproj" />
     <TestProjFiles Include="$(SolutionDir)\src\**\*.csproj" />
     <NuGetPackageProjects Include="$(SolutionDir)\src\WebApiDoodle.Web\WebApiDoodle.Web.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http.Client.Model\WebApiDoodle.Net.Http.Client.Model.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http.Client\WebApiDoodle.Net.Http.Client.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http.Formatting\WebApiDoodle.Net.Http.Formatting.csproj;$(SolutionDir)\src\WebApiDoodle.Net.Http\WebApiDoodle.Net.Http.csproj;$(SolutionDir)\src\WebApiDoodle.Web.Meta\WebApiDoodle.Web.Meta.csproj;$(SolutionDir)\src\WebApiDoodle.Web.WebHostEx\WebApiDoodle.Web.WebHostEx.csproj" />
+    <NuGetPackageManifests Include="$(SolutionDir)\src\NuGetPackageManifests\*.nuspec" />
   </ItemGroup>
 
   <Target Name="Default" DependsOnTargets="Compile; Package" />
@@ -32,7 +33,8 @@
     <MSBuild Projects="@(AppProjFiles)" Targets="Rebuild" Properties="OutDir=$(BuildArtifactsDir);Configuration=$(Configuration)" />
   </Target>
   <Target Name="Package">
-    <Exec Command="$(NugetExeDir)\nuget.exe pack %(NuGetPackageProjects.FullPath) -Build -OutputDirectory $(NuGetPackageOutputDir)" />
+    <Exec Command="$(NugetExeDir)\nuget.exe pack %(NuGetPackageProjects.FullPath) -Build -OutputDirectory $(NuGetPackageOutputDir) -NonInteractive -Verbosity detailed" />
+    <Exec Command="$(NugetExeDir)\nuget.exe pack %(NuGetPackageManifests.FullPath) -OutputDirectory $(NuGetPackageOutputDir) -NonInteractive -Verbosity detailed" />
   </Target>
   <Target Name="PublishPackage">
     <Exec Command="powershell -file $(ScriptsDir)\publish.ps1" />

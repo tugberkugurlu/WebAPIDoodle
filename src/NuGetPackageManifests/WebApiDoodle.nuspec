@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>WebApiDoodle</id>
+    <version>2.0.0</version>
+    <title>WebApiDoodle</title>
+    <authors>Tugberk Ugurlu</authors>
+    <owners>Tugberk Ugurlu</owners>
+    <licenseUrl>https://raw.github.com/WebAPIDoodle/WebAPIDoodle/master/LICENSE.md</licenseUrl>
+    <projectUrl>https://github.com/WebAPIDoodle/WebAPIDoodle</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>WebApiDoodle is an ASP.NET Web API library which contains several useful Extensions, Filters, Message Handlers and so on and so forth.</description>
+    <copyright>Copyright Tugberk Ugurlu 2013</copyright>
+    <tags>aspnetwebapi aspnet webapi</tags>
+    <dependencies>
+      <dependency id="WebApiDoodle.Web" version="2.0.0" />
+      <dependency id="WebApiDoodle.Net.Http" version="2.0.0" />
+      <dependency id="WebApiDoodle.Net.Http.Formatting" version="2.0.0" />
+    </dependencies>
+  </metadata>
+</package>
