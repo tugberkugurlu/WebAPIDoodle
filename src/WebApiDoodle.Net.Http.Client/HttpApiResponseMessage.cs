@@ -16,13 +16,6 @@ namespace WebApiDoodle.Net.Http.Client {
                 throw new ArgumentNullException("httpError");
             }
 
-            HttpApiError modelState = httpError[ModelStateKey] as HttpApiError;
-
-            if (modelState != null) {
-
-                ModelState = httpError[ModelStateKey] as Dictionary<string, string[]>;
-            }
-
             HttpError = httpError;
         }
 
@@ -54,11 +47,6 @@ namespace WebApiDoodle.Net.Http.Client {
         /// Represents the HTTP error message retrieved from the server if the response has "400 Bad Request" status code.
         /// </summary>
         public HttpApiError HttpError { get; private set; }
-
-        /// <summary>
-        /// Represents the ModelState if the response has "400 Bad Request" status code and ModelState is available.
-        /// </summary>
-        public Dictionary<string, string[]> ModelState { get; private set; }
 
         public void Dispose() {
 
