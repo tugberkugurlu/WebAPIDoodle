@@ -68,7 +68,21 @@ namespace WebApiDoodle.Web.MessageHandlers {
                 }
 
                 // Request is not authanticated. Handle unauthenticated request.
-                return HandleUnauthenticatedRequestImpl(request, cancellationToken);
+                //return HandleUnauthenticatedRequestImpl(request, cancellationToken);
+                // fixed to work with WebApi 
+                // http://stackoverflow.com/questions/15953291/webapidoodle-basicauthenticationhandler-and-webapi-4-not-allowing-anonymous/15956342?noredirect=1#15956342
+                return base.SendAsync(request, cancellationToken).ContinueWith<HttpResponseMessage>(
+                    task =>
+                    {
+                        var response = task.Result ; 
+                        if (response.StatusCode == HttpStatusCode.Unauthorized)
+                        {
+                            var retval = HandleUnauthenticatedRequestImpl(request, cancellationToken);
+                            return retval.Result; 
+                        }
+
+                        return task.Result; 
+                    }); 
             }
             else {
 
