@@ -89,7 +89,7 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
                     .ContinueWith(task => {
 
                         Assert.Equal(TaskStatus.Faulted, task.Status);
-                        Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                        Assert.IsType<UnsupportedMediaTypeException>(task.Exception.GetBaseException());
                     });
             }
 
@@ -252,7 +252,7 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
                     .ContinueWith(task => {
 
                         Assert.Equal(TaskStatus.Faulted, task.Status);
-                        Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                        Assert.IsType<UnsupportedMediaTypeException>(task.Exception.GetBaseException());
                     });
             }
 
@@ -374,7 +374,7 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
                     .ContinueWith(task => {
 
                         Assert.Equal(TaskStatus.Faulted, task.Status);
-                        Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                        Assert.IsType<UnsupportedMediaTypeException>(task.Exception.GetBaseException());
                     });
             }
 
@@ -507,7 +507,7 @@ namespace WebApiDoodle.Net.Http.Client.Test.Core {
                     .ContinueWith(task => {
 
                         Assert.Equal(TaskStatus.Faulted, task.Status);
-                        Assert.IsType<InvalidOperationException>(task.Exception.GetBaseException());
+                        Assert.IsType<UnsupportedMediaTypeException>(task.Exception.GetBaseException());
                     });
             }
 
