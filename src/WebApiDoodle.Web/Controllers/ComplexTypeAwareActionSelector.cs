@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.Controllers;
 using WebApiDoodle.Web.Internal;
 using WebApiDoodle.Web.Meta;
+using WebAPIDoodle;
 
 namespace WebApiDoodle.Web.Controllers {
 
