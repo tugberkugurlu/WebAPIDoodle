@@ -1,4 +1,7 @@
 #WebAPIDoodle
+
+> :warning: **THIS REPOSITORY IS NOT MAINTAINED ANYMORE. IF YOU WOULD LIKE TO VOLUNTEER TO BE THE MAINTAINER, PLEASE [CONTACT ME](https://twitter.com/tourismgeek).**
+
 **WebAPIDoodle** is an ASP.NET Web API library which contains several useful:
 
  - Extensions
